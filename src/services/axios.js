@@ -34,7 +34,7 @@ export default function request(option) {
     instance.interceptors.response.use(
       (response) => {
         const { code } = response.data
-        if (code == 777) {
+        if (code === 777) {
           localStorage.setItem('isLogin', 0)
           localStorage.setItem('userInfo', {})
           // notification.open({

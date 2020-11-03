@@ -1,13 +1,10 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
-import './app.less'
+import BasicRoute from '@/route'
 
 function App() {
   return (
     <div className="App">
-      <Button variant="contained" color="primary">
-        你好，世界
-      </Button>
+      <BasicRoute />
     </div>
   )
 }
