@@ -72,6 +72,7 @@ module.exports = {
   babel: {
     plugins: [
       ['@babel/plugin-proposal-decorators', { legacy: true }],
+      ['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }],
     ],
   },
   plugins: [
@@ -83,7 +84,9 @@ module.exports = {
       options: {
         lessLoaderOptions: {
           lessOptions: {
-            modifyVars: {},
+            modifyVars: {
+              '@primary-color': '#E50304',
+            },
             javascriptEnabled: true,
           },
         },

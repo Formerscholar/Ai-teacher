@@ -5,7 +5,7 @@ import './index.less'
 function Main() {
   return (
     <div id="Main">
-      <Button variant="contained" color="primary">hello react</Button>
+      <Button variant="contained" color="primary">react</Button>
     </div>
   )
 }
