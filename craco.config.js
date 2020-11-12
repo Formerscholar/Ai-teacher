@@ -29,7 +29,9 @@ module.exports = {
       new HardSourceWebpackPlugin(),
       new CompressionWebpackPlugin({
         algorithm: 'gzip',
-        test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
+        test: new RegExp(
+          '\\.(' + ['js', 'jsx', 'css', 'less'].join('|') + ')$'
+        ),
         threshold: 1024,
         minRatio: 0.8,
       }),
@@ -84,9 +86,6 @@ module.exports = {
       options: {
         lessLoaderOptions: {
           lessOptions: {
-            modifyVars: {
-              '@primary-color': '#E50304',
-            },
             javascriptEnabled: true,
           },
         },
