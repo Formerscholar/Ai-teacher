@@ -1,0 +1,130 @@
+#Login {
+  height: 100vh;
+  background: url('https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/login_bg.png') no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #222222;
+
+
+  .content {
+    width: 100rem;
+    height: 57.14rem;
+    background: #FFFFFF;
+    box-shadow: 0rem 1rem 2rem 0rem rgba(114, 29, 29, 0.5);
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .left_box {
+      flex: 1;
+
+      img {
+        width: 45.14rem;
+        height: 36.64rem;
+        margin-left: 6.43rem;
+      }
+    }
+
+    .right_box {
+      position: relative;
+      height: 100%;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .right_imgs {
+        position: absolute;
+        right: 1.43rem;
+        top: 1.43rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .WeChat {
+          width: 13.79rem;
+          height: 2.93rem;
+          line-height: 2.93rem;
+          background: url('https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/WeChat.png') no-repeat;
+          background-size: 100% 100%;
+          font-size: 1.14rem;
+          font-weight: 400;
+          text-align: right;
+          padding-right: 1.86rem;
+          margin-right: .64rem;
+
+        }
+
+        .QRcode {
+          width: 5.86rem;
+          height: 5.21rem;
+        }
+
+      }
+
+      .form_box {
+
+        .title {
+          font-size: 2.86rem;
+          font-weight: bold;
+          margin-bottom: 5.71rem;
+
+        }
+
+        .phone,
+        .Verification {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          margin-bottom: 2.71rem;
+
+          .userinput {
+            width: 25.21rem;
+
+            a {
+              width: 7rem;
+              font-size: 1rem;
+              font-weight: 400;
+              color: #E91003;
+              cursor: pointer;
+            }
+
+            a:hover {
+              text-shadow: 2px 2px 8px #E91003;
+            }
+          }
+
+          span {
+            font-size: 1.43rem;
+            font-weight: 400;
+          }
+        }
+
+        .btns {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 2.93rem;
+
+          .login {
+            width: 23.79rem;
+            height: 4.29rem;
+            border-radius: 2.5rem;
+            font-size: 1.714286rem;
+          }
+        }
+
+        .tip {
+          font-size: 1.14rem;
+          font-weight: 400;
+          text-align: center;
+
+        }
+      }
+    }
+  }
+}
