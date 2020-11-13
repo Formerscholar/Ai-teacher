@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { TextField, Button, Fade, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-import { phoneRegular, appid, callBackUrl } from '@/conf'
+import { phoneRegular, appid, callBackUrl, setCookie } from '@/conf'
 
 import { getLoginCode, getLogin } from '@/services/login'
 
@@ -102,6 +102,7 @@ function Login(props) {
       }, 300)
     }
   }
+
   const clickLogin = async () => {
     const { code, data, msg } = await getLogin({
       mobile: Phone,
@@ -109,7 +110,8 @@ function Login(props) {
     })
     setopentip(msg)
     if (code == 200) {
-      localStorage.setItem('token', data.token)
+      setCookie('id', data.id)
+      setCookie('token', data.token)
       props.history.push('/main')
     } else {
       setOpen(true)

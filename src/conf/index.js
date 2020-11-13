@@ -11,4 +11,11 @@ const callBackUrl = encodeURIComponent(
   'http://test.aictb.com/teacher/WXLogin'
 )
 
-export { baseURL, phoneRegular, appid, callBackUrl }
+const setCookie = (key, value) => {
+  const d = new Date()
+  d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
+  const expires = 'expires=' + d.toGMTString()
+  document.cookie = key + '=' + value + '; ' + expires
+}
+
+export { baseURL, phoneRegular, appid, callBackUrl ,setCookie}

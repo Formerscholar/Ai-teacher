@@ -4,7 +4,6 @@ import AI_header from 'components/AI_header/AI_header'
 
 function Main(props) {
   useEffect(() => {
-    console.log('保存cookies', props, props.location)
     return () => {}
   }, [])
   return (
