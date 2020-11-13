@@ -1,8 +1,12 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import './index.less'
 import AI_header from 'components/AI_header/AI_header'
 
-function Main() {
+function Main(props) {
+  useEffect(() => {
+    console.log('保存cookies', props, props.location)
+    return () => {}
+  }, [])
   return (
     <div id="Main">
       <AI_header />

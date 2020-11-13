@@ -35,8 +35,8 @@ export default function request(option) {
       (response) => {
         const { code } = response.data
         if (code === 777) {
-          localStorage.setItem('isLogin', 0)
-          localStorage.setItem('userInfo', {})
+          // localStorage.setItem('isLogin', 0)
+          // localStorage.setItem('userInfo', {})
           // notification.open({
           //   message: '错题宝提示',
           //   description: '未检测到您的登录信息,请重新登录!',

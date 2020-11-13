@@ -13,12 +13,12 @@ module.exports = {
     https: false,
     disableHostCheck: true,
     proxy: {
-      '/api': {
-        target: 'http://test.aictb.com:8080',
+      '/teacher': {
+        target: 'http://test.aictb.com',
         ws: true,
         changOrigin: true,
         pathRewrite: {
-          '^/api': '/api',
+          '^/teacher': '/teacher',
         },
       },
     },
