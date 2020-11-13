@@ -1,11 +1,11 @@
-import React,{memo} from 'react'
-import { Button } from '@material-ui/core'
+import React, { memo } from 'react'
 import './index.less'
+import AI_header from 'components/AI_header/AI_header'
 
 function Main() {
   return (
     <div id="Main">
-      <Button variant="contained" color="primary">react</Button>
+      <AI_header />
     </div>
   )
 }
