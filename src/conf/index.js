@@ -7,9 +7,7 @@ const phoneRegular = /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])
 
 const appid = 'wx5f0976e726b587f8'
 
-const callBackUrl = encodeURIComponent(
-  'http://test.aictb.com/teacher/WXLogin'
-)
+const callBackUrl = encodeURIComponent('http://test.aictb.com/teacher/WXLogin')
 
 const setCookie = (key, value) => {
   const d = new Date()
@@ -18,4 +16,19 @@ const setCookie = (key, value) => {
   document.cookie = key + '=' + value + '; ' + expires
 }
 
-export { baseURL, phoneRegular, appid, callBackUrl ,setCookie}
+function getCookie(name) {
+  var arr,
+    reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
+  if ((arr = document.cookie.match(reg))) return unescape(arr[2])
+  else return null
+}
+
+function delCookie(name) {
+  var exp = new Date()
+  exp.setTime(exp.getTime() - 1)
+  var cval = getCookie(name)
+  if (cval != null)
+    document.cookie = name + '=' + cval + ';expires=' + exp.toGMTString()
+}
+
+export { baseURL, phoneRegular, appid, callBackUrl, setCookie ,getCookie ,delCookie  }

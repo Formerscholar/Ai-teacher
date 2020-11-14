@@ -16,3 +16,11 @@ export function getLogin(params) {
     params
   })
 }
+
+export function getLogout(params) {
+  return request({
+    url: '/loginOut',
+    method: 'GET',
+    params
+  })
+}
