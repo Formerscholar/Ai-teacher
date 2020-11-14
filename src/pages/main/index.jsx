@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo } from 'react'
 import './index.less'
 import M_InformationSummary from './components/M_InformationSummary/M_InformationSummary'
 
