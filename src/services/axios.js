@@ -1,6 +1,5 @@
 import originAxios from 'axios'
-import { baseURL } from '../conf'
-
+import { baseURL ,delCookie } from '../conf'
 originAxios.defaults.withCredentials = true
 
 export default function request(option) {
@@ -23,6 +22,8 @@ export default function request(option) {
       (response) => {
         const { code } = response.data
         if (code === 777) {
+          delCookie('id')
+          delCookie('token')
           window.location.href = '/login'
         }
         return response.data

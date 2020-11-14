@@ -1,31 +1,73 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState ,useEffect} from 'react'
 import './AI_header.less'
 import { Menu, MenuItem, Avatar, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import { getLogout } from '@/services/login'
 import { getCookie, delCookie } from '@/conf'
+import { gethome } from '@/services/home'
 
 const araList = ['data', 'integral', 'logout']
 const headMenu = [
-  'index',
-  'class',
-  'Famous',
-  'School-based',
-  'knowledge',
-  'Uploadedpaper',
-  'Mypaper',
+  {
+    text: '首页',
+    url: 'main/index',
+  },
+  {
+    text: '班级信息',
+    url: 'main/class',
+  },
+  {
+    text: '名校资源',
+    url: 'main/famous',
+  },
+  {
+    text: '校本试卷',
+    url: 'main/schoolbased',
+  },
+  {
+    text: '知识库',
+    url: 'main/knowledge',
+  },
+  {
+    text: '上传试卷',
+    url: 'main/uploadpaper',
+  },
+  {
+    text: '我的试卷',
+    url: 'main/mypaper',
+  },
 ]
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />
 }
-function AI_header({ props, teacher }) {
+
+function AI_header({props}) {
   const [open, setOpen] = useState(false)
   const [opentip, setopentip] = useState('请求错误!')
-
   const [anchorEl, setAnchorEl] = useState(null)
+  const [current, setcurrent] = useState(0)
+  const [indexData, setIndexData] = useState({})
+
+  useEffect(() => {
+    gethomeData()
+    return () => {}
+  }, [])
+
+  const gethomeData = async () => {
+    const { code, data } = await gethome()
+    if (code == 200) {
+      setIndexData(data)
+    }
+  }
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const headMenuClick = (e) => {
+    const { id } = e.target.dataset
+    setcurrent(id)
+    props.history.push(`/${headMenu[id].url}`)
   }
 
   const handleClose = (e) => {
@@ -75,35 +117,26 @@ function AI_header({ props, teacher }) {
           />
         </div>
         <div className="center_box">
-          <div data-info={headMenu[0]} className="cenItem index">
-            首页
-          </div>
-          <div data-info={headMenu[1]} className="cenItem">
-            班级信息
-          </div>
-          <div data-info={headMenu[2]} className="cenItem">
-            名校资源
-          </div>
-          <div data-info={headMenu[3]} className="cenItem">
-            校本试卷
-          </div>
-          <div data-info={headMenu[4]} className="cenItem">
-            知识库
-          </div>
-          <div data-info={headMenu[5]} className="cenItem">
-            上传的试卷
-          </div>
-          <div data-info={headMenu[6]} className="cenItem">
-            我的试卷
-          </div>
+          {headMenu.map((item, index) => {
+            return (
+              <div
+                data-id={index}
+                key={index}
+                className={current == index ? 'cenItem index' : 'cenItem'}
+                onClick={headMenuClick}
+              >
+                {item.text}
+              </div>
+            )
+          })}
         </div>
         <div className="right_box">
           <Avatar
             className="Avatar"
             alt="Remy Sharp"
-            src={teacher?.avatar_file}
+            src={indexData.teacher?.avatar_file}
           />
-          <span onClick={handleClick}>{teacher?.true_name}</span>
+          <span onClick={handleClick}>{indexData.teacher?.true_name}</span>
           <div className="right_icon"></div>
           <Menu
             id="simple-menu"
