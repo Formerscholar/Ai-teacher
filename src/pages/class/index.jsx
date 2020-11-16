@@ -13,7 +13,7 @@ import { getTeamList } from '@/services/class'
  */
 function Class(props) {
   const [classInfo, setClassInfo] = useState({})
-  const { homeInfo, setClass, classInfos } = props
+  const { homeInfo, setClass, classInfos ,history } = props
 
   useEffect(() => {
     getTeamLists()
@@ -29,12 +29,14 @@ function Class(props) {
   }
 
   /**
-   *跳转班级详情页面 传递iid
+   *跳转班级详情页面/main/classdetail 传递iid
    *
    * @param {Number} iid
    */
   const get_Details = (iid) => {
-    console.log(iid)
+    history.push('/main/classdetail', {
+      iid
+    })
   }
 
   return (
@@ -63,7 +65,7 @@ function Class(props) {
           个班级
         </div>
       </div>
-      <div className="class_box"></div>
+      <div className="class_box">
         {classInfo.teamList?.map((item) => {
           return (
             <div className="item_box" key={item?.id}>

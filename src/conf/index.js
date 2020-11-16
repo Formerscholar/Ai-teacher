@@ -40,35 +40,4 @@ const headMenu = [
   },
 ]
 
-const setCookie = (key, value) => {
-  const d = new Date()
-  d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
-  const expires = 'expires=' + d.toGMTString()
-  document.cookie = key + '=' + value + '; ' + expires
-}
-
-function getCookie(name) {
-  var arr,
-    reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
-  if ((arr = document.cookie.match(reg))) return unescape(arr[2])
-  else return null
-}
-
-function delCookie(name) {
-  var exp = new Date()
-  exp.setTime(exp.getTime() - 1)
-  var cval = getCookie(name)
-  if (cval != null)
-    document.cookie = name + '=' + cval + ';expires=' + exp.toGMTString()
-}
-
-export {
-  baseURL,
-  phoneRegular,
-  appid,
-  callBackUrl,
-  setCookie,
-  getCookie,
-  delCookie,
-  headMenu,
-}
+export { baseURL, phoneRegular, appid, callBackUrl, headMenu }

@@ -6,3 +6,12 @@ export function getTeamList() {
     method: 'GET'
   })
 }
+
+
+export function getTeamDetail(params) {
+  return request({
+    url: '/getTeamDetail',
+    method: 'GET',
+    params
+  })
+}

@@ -2,7 +2,8 @@ import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { TextField, Button, Fade, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-import { phoneRegular, appid, callBackUrl, setCookie } from '@/conf'
+import { phoneRegular, appid, callBackUrl } from '@/conf'
+import { setCookie } from '@/utils'
 
 import { getLoginCode, getLogin } from '@/services/login'
 
