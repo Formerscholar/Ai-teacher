@@ -85,8 +85,7 @@ function ClassDetails(props) {
                   <span>{setTimerType(item?.last_login_time * 1000)}</span>
                 </div>
                 <div className="operate_box flex_box">
-                  {(detailData?.team?.teacher_id !== item?.id) ===
-                  homeInfo?.teacher?.id ? (
+                  {detailData?.team?.teacher_id !== item?.id && detailData?.team?.teacher_id  === homeInfo?.teacher?.id ? (
                     <span>移除</span>
                   ) : (
                     <span>-</span>
