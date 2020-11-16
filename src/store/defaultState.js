@@ -1,4 +1,5 @@
 const defaultState = {
-  listItem: [],
+  homeInfo: {},
+  classInfo:{}
 }
 export default defaultState

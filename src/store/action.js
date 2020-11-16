@@ -1,16 +1,21 @@
-import {GetList } from '@/store/actionCreators'
+import { GetListAction, GetClassAction } from '@/store/actionCreators'
 
 const mapStateToProps = (state) => {
-  const { listItem } = state
+  const { homeInfo, classInfo } = state
   return {
-    listItem,
+    homeInfo,
+    classInfo,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     GetListData(value) {
-      const action = GetList(value)
+      const action = GetListAction(value)
+      dispatch(action)
+    },
+    GetClassData(value) {
+      const action = GetClassAction(value)
       dispatch(action)
     },
   }

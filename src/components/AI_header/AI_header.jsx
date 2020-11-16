@@ -1,48 +1,20 @@
-import React, { memo, useState ,useEffect} from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import './AI_header.less'
 import { Menu, MenuItem, Avatar, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import { getLogout } from '@/services/login'
-import { getCookie, delCookie } from '@/conf'
+import { getCookie, delCookie, headMenu } from '@/conf'
 import { gethome } from '@/services/home'
+import { connect } from 'react-redux'
+import { GET_HOME_INFO } from '@/store/actionType'
 
 const araList = ['data', 'integral', 'logout']
-const headMenu = [
-  {
-    text: '首页',
-    url: 'main/index',
-  },
-  {
-    text: '班级信息',
-    url: 'main/class',
-  },
-  {
-    text: '名校资源',
-    url: 'main/famous',
-  },
-  {
-    text: '校本试卷',
-    url: 'main/schoolbased',
-  },
-  {
-    text: '知识库',
-    url: 'main/knowledge',
-  },
-  {
-    text: '上传试卷',
-    url: 'main/uploadpaper',
-  },
-  {
-    text: '我的试卷',
-    url: 'main/mypaper',
-  },
-]
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-function AI_header({props}) {
+function AI_header({ homeInfo, props, setData }) {
   const [open, setOpen] = useState(false)
   const [opentip, setopentip] = useState('请求错误!')
   const [anchorEl, setAnchorEl] = useState(null)
@@ -58,6 +30,7 @@ function AI_header({props}) {
     const { code, data } = await gethome()
     if (code == 200) {
       setIndexData(data)
+      setData(data)
     }
   }
   const handleClick = (event) => {
@@ -177,4 +150,23 @@ function AI_header({props}) {
     </div>
   )
 }
-export default memo(AI_header)
+
+const mapStateToProps = (state) => {
+  return {
+    homeInfo: state.homeInfo,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setData(value) {
+      let action = {
+        type: GET_HOME_INFO,
+        value: value,
+      }
+      dispatch(action)
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(AI_header))

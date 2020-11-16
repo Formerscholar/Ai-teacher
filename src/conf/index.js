@@ -9,6 +9,37 @@ const appid = 'wx5f0976e726b587f8'
 
 const callBackUrl = encodeURIComponent('http://test.aictb.com/teacher/WXLogin')
 
+const headMenu = [
+  {
+    text: '首页',
+    url: 'main/index',
+  },
+  {
+    text: '班级信息',
+    url: 'main/class',
+  },
+  {
+    text: '名校资源',
+    url: 'main/famous',
+  },
+  {
+    text: '校本试卷',
+    url: 'main/schoolbased',
+  },
+  {
+    text: '知识库',
+    url: 'main/knowledge',
+  },
+  {
+    text: '上传试卷',
+    url: 'main/uploadpaper',
+  },
+  {
+    text: '我的试卷',
+    url: 'main/mypaper',
+  },
+]
+
 const setCookie = (key, value) => {
   const d = new Date()
   d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
@@ -31,4 +62,13 @@ function delCookie(name) {
     document.cookie = name + '=' + cval + ';expires=' + exp.toGMTString()
 }
 
-export { baseURL, phoneRegular, appid, callBackUrl, setCookie ,getCookie ,delCookie  }
+export {
+  baseURL,
+  phoneRegular,
+  appid,
+  callBackUrl,
+  setCookie,
+  getCookie,
+  delCookie,
+  headMenu,
+}

@@ -2,6 +2,8 @@ import React, { memo } from 'react'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import G_spin from '@/common/G_spin'
 import Loadable from 'react-loadable'
+import { Provider } from 'react-redux'
+import store from '@/store'
 
 const Login = Loadable({
   loader: () => import('@/pages/login'),
@@ -16,13 +18,15 @@ const BasicRoute = Loadable({
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Switch>
-          <Route path="/main" component={BasicRoute} />
-          <Route path="/login" component={Login} />
-          <Redirect to="/main"></Redirect>
-        </Switch>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/main" component={BasicRoute} />
+            <Route path="/login" component={Login} />
+            <Redirect to="/main"></Redirect>
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     </div>
   )
 }
