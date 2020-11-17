@@ -1,1 +1,0 @@
-(this.webpackJsonpteacher_admin=this.webpackJsonpteacher_admin||[]).push([[13],{137:function(e,n,t){},179:function(e,n,t){"use strict";t.r(n);var c=t(4),i=t(0);t(137);function a(e){return Object(c.jsx)("div",{id:"Knowledge",children:"Knowledge"})}n.default=Object(i.memo)(a)}}]);
