@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 
 const araList = ['data', 'integral', 'logout']
+const araLists = ['Chapter', 'Knowledge']
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />
@@ -19,6 +20,7 @@ function AI_header({ homeInfo, props, setData }) {
   const [open, setOpen] = useState(false)
   const [opentip, setopentip] = useState('请求错误!')
   const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEls, setAnchorEls] = useState(null)
   const [current, setcurrent] = useState(0)
   const [indexData, setIndexData] = useState({})
 
@@ -38,10 +40,15 @@ function AI_header({ homeInfo, props, setData }) {
     setAnchorEl(event.currentTarget)
   }
 
-  const headMenuClick = (e) => {
-    const { id } = e.target.dataset
+  const headMenuClick = (event, id) => {
     setcurrent(id)
-    props.history.push(`/${headMenu[id].url}`)
+    if (id !== 4) {
+      props.history.push(`/${headMenu[id].url}`)
+    } else {
+      // 打开menu 选择跳转路由
+      console.log('headMenuClick ')
+      setAnchorEls(event.currentTarget)
+    }
   }
 
   const handleClose = (e) => {
@@ -80,6 +87,23 @@ function AI_header({ homeInfo, props, setData }) {
     keymap.get(info) && keymap.get(info)()
     setAnchorEl(null)
   }
+
+  const handleCloses = (e) => {
+    const { info } = e.target.dataset
+    const Chapterfunc = () => {
+      props.history.push('/main/chapter')
+    }
+    const Knowledgefunc = () => {
+      props.history.push('/main/knowledge')
+    }
+    const keymap = new Map([
+      [araLists[0], Chapterfunc],
+      [araLists[1], Knowledgefunc],
+    ])
+    keymap.get(info) && keymap.get(info)()
+    setAnchorEls(null)
+  }
+
   return (
     <div id="AI_header">
       <div className="title_box">
@@ -94,15 +118,28 @@ function AI_header({ homeInfo, props, setData }) {
           {headMenu.map((item, index) => {
             return (
               <div
-                data-id={index}
                 key={index}
                 className={current == index ? 'cenItem index' : 'cenItem'}
-                onClick={headMenuClick}
+                onClick={(e) => headMenuClick(e, index)}
               >
                 {item.text}
               </div>
             )
           })}
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEls}
+            keepMounted
+            open={Boolean(anchorEls)}
+            style={{ top: '3.571429rem' }}
+          >
+            <MenuItem data-info={araLists[0]} onClick={handleCloses}>
+              章节同步选题
+            </MenuItem>
+            <MenuItem data-info={araLists[1]} onClick={handleCloses}>
+              知识点组卷
+            </MenuItem>
+          </Menu>
         </div>
         <div className="right_box">
           <Avatar
@@ -110,15 +147,16 @@ function AI_header({ homeInfo, props, setData }) {
             alt="Remy Sharp"
             src={indexData.teacher?.avatar_file}
           />
-          <span onClick={handleClick}>{indexData.teacher?.true_name}</span>
-          <div className="right_icon"></div>
+          <span onClick={handleClick}>
+            {indexData.teacher?.true_name} <div className="right_icon"></div>
+          </span>
+
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
-            onClose={handleClose}
-            style={{ top: '3.571429rem', left: '-1.714286rem' }}
+            style={{ top: '3.571429rem', left:'-1.714286rem' }}
           >
             <MenuItem data-info={araList[0]} onClick={handleClose}>
               个人资料

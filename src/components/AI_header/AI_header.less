@@ -49,29 +49,36 @@
       }
 
       span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 1.14rem;
         font-weight: 400;
         color: #FFFFFF;
-        margin-right: 0.93rem;
-      }
 
-      .right_icon {
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 0.428571rem 0.5rem 0.428571rem;
-        border-color: transparent transparent #fff transparent;
-        line-height: 0px;
-        _border-color: #000000 #000000 #fff #000000;
-        _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
-        transition: 0.618s;
-        transform-origin: center center;
+        .right_icon {
+          margin-left: 0.93rem;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 0 0.428571rem 0.5rem 0.428571rem;
+          border-color: transparent transparent #fff transparent;
+          line-height: 0px;
+          _border-color: #000000 #000000 #fff #000000;
+          _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+          transition: 0.618s;
+          transform-origin: center center;
 
-        &:hover {
+
+        }
+
+        &:hover .right_icon {
           transform: rotateZ(180deg);
 
         }
       }
+
+
 
     }
 
