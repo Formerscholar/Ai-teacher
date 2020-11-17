@@ -15,3 +15,20 @@ export function getTeamDetail(params) {
     params
   })
 }
+
+
+export function delTeamTeacher(data) {
+  return request({
+    url: '/delTeamTeacher',
+    method: 'POST',
+    data
+  })
+}
+
+export function delTeamStudent(data) {
+  return request({
+    url: '/delTeamStudent',
+    method: 'POST',
+    data
+  })
+}

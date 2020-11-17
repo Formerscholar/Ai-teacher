@@ -109,5 +109,105 @@
     }
   }
 
-  .student_list {}
+  .student_list {
+    margin-top: 1.21rem;
+    background: #FFFFFF;
+    border-radius: 1rem;
+    padding: 1.71rem;
+    margin-bottom: 3.57rem;
+
+    .title_text {
+      font-size: 1.14rem;
+      font-weight: 400;
+      color: #222222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.14rem;
+
+      span {
+        flex: 3;
+        text-align: left;
+
+        &:last-child {
+          flex: 2;
+        }
+      }
+    }
+
+    .teacher_items {
+      border: 1px solid #FDF5F0;
+      border-radius: 0.714286rem;
+      margin-top: 1.36rem;
+
+      .item {
+        height: 5.86rem;
+        border-bottom: 1px solid #FDF5F0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.14rem;
+
+        &:last-child {
+          border: none;
+        }
+
+        .flex_box {
+          flex: 2.8;
+          text-align: left;
+
+          &:last-child {
+            flex: 1.8;
+          }
+        }
+
+        .name_box {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          .Avatar {
+            margin-right: 2.29rem;
+            width: 3.57rem;
+            height: 3.57rem;
+          }
+
+          span {
+            font-size: 1.14rem;
+            font-weight: 400;
+            color: #222222;
+
+          }
+          .vip{
+            width: 2.86rem;
+            height: 1.43rem;
+            margin-left: 1.43rem;
+          }
+        }
+
+        .subject_box,
+        .lasttime_box,
+        .operate_box {
+          span {
+            font-size: 1.14rem;
+            font-weight: 400;
+            color: #222222;
+
+          }
+        }
+
+        .operate_box {
+          span {
+            color: #67A9FB;
+            cursor: pointer;
+            margin-right: 2.29rem;
+            &:last-child{
+              margin-right: 0;
+            }
+          }
+        }
+
+      }
+    }
+  }
 }

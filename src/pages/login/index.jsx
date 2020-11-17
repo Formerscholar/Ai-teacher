@@ -3,7 +3,7 @@ import './index.less'
 import { TextField, Button, Fade, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import { phoneRegular, appid, callBackUrl } from '@/conf'
-import { setCookie } from '@/utils'
+import { setCookie, Trim } from '@/utils'
 
 import { getLoginCode, getLogin } from '@/services/login'
 
@@ -45,13 +45,13 @@ function Login(props) {
   const phoneText = (data) => {
     const { value } = data.target
     if (phoneRegular.test(value)) {
-      setPhone(value)
+      setPhone(Trim(value))
     }
   }
 
   const codeText = (data) => {
     const { value } = data.target
-    setCode(value)
+    setCode(Trim(value))
     setbtnlogin(false)
   }
 
