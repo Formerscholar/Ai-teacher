@@ -3,11 +3,12 @@ import './index.less'
 import { TextField, Button } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
 import { getSchoolResourcesList } from '@/services/famous'
-import { setTimerType, Trim, useCallbackState } from '@/utils'
+import { setTimerType, Trim } from '@/utils'
 
 function Famous(props) {
   const [searchName, setSearchName] = useState('')
-  const [page, setPage] = useCallbackState(1)
+  const [searchdata, setsearchdata] = useState('')
+  const [Listpage, setListpage] = useState(1)
   const [ResourcesList, setResourcesList] = useState({})
 
   useEffect(() => {
@@ -41,6 +42,7 @@ function Famous(props) {
     const { value } = e.target
     console.log(Trim(value))
     setSearchName(Trim(value))
+    setsearchdata(Trim(value))
   }
 
   /**
@@ -50,9 +52,8 @@ function Famous(props) {
    * @param {Number} page
    */
   const PaginationChange = (event, page) => {
-    setPage(page, (data) => {
-      getResourcesList(searchName, data)
-    })
+    setListpage(page)
+    getResourcesList(searchdata, page)
   }
 
   /**
@@ -60,18 +61,16 @@ function Famous(props) {
    * 点击查询按钮 给定查询字段 初始化页码1
    */
   const searchClick = () => {
-    setPage(1, (data) => {
-      getResourcesList(searchName, data)
-    })
+    setListpage(1)
+    getResourcesList(searchName, 1)
+    setSearchName('')
   }
 
   /**
    *
    *  下载试卷事件
    */
-  const downloadClick = () => {
-    
-  }
+  const downloadClick = () => {}
 
   return (
     <div id="Famous">
@@ -80,6 +79,7 @@ function Famous(props) {
         <TextField
           className="outlined"
           variant="outlined"
+          value={searchName}
           style={{ width: '11.43rem', height: '2.29rem' }}
           size="small"
           onInput={InputChange}
@@ -125,7 +125,9 @@ function Famous(props) {
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/download_icon.png"
                     alt="download_icon"
                   />
-                  <span className="text" onClick={downloadClick}>下载</span>
+                  <span className="text" onClick={downloadClick}>
+                    下载
+                  </span>
                 </div>
               </div>
             )
@@ -137,7 +139,7 @@ function Famous(props) {
             variant="outlined"
             shape="rounded"
             onChange={PaginationChange}
-            page={page}
+            page={Listpage}
           />
         </div>
       </div>

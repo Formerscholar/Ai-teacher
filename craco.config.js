@@ -41,7 +41,7 @@ module.exports = {
             comments: false,
           },
         },
-        exclude: [/\.min\.js$/gi], 
+        exclude: [/\.min\.js$/gi],
       }),
       new HardSourceWebpackPlugin(),
       new CompressionWebpackPlugin({

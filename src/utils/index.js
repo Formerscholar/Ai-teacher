@@ -1,6 +1,3 @@
-import { useEffect, useState, useRef } from 'react'
-
-
 function setTimerType(timer) {
   let d = new Date(timer)
   let ConvertedYear = d.getFullYear().toString()
@@ -38,28 +35,10 @@ function delCookie(name) {
  *
  *  去除字符串前后空格
  * @param {String} str
- * @return {String} 
+ * @return {String}
  */
 function Trim(str) {
   return str.replace(/(^\s*)|(\s*$)/g, '')
 }
 
-
-function useCallbackState(od) {
-  const cbRef = useRef()
-  const [data, setData] = useState(od)
-
-  useEffect(() => {
-    cbRef.current && cbRef.current(data)
-  }, [data])
-
-  return [
-    data,
-    function (d, callback) {
-      cbRef.current = callback
-      setData(d)
-    },
-  ]
-}
-
-export { setTimerType, setCookie, getCookie, delCookie, Trim, useCallbackState }
+export { setTimerType, setCookie, getCookie, delCookie, Trim }
