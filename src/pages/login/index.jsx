@@ -4,7 +4,6 @@ import { TextField, Button, Fade, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import { phoneRegular, appid, callBackUrl } from '@/conf'
 import { setCookie, Trim } from '@/utils'
-
 import { getLoginCode, getLogin } from '@/services/login'
 
 function Alert(props) {
