@@ -1,14 +1,11 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { getTeamDetail, delTeamTeacher ,delTeamStudent } from '@/services/class'
-import { Breadcrumbs, Typography, Avatar, Snackbar } from '@material-ui/core'
-import MuiAlert from '@material-ui/lab/Alert'
+import { getTeamDetail, delTeamTeacher, delTeamStudent } from '@/services/class'
+import { Avatar } from 'antd'
 import { setTimerType } from '@/utils'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />
-}
+
 function ClassDetails(props) {
   const { location, history, homeInfo } = props
   const [detailData, setDetailData] = useState({})
@@ -59,7 +56,6 @@ function ClassDetails(props) {
     }, 2888)
   }
 
-
   /**
    * 班级删除学生
    *
@@ -86,7 +82,7 @@ function ClassDetails(props) {
 
   return (
     <div id="ClassDetails">
-      <Breadcrumbs
+      {/* <Breadcrumbs
         className="bread"
         aria-label="breadcrumb"
         separator={
@@ -112,7 +108,7 @@ function ClassDetails(props) {
           {detailData?.team?.get_grade?.name}
           {detailData?.team?.name}
         </Typography>
-      </Breadcrumbs>
+      </Breadcrumbs> */}
       <div className="teacher_list">
         <div className="title_text">
           <span>老师姓名</span>
@@ -200,9 +196,13 @@ function ClassDetails(props) {
                   <span>学情报告</span>
                   {detailData?.team?.teacher_id !== item?.id &&
                   detailData?.team?.is_active === 0 ? (
-                    <span  onClick={() =>
-                      delstudentrClick(detailData?.team?.id, item?.user_id)
-                    }>移除</span>
+                    <span
+                      onClick={() =>
+                        delstudentrClick(detailData?.team?.id, item?.user_id)
+                      }
+                    >
+                      移除
+                    </span>
                   ) : (
                     <span>-</span>
                   )}
@@ -212,13 +212,6 @@ function ClassDetails(props) {
           })}
         </div>
       </div>
-      <Snackbar
-        open={open}
-        autoHideDuration={2888}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert severity={openType}>{opentip}</Alert>
-      </Snackbar>
     </div>
   )
 }

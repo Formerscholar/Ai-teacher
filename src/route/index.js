@@ -51,7 +51,10 @@ const Chapter = Loadable({
   loading: G_spin,
 })
 
-
+const Questiondetails = Loadable({
+  loader: () => import('@/pages/questiondetails'),
+  loading: G_spin,
+})
 
 
 const BasicRoute = (props) => (
@@ -66,6 +69,7 @@ const BasicRoute = (props) => (
     <Route path="/main/mypaper" component={Mypaper} />
     <Route path="/main/classdetail" component={classDetails} />
     <Route path="/main/chapter" component={Chapter} />
+    <Route path="/main/questiondetails" component={Questiondetails} />
     <Redirect to="/main/index"></Redirect>
     <AI_footer />
   </>

@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Button } from '@material-ui/core'
+import { Button } from 'antd'
 import './M_InformationSummary.less'
 
 function M_InformationSummary() {

@@ -1,20 +1,13 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { TextField, Button, Fade, Snackbar } from '@material-ui/core'
-import MuiAlert from '@material-ui/lab/Alert'
+import { Button, message, Input } from 'antd'
 import { phoneRegular, appid, callBackUrl } from '@/conf'
 import { setCookie, Trim } from '@/utils'
 import { getLoginCode, getLogin } from '@/services/login'
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />
-}
-
 function Login(props) {
   const [isWechat, setWechat] = useState(false)
   const [isSMS, setSMS] = useState(true)
-  const [open, setOpen] = useState(false)
-  const [opentip, setopentip] = useState('请输入正确手机号码!')
   const [btndis, setbtndis] = useState(false)
   const [btnlogin, setbtnlogin] = useState(true)
   const [outtime, setOutTime] = useState('60')
@@ -55,7 +48,6 @@ function Login(props) {
   }
 
   const openCode = async () => {
-    setopentip('请输入正确手机号码!')
     if (phoneRegular.test(Phone)) {
       setbtndis(true)
       let num = 60
@@ -72,10 +64,7 @@ function Login(props) {
       })
       console.log('getLoginCode', code, data, msg)
     } else {
-      setOpen(true)
-      setTimeout(() => {
-        setOpen(false)
-      }, 2888)
+      message.error('请输入正确手机号码!')
     }
   }
 
@@ -108,16 +97,12 @@ function Login(props) {
       mobile: Phone,
       code: Code,
     })
-    setopentip(msg)
     if (code == 200) {
       setCookie('id', data.id)
       setCookie('token', data.token)
       props.history.push('/main')
     } else {
-      setOpen(true)
-      setTimeout(() => {
-        setOpen(false)
-      }, 2888)
+      message.error(msg)
     }
   }
   return (
@@ -132,21 +117,19 @@ function Login(props) {
         <div className="right_box">
           <div className="right_imgs" onClick={handleClick}>
             {isWechat ? (
-              <Fade in={isWechat}>
-                <>
-                  <div className="WeChat">微信扫码登录</div>
-                  <img
-                    className="QRcode"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/QRcode.png"
-                    alt="QRcode"
-                  />
-                </>
-              </Fade>
+              <>
+                <div className="WeChat">微信扫码登录</div>
+                <img
+                  className="QRcode"
+                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/QRcode.png"
+                  alt="QRcode"
+                />
+              </>
             ) : (
               ''
             )}
             {isSMS ? (
-              <Fade in={isSMS}>
+              <>
                 <>
                   <img
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/SMSlogin.png"
@@ -158,38 +141,34 @@ function Login(props) {
                     alt="QRcode"
                   />
                 </>
-              </Fade>
+              </>
             ) : (
               ''
             )}
           </div>
           {isWechat ? (
-            <Fade in={isWechat}>
+            <>
               <div className="form_box">
                 <div className="title">老师后台管理系统</div>
                 <div className="phone">
                   <span>手机号</span>
-                  <TextField
-                    id="standard-basic"
+                  <Input
                     className="userinput"
-                    label="请输入手机号"
+                    placeholder="请输入手机号"
                     onInput={phoneText}
                   />
                 </div>
                 <div className="Verification">
                   <span>验证码</span>
-                  <TextField
-                    id="standard-basic"
+                  <Input
                     className="userinput"
-                    label="请输入验证码"
+                    placeholder="请输入验证码"
                     onInput={codeText}
-                    InputProps={{
-                      endAdornment: (
-                        <button disabled={btndis} onClick={openCode}>
-                          {!btndis ? '获取验证码' : `再次获取(${outtime})`}
-                        </button>
-                      ),
-                    }}
+                    suffix={
+                      <button disabled={btndis} onClick={openCode}>
+                        {!btndis ? '获取验证码' : `再次获取(${outtime})`}
+                      </button>
+                    }
                   />
                 </div>
                 <div className="btns">
@@ -204,12 +183,12 @@ function Login(props) {
                 </div>
                 <div className="tip">客服电话:0514-82885886</div>
               </div>
-            </Fade>
+            </>
           ) : (
             ''
           )}
           {isSMS ? (
-            <Fade in={isSMS}>
+            <>
               <div className="wechatForm">
                 <div className="title_box">
                   <img
@@ -229,19 +208,12 @@ function Login(props) {
                 </div>
                 <div className="footer_box">打开微信,扫一扫登录</div>
               </div>
-            </Fade>
+            </>
           ) : (
             ''
           )}
         </div>
       </div>
-      <Snackbar
-        open={open}
-        autoHideDuration={2888}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert severity="error">{opentip}</Alert>
-      </Snackbar>
     </div>
   )
 }

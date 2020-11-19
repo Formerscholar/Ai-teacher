@@ -2,6 +2,7 @@
   min-height: 19.428571rem;
   margin: 0 26rem;
 
+
   .teacher_info {
     height: 9.071429rem;
     background: #FFFFFF;
@@ -51,16 +52,24 @@
     }
 
     .right_box {
+      width: 9.71rem;
+      height: 2.86rem;
+      line-height: 2.86rem;
+      text-align: center;
+      border: 1px solid #E50304;
+      border-radius: 0.357143rem;
       font-size: 1.14rem;
       font-weight: 400;
-      color: #222222;
+      color: #E50304;
+      cursor: pointer;
 
-      .focus {
-        font-size: 2.14rem;
-        font-weight: bold;
-        color: #E50304;
-        margin: 0 1rem;
-      }
+
+      // .focus {
+      //   font-size: 2.14rem;
+      //   font-weight: bold;
+      //   color: #E50304;
+      //   margin: 0 1rem;
+      // }
     }
   }
 
@@ -143,9 +152,24 @@
           font-size: 1.14rem;
           font-weight: 400;
           color: #FFFFFF;
+          background-image: none !important;
         }
 
       }
+    }
+  }
+
+  .tmodelbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+      font-size: 1.57rem;
+      font-weight: bold;
+      color: #222222;
+
     }
   }
 }

@@ -7,3 +7,11 @@ export function getKnowledgeExercises(params) {
     params
   })
 }
+
+export function getExercisesDetail(params) {
+  return request({
+    url: '/getExercisesDetail',
+    method: 'GET',
+    params
+  })
+}

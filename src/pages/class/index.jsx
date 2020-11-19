@@ -1,9 +1,10 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { Avatar, Button } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { GET_CLASS_INFO } from '@/store/actionType'
 import { getTeamList } from '@/services/class'
+import T_modelbox from '@/common/T_modelbox'
+import { Button, Avatar } from 'antd'
 
 /**
  *  Class 路由
@@ -13,8 +14,8 @@ import { getTeamList } from '@/services/class'
  */
 function Class(props) {
   const [classInfo, setClassInfo] = useState({})
-  const { homeInfo, setClass, classInfos ,history } = props
-
+  const [Open, setOpen] = useState(false)
+  const { homeInfo, setClass, classInfos, history } = props
   useEffect(() => {
     getTeamLists()
     return () => {}
@@ -35,8 +36,21 @@ function Class(props) {
    */
   const get_Details = (iid) => {
     history.push('/main/classdetail', {
-      iid
+      iid,
     })
+  }
+
+  /**
+   *创建新班级 打开封装弹窗
+   *
+   */
+  const newClassClick = () => {
+    console.log('newClassClick')
+    setOpen(true)
+  }
+
+  const closeClick = () => {
+    setOpen(false)
   }
 
   return (
@@ -60,9 +74,10 @@ function Class(props) {
             </div>
           </div>
         </div>
-        <div className="right_box">
-          已加入<span className="focus">{classInfo.teamList?.length}</span>
-          个班级
+        <div className="right_box" onClick={newClassClick}>
+          创建新的班级
+          {/* 已加入<span className="focus">{classInfo.teamList?.length}</span>
+          个班级 */}
         </div>
       </div>
       <div className="class_box">
@@ -100,6 +115,18 @@ function Class(props) {
           )
         })}
       </div>
+      {/* 模tai */}
+      <T_modelbox
+        isOpen={Open}
+        title="【创建】"
+        closeClick={closeClick}
+        width="41.71rem"
+        height="23.5rem"
+      >
+        <div className="tmodelbox">
+          <div className="title">扬州测试学校</div>
+        </div>
+      </T_modelbox>
     </div>
   )
 }

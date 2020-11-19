@@ -1,7 +1,6 @@
 import React, { memo, useState, useEffect } from 'react'
 import './AI_header.less'
-import { Menu, MenuItem, Avatar, Snackbar } from '@material-ui/core'
-import MuiAlert from '@material-ui/lab/Alert'
+import { Avatar, message, Menu, Dropdown, Button } from 'antd'
 import { getLogout } from '@/services/login'
 import { headMenu } from '@/conf'
 import { getCookie, delCookie } from '@/utils'
@@ -12,15 +11,7 @@ import { GET_HOME_INFO } from '@/store/actionType'
 const araList = ['data', 'integral', 'logout']
 const araLists = ['Chapter', 'Knowledge']
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />
-}
-
 function AI_header({ homeInfo, props, setData }) {
-  const [open, setOpen] = useState(false)
-  const [opentip, setopentip] = useState('请求错误!')
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [anchorEls, setAnchorEls] = useState(null)
   const [current, setcurrent] = useState(0)
   const [indexData, setIndexData] = useState({})
 
@@ -36,23 +27,15 @@ function AI_header({ homeInfo, props, setData }) {
       setData(data)
     }
   }
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
 
   const headMenuClick = (event, id) => {
     setcurrent(id)
     if (id !== 4) {
       props.history.push(`/${headMenu[id].url}`)
-    } else {
-      // 打开menu 选择跳转路由
-      console.log('headMenuClick ')
-      setAnchorEls(event.currentTarget)
     }
   }
 
-  const handleClose = (e) => {
-    const { info } = e.target.dataset
+  const handleClose = (info) => {
     const datafunc = () => {
       console.log('datafunc')
     }
@@ -60,7 +43,6 @@ function AI_header({ homeInfo, props, setData }) {
       console.log('integralfunc')
     }
     const logoutfunc = async () => {
-      console.log('logoutfunc')
       let id = getCookie('id')
       let token = getCookie('token')
       const { code, msg } = await getLogout({
@@ -72,11 +54,7 @@ function AI_header({ homeInfo, props, setData }) {
         delCookie('token')
         props.history.push('/login')
       } else {
-        setopentip(msg)
-        setOpen(true)
-        setTimeout(() => {
-          setOpen(false)
-        }, 2888)
+        message.error(msg)
       }
     }
     const keymap = new Map([
@@ -85,11 +63,9 @@ function AI_header({ homeInfo, props, setData }) {
       [araList[2], logoutfunc],
     ])
     keymap.get(info) && keymap.get(info)()
-    setAnchorEl(null)
   }
 
-  const handleCloses = (e) => {
-    const { info } = e.target.dataset
+  const handleCloses = (info) => {
     const Chapterfunc = () => {
       props.history.push('/main/chapter')
     }
@@ -101,8 +77,31 @@ function AI_header({ homeInfo, props, setData }) {
       [araLists[1], Knowledgefunc],
     ])
     keymap.get(info) && keymap.get(info)()
-    setAnchorEls(null)
   }
+
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={() => handleCloses(araLists[0])}>
+        章节同步选题
+      </Menu.Item>
+      <Menu.Item onClick={() => handleCloses(araLists[1])}>
+        知识点组卷
+      </Menu.Item>
+    </Menu>
+  )
+
+  const menus = (
+    <Menu>
+      <Menu.Item onClick={() => handleClose(araList[0])}>个人资料</Menu.Item>
+      <Menu.Item onClick={() => handleClose(araList[1])}>积分记录</Menu.Item>
+      <Menu.Item
+        onClick={() => handleClose(araList[2])}
+        style={{ color: '#E9140A' }}
+      >
+        退出
+      </Menu.Item>
+    </Menu>
+  )
 
   return (
     <div id="AI_header">
@@ -122,56 +121,28 @@ function AI_header({ homeInfo, props, setData }) {
                 className={current == index ? 'cenItem index' : 'cenItem'}
                 onClick={(e) => headMenuClick(e, index)}
               >
-                {item.text}
+                {index != 4 ? (
+                  item.text
+                ) : (
+                  <Dropdown overlay={menu} placement="bottomCenter">
+                    <button>{item.text}</button>
+                  </Dropdown>
+                )}
               </div>
             )
           })}
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEls}
-            keepMounted
-            open={Boolean(anchorEls)}
-            style={{ top: '3.571429rem' }}
-          >
-            <MenuItem data-info={araLists[0]} onClick={handleCloses}>
-              章节同步选题
-            </MenuItem>
-            <MenuItem data-info={araLists[1]} onClick={handleCloses}>
-              知识点组卷
-            </MenuItem>
-          </Menu>
         </div>
-        <div className="right_box">
+        <div overlay={menu} placement="bottomCenter" className="right_box">
           <Avatar
             className="Avatar"
             alt="Remy Sharp"
             src={indexData.teacher?.avatar_file}
           />
-          <span onClick={handleClick}>
-            {indexData.teacher?.true_name} <div className="right_icon"></div>
-          </span>
-
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            style={{ top: '3.571429rem', left:'-1.714286rem' }}
-          >
-            <MenuItem data-info={araList[0]} onClick={handleClose}>
-              个人资料
-            </MenuItem>
-            <MenuItem data-info={araList[1]} onClick={handleClose}>
-              积分记录
-            </MenuItem>
-            <MenuItem
-              data-info={araList[2]}
-              onClick={handleClose}
-              style={{ color: '#E9140A' }}
-            >
-              退出
-            </MenuItem>
-          </Menu>
+          <Dropdown overlay={menus} placement="bottomCenter">
+            <button>
+              {indexData.teacher?.true_name} <div className="right_icon"></div>
+            </button>
+          </Dropdown>
         </div>
       </div>
       <img
@@ -179,13 +150,6 @@ function AI_header({ homeInfo, props, setData }) {
         src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner.png"
         alt="banner"
       />
-      <Snackbar
-        open={open}
-        autoHideDuration={2888}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert severity="error">{opentip}</Alert>
-      </Snackbar>
     </div>
   )
 }

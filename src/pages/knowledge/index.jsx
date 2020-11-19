@@ -1,56 +1,13 @@
 import React, { memo, useEffect, useState } from 'react'
 import './index.less'
-import { TreeView, TreeItem, Pagination } from '@material-ui/lab'
-import { fade, makeStyles, withStyles } from '@material-ui/core/styles'
-import { Collapse, TextField, Button } from '@material-ui/core'
-import { useSpring, animated } from 'react-spring/web.cjs'
+import { Button, Input, Pagination, Tree } from 'antd'
 import { getKnowledgeExercises } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 import { setTimerType } from '@/utils'
 
-function TransitionComponent(props) {
-  const style = useSpring({
-    from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
-    to: {
-      opacity: props.in ? 1 : 0,
-      transform: `translate3d(${props.in ? 0 : 20}px,0,0)`,
-    },
-  })
-
-  return (
-    <animated.div style={style}>
-      <Collapse {...props} />
-    </animated.div>
-  )
-}
-
-const StyledTreeItem = withStyles((theme) => ({
-  iconContainer: {
-    '& .close': {
-      opacity: 0.3,
-    },
-  },
-  group: {
-    marginLeft: 7,
-    paddingLeft: 18,
-    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
-  },
-}))((props) => (
-  <TreeItem {...props} TransitionComponent={TransitionComponent} />
-))
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    maxWidth: '23.43rem',
-    padding: '1.71rem',
-  },
-})
-
 function Knowledge(props) {
-  const { homeInfo } = props
-  const classes = useStyles()
+  const { homeInfo, history } = props
   const [Knowledge, setKnowledge] = useState({})
   const [gradescrure, setgradescrure] = useState(0)
   const [levelscrure, setlevelscrure] = useState(0)
@@ -60,6 +17,10 @@ function Knowledge(props) {
   const [questionCategory, setquestionCategory] = useState(0)
   const [Listpage, setListpage] = useState(1)
   const [topageValue, settopageValue] = useState('1')
+  const [expandedKeys, setExpandedKeys] = useState([])
+  const [checkedKeys, setCheckedKeys] = useState([])
+  const [selectedKeys, setSelectedKeys] = useState([])
+  const [autoExpandParent, setAutoExpandParent] = useState(true)
 
   useEffect(() => {
     getKnowledge(16)
@@ -94,25 +55,17 @@ function Knowledge(props) {
   }
 
   /**
-   *  递归函数 生成 知识点树
+   *  递归函数 生成 知识点树Data
    * @param {*} [array=[]]
    */
   function knowledgeArrNewView(array = []) {
-    return (
-      <>
-        {array?.map((item) => {
-          return (
-            <StyledTreeItem
-              key={item?.id}
-              nodeId={item?.id.toString()}
-              label={item?.name}
-            >
-              {item?.children && knowledgeArrNewView(item?.children)}
-            </StyledTreeItem>
-          )
-        })}
-      </>
-    )
+    return array?.map((item) => {
+      return {
+        title: item?.name,
+        key: item?.id,
+        children: item?.children && knowledgeArrNewView(item?.children),
+      }
+    })
   }
 
   /**
@@ -123,7 +76,7 @@ function Knowledge(props) {
   const gradeClick = (id, index) => {
     setgradescrure(index)
     setgradeId(id)
-    getKnowledge(id, '', questionCategoryscrure, level, Listpage)
+    getKnowledge(id, checkedKeys, questionCategoryscrure, level, Listpage)
   }
 
   /**
@@ -133,7 +86,7 @@ function Knowledge(props) {
   const levelClick = (index) => {
     setlevelscrure(index)
     setlevel(index)
-    getKnowledge(gradeId, '', questionCategoryscrure, index, Listpage)
+    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, index, Listpage)
   }
   /**
    *  题类选择事件
@@ -143,7 +96,7 @@ function Knowledge(props) {
   const questionCategoryClick = (id, index) => {
     setquestionCategoryscrure(id)
     setquestionCategory(index)
-    getKnowledge(gradeId, '', id, level, Listpage)
+    getKnowledge(gradeId, checkedKeys, id, level, Listpage)
   }
   /**
    *
@@ -151,9 +104,9 @@ function Knowledge(props) {
    * @param {Object} event
    * @param {Number} page
    */
-  const PaginationChange = (event, page) => {
+  const PaginationChange = (page, pageSize) => {
     setListpage(page * 1)
-    getKnowledge(gradeId, '', questionCategoryscrure, level, page)
+    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, page)
   }
 
   /**
@@ -170,8 +123,36 @@ function Knowledge(props) {
    * 确定跳转点击
    */
   const TopageClick = () => {
-    getKnowledge(gradeId, '', questionCategoryscrure, level, topageValue)
+    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, topageValue)
     setListpage(topageValue * 1)
+  }
+
+  /**
+   *
+   *  点击试题详情
+   * @param {*} id
+   */
+  const answerClick = (id) => {
+    history.push('/main/questiondetails', {
+      id,
+    })
+  }
+
+  const onExpand = (expandedKeys) => {
+    console.log('onExpand', expandedKeys)
+    setExpandedKeys(expandedKeys)
+    setAutoExpandParent(false)
+  }
+
+  const onCheck = (checkedKeys) => {
+    console.log('onCheck', checkedKeys)
+    setCheckedKeys(checkedKeys)
+    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, topageValue)
+  }
+
+  const onSelect = (selectedKeys, info) => {
+    console.log('onSelect', info)
+    setSelectedKeys(selectedKeys)
   }
 
   return (
@@ -185,33 +166,18 @@ function Knowledge(props) {
           })}
           {homeInfo?.teacher?.get_subject?.title} · 知识点
         </div>
-        <TreeView
-          className={classes.root}
-          defaultExpanded={['1']}
-          defaultCollapseIcon={
-            <img
-              style={{ width: '1.29rem', height: '1.29rem' }}
-              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/sub.png"
-              alt="plus"
-            />
-          }
-          defaultExpandIcon={
-            <img
-              style={{ width: '1.29rem', height: '1.29rem' }}
-              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/plus.png"
-              alt="plus"
-            />
-          }
-          defaultEndIcon="-"
-        >
-          {Knowledge?.knowledge?.map((item) => {
-            if (Knowledge?.grade_id == item?.grade_id) {
-              return (
-                <div key={item?.id}>{knowledgeArrNewView(item?.children)}</div>
-              )
-            }
-          })}
-        </TreeView>
+        <Tree
+          checkable
+          showLine
+          onExpand={onExpand}
+          expandedKeys={expandedKeys}
+          autoExpandParent={autoExpandParent}
+          onCheck={onCheck}
+          checkedKeys={checkedKeys}
+          onSelect={onSelect}
+          selectedKeys={selectedKeys}
+          treeData={knowledgeArrNewView(Knowledge?.knowledge)}
+        />
       </div>
       <div className="right_box">
         <div className="top_box">
@@ -347,7 +313,10 @@ function Knowledge(props) {
                       />
                       <span>查看答案</span>
                     </div>
-                    <div className="details">
+                    <div
+                      className="details"
+                      onClick={() => answerClick(item?.id)}
+                    >
                       <img
                         className="answer"
                         src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/answer.png"
@@ -356,7 +325,7 @@ function Knowledge(props) {
                       <span>试题详情</span>
                     </div>
                     <Button className="add" variant="contained">
-                      <em>+</em>
+                      <span>+</span>
                       组卷
                     </Button>
                     {/* <Button className="sub" variant="contained">
@@ -374,17 +343,19 @@ function Knowledge(props) {
         {/* page */}
         <div className="pages">
           <Pagination
-            count={Knowledge?.exercisesLists?.last_page}
-            variant="outlined"
-            shape="rounded"
+            hideOnSinglePage={false}
+            total={Knowledge?.exercisesLists?.total}
+            defaultPageSize={20}
+            showSizeChanger={false}
+            showQuickJumper={true}
+            pageSize={Knowledge?.exercisesLists?.per_page || 20}
             onChange={PaginationChange}
-            page={Listpage}
+            current={Listpage}
           />
-          {/* Knowledge?.exercisesLists?.last_page */}
-          <div className="showtotal">
+          {/* <div className="showtotal">
             共{Knowledge?.exercisesLists?.last_page}页
           </div>
-          <TextField
+          <Input
             className="outlined"
             id="outlined-basic"
             variant="outlined"
@@ -393,8 +364,25 @@ function Knowledge(props) {
           />
           <Button variant="contained" className="btns" onClick={TopageClick}>
             跳转
-          </Button>
+          </Button> */}
         </div>
+      </div>
+      {/* 悬浮篮 */}
+      <div className="fled_basket">
+        <img
+          className="basket_icon"
+          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/basket_icon.png"
+          alt="basket_icon"
+        />
+        <span className="count">
+          <em>0</em>/40
+        </span>
+        <span className="title">进入组卷</span>
+        <img
+          className="arrow_icon"
+          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/arrow_icon.png"
+          alt="arrow_icon"
+        />
       </div>
     </div>
   )

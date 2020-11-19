@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { TextField, Button } from '@material-ui/core'
-import { Pagination } from '@material-ui/lab'
+import { Button, Input } from 'antd'
+import { Pagination } from 'antd'
 import { getSchoolBasedList } from '@/services/Schoolbased'
 import { setTimerType, Trim } from '@/utils'
 
@@ -48,10 +48,10 @@ function Schoolbased(props) {
   /**
    *
    *  页面变化请求数据
-   * @param {Object} event
    * @param {Number} page
+   * @param {Number} pageSize
    */
-  const PaginationChange = (event, page) => {
+  const PaginationChange = (page, pageSize) => {
     setListpage(page)
     getResourcesList(searchdata, page)
   }
@@ -66,13 +66,11 @@ function Schoolbased(props) {
     setSearchName('')
   }
 
-  
-
   return (
     <div id="Schoolbased">
       <div className="top_box">
         <span className="name">试卷名称:</span>
-        <TextField
+        <Input
           className="outlined"
           variant="outlined"
           value={searchName}
@@ -104,7 +102,8 @@ function Schoolbased(props) {
                         alt="time_icon"
                       />
                       <span className="time_text">
-                        更新时间：{setTimerType(item?.get_base?.update_time * 1000)}
+                        更新时间：
+                        {setTimerType(item?.get_base?.update_time * 1000)}
                       </span>
                       <img
                         className="View_icon"
@@ -128,11 +127,13 @@ function Schoolbased(props) {
         </div>
         <div className="Pagination">
           <Pagination
-            count={ResourcesList?.schoolResources?.last_page}
-            variant="outlined"
-            shape="rounded"
+            hideOnSinglePage={false}
+            showSizeChanger={false}
+            total={ResourcesList?.examsSchool?.total}
+            defaultPageSize={20}
+            pageSize={ResourcesList?.examsSchool?.per_page || 20}
             onChange={PaginationChange}
-            page={Listpage}
+            current={Listpage}
           />
         </div>
       </div>

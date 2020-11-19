@@ -1,7 +1,6 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { TextField, Button } from '@material-ui/core'
-import { Pagination } from '@material-ui/lab'
+import { Button, Input, Pagination } from 'antd'
 import { getSchoolResourcesList } from '@/services/famous'
 import { setTimerType, Trim } from '@/utils'
 
@@ -48,10 +47,10 @@ function Famous(props) {
   /**
    *
    *  页面变化请求数据
-   * @param {Object} event
    * @param {Number} page
+   * @param {Number} pageSize
    */
-  const PaginationChange = (event, page) => {
+  const PaginationChange = (page, pageSize) => {
     setListpage(page)
     getResourcesList(searchdata, page)
   }
@@ -76,7 +75,7 @@ function Famous(props) {
     <div id="Famous">
       <div className="top_box">
         <span className="name">试卷名称:</span>
-        <TextField
+        <Input
           className="outlined"
           variant="outlined"
           value={searchName}
@@ -135,11 +134,13 @@ function Famous(props) {
         </div>
         <div className="Pagination">
           <Pagination
-            count={ResourcesList?.schoolResources?.last_page}
-            variant="outlined"
-            shape="rounded"
+            hideOnSinglePage={false}
+            showSizeChanger={false}
+            total={ResourcesList?.schoolResources?.total}
+            defaultPageSize={20}
+            pageSize={ResourcesList?.schoolResources?.per_page || 20}
             onChange={PaginationChange}
-            page={Listpage}
+            current={Listpage}
           />
         </div>
       </div>

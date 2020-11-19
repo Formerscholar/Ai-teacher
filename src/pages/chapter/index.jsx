@@ -1,56 +1,16 @@
 import React, { memo } from 'react'
 import './index.less'
-import { TreeView, TreeItem, Pagination } from '@material-ui/lab'
-import { fade, makeStyles, withStyles } from '@material-ui/core/styles'
-import { Collapse, TextField, Button } from '@material-ui/core'
-import { useSpring, animated } from 'react-spring/web.cjs'
-
-function TransitionComponent(props) {
-  const style = useSpring({
-    from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
-    to: {
-      opacity: props.in ? 1 : 0,
-      transform: `translate3d(${props.in ? 0 : 20}px,0,0)`,
-    },
-  })
-
-  return (
-    <animated.div style={style}>
-      <Collapse {...props} />
-    </animated.div>
-  )
-}
-
-const StyledTreeItem = withStyles((theme) => ({
-  iconContainer: {
-    '& .close': {
-      opacity: 0.3,
-    },
-  },
-  group: {
-    marginLeft: 7,
-    paddingLeft: 18,
-    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
-  },
-}))((props) => (
-  <TreeItem {...props} TransitionComponent={TransitionComponent} />
-))
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    maxWidth: '23.43rem',
-    padding: '1.71rem',
-  },
-})
+import { Button, Pagination, Input } from 'antd'
+// import { TreeView, TreeItem, Pagination } from 'antd'
+//
+// import { Collapse, TextField, Button } from 'antd
 
 function Chapter(props) {
-  const classes = useStyles()
   return (
     <div id="Chapter">
       <div className="left_box">
         <div className="title">七年级数学 · 章节</div>
-        <TreeView
+        {/* <TreeView
           className={classes.root}
           defaultExpanded={['1']}
           defaultCollapseIcon={
@@ -81,7 +41,7 @@ function Chapter(props) {
             <StyledTreeItem nodeId="8" label="第6章" />
           </StyledTreeItem>
           <StyledTreeItem nodeId="2" label="七年级下册"></StyledTreeItem>
-        </TreeView>
+        </TreeView> */}
       </div>
       <div className="right_box">
         <div className="top_box">
@@ -169,9 +129,13 @@ function Chapter(props) {
               />
             </div>
             <div className="cet_body">
-
-            <p>sadasd</p><p>1<br/></p><p>2<br/></p>
-
+              <p>sadasd</p>
+              <p>
+                1<br />
+              </p>
+              <p>
+                2<br />
+              </p>
             </div>
             <div className="bot_btns">
               <div className="left_box_warp">
@@ -205,9 +169,9 @@ function Chapter(props) {
         </div>
         {/* page */}
         <div className="pages">
-          <Pagination count={10} variant="outlined" shape="rounded" />
+          <Pagination showSizeChanger={false} count={10} variant="outlined" shape="rounded" />
           <div className="showtotal">共500页</div>
-          <TextField
+          <Input
             className="outlined"
             id="outlined-basic"
             variant="outlined"
