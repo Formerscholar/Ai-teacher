@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { getTeamDetail, delTeamTeacher, delTeamStudent } from '@/services/class'
-import { Avatar } from 'antd'
+import { Avatar, Breadcrumb, message } from 'antd'
 import { setTimerType, splitSearch } from '@/utils'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
@@ -9,9 +9,6 @@ import { GET_HOME_INFO } from '@/store/actionType'
 function ClassDetails(props) {
   const { location, history, homeInfo } = props
   const [detailData, setDetailData] = useState({})
-  const [open, setOpen] = useState(false)
-  const [opentip, setopentip] = useState('')
-  const [openType, setopenType] = useState('error')
   useEffect(() => {
     getTeamDetails()
 
@@ -43,17 +40,12 @@ function ClassDetails(props) {
       team_id,
       teacher_id,
     })
-    setopentip(msg)
     if (code === 200) {
-      setopenType('success')
+      message.success(msg)
     } else {
-      setopenType('error')
+      message.error(msg)
     }
-    setOpen(true)
-    setTimeout(() => {
-      setOpen(false)
-      getTeamDetails()
-    }, 2888)
+    getTeamDetails()
   }
 
   /**
@@ -67,24 +59,17 @@ function ClassDetails(props) {
       team_id,
       student_id,
     })
-    setopentip(msg)
     if (code === 200) {
-      setopenType('success')
+      message.success(msg)
     } else {
-      setopenType('error')
+      message.error(msg)
     }
-    setOpen(true)
-    setTimeout(() => {
-      setOpen(false)
-      getTeamDetails()
-    }, 2888)
+    getTeamDetails()
   }
 
   return (
     <div id="ClassDetails">
-      {/* <Breadcrumbs
-        className="bread"
-        aria-label="breadcrumb"
+      <Breadcrumb
         separator={
           <img
             src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right_icon.png"
@@ -92,23 +77,26 @@ function ClassDetails(props) {
           />
         }
       >
-        <Typography
-          className="breaditem"
-          color="textPrimary"
+        <Breadcrumb.Item
           onClick={handleClick}
+          style={{ cursor: 'pointer', color: '#222' }}
         >
           <img
             className="position"
             src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/position.png"
             alt="position"
+            style={{ width: '0.86rem', height: '1.14rem', marginRight: '1rem' }}
           />
           班级信息
-        </Typography>
-        <Typography className="breaditem" color="textPrimary">
+        </Breadcrumb.Item>
+        <Breadcrumb.Item
+          className="breaditem"
+          style={{ cursor: 'pointer', color: '#222' }}
+        >
           {detailData?.team?.get_grade?.name}
           {detailData?.team?.name}
-        </Typography>
-      </Breadcrumbs> */}
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <div className="teacher_list">
         <div className="title_text">
           <span>老师姓名</span>
@@ -169,10 +157,10 @@ function ClassDetails(props) {
                   <Avatar
                     className="Avatar"
                     alt="avatar"
-                    src={item?.get_user?.avatar_file}
+                    src={item?.avatar_file}
                   />
-                  <span>{item?.get_user?.true_name}</span>
-                  {item?.get_user?.is_vip === 1 ? (
+                  <span>{item?.true_name}</span>
+                  {item?.is_vip === 1 ? (
                     <img
                       className="vip"
                       src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/vip.png"
@@ -188,7 +176,8 @@ function ClassDetails(props) {
                 <div className="lasttime_box flex_box">
                   <span>
                     {setTimerType(
-                      item?.get_user?.last_add_exercises_time * 1000
+                      item?.last_add_exercises_time * 1000 ||
+                        new Date().getTime()
                     )}
                   </span>
                 </div>

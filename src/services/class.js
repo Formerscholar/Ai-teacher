@@ -32,3 +32,19 @@ export function delTeamStudent(data) {
     data
   })
 }
+
+export function getAddTeam() {
+  return request({
+    url: '/getAddTeam',
+    method: 'GET'
+  })
+}
+
+
+export function addTeam(data) {
+  return request({
+    url: '/addTeam',
+    method: 'POST',
+    data
+  })
+}

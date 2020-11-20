@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { GET_CLASS_INFO } from '@/store/actionType'
 import { getTeamList } from '@/services/class'
 import T_modelbox from '@/common/T_modelbox'
-import { Button, Avatar, Select } from 'antd'
+import { Button, Avatar, Select, Breadcrumb, message } from 'antd'
+import { getAddTeam, addTeam } from '@/services/class'
 const { Option } = Select
 
 /**
@@ -14,13 +15,28 @@ const { Option } = Select
  * @return {*}
  */
 function Class(props) {
+  const [TeamData, setTeamData] = useState({})
+  const [Teamid, setTeamid] = useState('请选择年级')
+  const [classId, setclassId] = useState('请选择班级')
   const [classInfo, setClassInfo] = useState({})
   const [Open, setOpen] = useState(false)
   const { homeInfo, setClass, classInfos, history } = props
   useEffect(() => {
+    getAddTeamData()
     getTeamLists()
     return () => {}
   }, [])
+
+  /**
+   *
+   *  获取新增班级所需
+   */
+  const getAddTeamData = async () => {
+    const { code, data } = await getAddTeam()
+    if (code === 200) {
+      setTeamData(data)
+    }
+  }
 
   const getTeamLists = async () => {
     const { code, data, msg } = await getTeamList()
@@ -52,10 +68,71 @@ function Class(props) {
   }
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`)
+    setTeamid(value)
   }
+
+  const handleChanges = (value) => {
+    setclassId(value)
+  }
+
+  /**
+   *  循环50次班级
+   *
+   * @param {*} num
+   * @return {*}
+   */
+  const forOptionClass = (num) => {
+    let arr = []
+    for (let key = 0; key < num; key++) {
+      arr.push(
+        <Option value={key + 1} key={key}>
+          {key + 1}班
+        </Option>
+      )
+    }
+    return arr
+  }
+
+  /**
+   *
+   *  新增班级点击
+   */
+  const addTeamClick = async () => {
+    const { code, msg } = await addTeam({
+      grade_id: Teamid,
+      name: classId,
+    })
+    if (code === 200) {
+      getTeamLists()
+      setOpen(false)
+      message.success(msg)
+    } else {
+      message.error(msg)
+    }
+    setTeamid('请选择年级')
+    setclassId('请选择班级')
+  }
+
   return (
     <div id="Class">
+      <Breadcrumb
+        separator={
+          <img
+            src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right_icon.png"
+            style={{ width: '0.57rem', height: '0.79rem' }}
+          />
+        }
+      >
+        <Breadcrumb.Item style={{ cursor: 'pointer', color: '#222' }}>
+          <img
+            className="position"
+            src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/position.png"
+            alt="position"
+            style={{ width: '0.86rem', height: '1.14rem', marginRight: '1rem' }}
+          />
+          班级信息
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <div className="teacher_info">
         <div className="left_box">
           <Avatar
@@ -126,23 +203,27 @@ function Class(props) {
           <div className="title">{classInfo.teacher?.get_school?.name}</div>
           <Select
             className="selectgrade"
-            defaultValue="请选择年级"
             style={{ width: '34.57rem' }}
             onChange={handleChange}
+            value={Teamid}
           >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
+            {TeamData?.grades?.map((item) => {
+              return (
+                <Option value={item?.id} key={item?.id}>
+                  {item?.name}
+                </Option>
+              )
+            })}
           </Select>
           <Select
             className="selectclass"
-            defaultValue="请选择班级"
             style={{ width: '34.57rem' }}
-            onChange={handleChange}
+            onChange={handleChanges}
+            value={classId}
           >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
+            {forOptionClass(50)}
           </Select>
-          <Button type="primary" className="btn">
+          <Button type="primary" className="btn" onClick={addTeamClick}>
             确定
           </Button>
         </div>

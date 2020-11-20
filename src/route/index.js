@@ -2,7 +2,6 @@ import React, { memo } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import AI_header from 'components/AI_header/AI_header'
 import AI_footer from 'components/AI_footer/AI_footer'
-
 import Loadable from 'react-loadable'
 import G_spin from '@/common/G_spin'
 
@@ -56,6 +55,11 @@ const Questiondetails = Loadable({
   loading: G_spin,
 })
 
+const Paperlist = Loadable({
+  loader: () => import('@/pages/paperlist'),
+  loading: G_spin,
+})
+
 const BasicRoute = (props) => (
   <>
     <AI_header props={props} />
@@ -65,6 +69,7 @@ const BasicRoute = (props) => (
     <Route path="/main/schoolbased" component={Schoolbased} />
     <Route path="/main/knowledge" component={Knowledge} />
     <Route path="/main/uploadpaper" component={Uploadpaper} />
+    <Route path="/main/paperlist" component={Paperlist} />
     <Route path="/main/mypaper" component={Mypaper} />
     <Route path="/main/classdetail" component={classDetails} />
     <Route path="/main/chapter" component={Chapter} />
