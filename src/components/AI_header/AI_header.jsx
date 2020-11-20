@@ -64,6 +64,7 @@ function AI_header({ homeInfo, props, setData }) {
       [araList[4], logoutfunc],
     ])
     keymap.get(info) && keymap.get(info)()
+    localStorage.setItem('menuIndex', 0)
   }
 
   const handleCloses = (info) => {
@@ -78,6 +79,7 @@ function AI_header({ homeInfo, props, setData }) {
       [araLists[1], Knowledgefunc],
     ])
     keymap.get(info) && keymap.get(info)()
+    localStorage.setItem('menuIndex', 4)
   }
 
   const handleClosess = (info) => {
@@ -92,6 +94,7 @@ function AI_header({ homeInfo, props, setData }) {
       [araListss[1], paperlistfunc],
     ])
     keymap.get(info) && keymap.get(info)()
+    localStorage.setItem('menuIndex', 5)
   }
 
   const menu = (
