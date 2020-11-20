@@ -56,7 +56,6 @@ const Questiondetails = Loadable({
   loading: G_spin,
 })
 
-
 const BasicRoute = (props) => (
   <>
     <AI_header props={props} />

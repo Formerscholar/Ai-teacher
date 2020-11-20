@@ -13,16 +13,10 @@ const araLists = ['Chapter', 'Knowledge']
 const araListss = ['Uploadpaper', 'paperList']
 
 function AI_header({ homeInfo, props, setData }) {
-  const [current, setcurrent] = useState(0)
+  const [current, setcurrent] = useState(localStorage.getItem('menuIndex'))
   const [indexData, setIndexData] = useState({})
-  
   useEffect(() => {
     gethomeData()
-    headMenu?.forEach((item, index) => {
-      if (item?.url === props.location.pathname) {
-        setcurrent(index)
-      }
-    })
     return () => {}
   }, [])
 
@@ -36,6 +30,7 @@ function AI_header({ homeInfo, props, setData }) {
 
   const headMenuClick = (event, id) => {
     setcurrent(id)
+    localStorage.setItem('menuIndex', id)
     if (id !== 4 && id !== 5) {
       props.history.push(`${headMenu[id].url}`)
     }
