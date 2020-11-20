@@ -133,9 +133,7 @@ function Knowledge(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    history.push('/main/questiondetails', {
-      id,
-    })
+    history.push(`/main/questiondetails?id=${id}`)
   }
 
   const onExpand = (expandedKeys) => {

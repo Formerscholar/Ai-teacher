@@ -41,4 +41,19 @@ function Trim(str) {
   return str.replace(/(^\s*)|(\s*$)/g, '')
 }
 
-export { setTimerType, setCookie, getCookie, delCookie, Trim }
+/**
+ *  获取URL 里 search 参数 
+ * @param {*} search 
+ * @return {*} 对象
+ */
+function splitSearch(search) {
+  let data = search.substr(1)
+  let ret = {}
+  data.split('&').map((item) => {
+    let kv = item.split('=')
+    ret[kv[0]] = kv[1]
+  })
+  return ret
+}
+
+export { setTimerType, setCookie, getCookie, delCookie, Trim, splitSearch }

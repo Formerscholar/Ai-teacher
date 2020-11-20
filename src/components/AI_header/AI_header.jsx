@@ -8,8 +8,9 @@ import { gethome } from '@/services/home'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 
-const araList = ['data', 'integral', 'logout']
+const araList = ['data', 'integral', '', '', 'logout']
 const araLists = ['Chapter', 'Knowledge']
+const araListss = ['Uploadpaper', 'paperList']
 
 function AI_header({ homeInfo, props, setData }) {
   const [current, setcurrent] = useState(0)
@@ -30,7 +31,7 @@ function AI_header({ homeInfo, props, setData }) {
 
   const headMenuClick = (event, id) => {
     setcurrent(id)
-    if (id !== 4) {
+    if (id !== 4 && id !== 5) {
       props.history.push(`/${headMenu[id].url}`)
     }
   }
@@ -60,7 +61,7 @@ function AI_header({ homeInfo, props, setData }) {
     const keymap = new Map([
       [araList[0], datafunc],
       [araList[1], integralfunc],
-      [araList[2], logoutfunc],
+      [araList[4], logoutfunc],
     ])
     keymap.get(info) && keymap.get(info)()
   }
@@ -79,6 +80,20 @@ function AI_header({ homeInfo, props, setData }) {
     keymap.get(info) && keymap.get(info)()
   }
 
+  const handleClosess = (info) => {
+    const uploadpaperfunc = () => {
+      props.history.push('/main/uploadpaper')
+    }
+    const paperlistfunc = () => {
+      props.history.push('/main/paperlist')
+    }
+    const keymap = new Map([
+      [araListss[0], uploadpaperfunc],
+      [araListss[1], paperlistfunc],
+    ])
+    keymap.get(info) && keymap.get(info)()
+  }
+
   const menu = (
     <Menu>
       <Menu.Item onClick={() => handleCloses(araLists[0])}>
@@ -93,9 +108,11 @@ function AI_header({ homeInfo, props, setData }) {
   const menus = (
     <Menu>
       <Menu.Item onClick={() => handleClose(araList[0])}>个人资料</Menu.Item>
-      <Menu.Item onClick={() => handleClose(araList[1])}>积分记录</Menu.Item>
+      <Menu.Item onClick={() => handleClose(araList[1])}>我的积分</Menu.Item>
+      <Menu.Item onClick={() => handleClose(araList[2])}>下载记录</Menu.Item>
+      <Menu.Item onClick={() => handleClose(araList[3])}>组卷记录</Menu.Item>
       <Menu.Item
-        onClick={() => handleClose(araList[2])}
+        onClick={() => handleClose(araList[4])}
         style={{ color: '#E9140A' }}
       >
         退出
@@ -103,6 +120,16 @@ function AI_header({ homeInfo, props, setData }) {
     </Menu>
   )
 
+  const menuss = (
+    <Menu>
+      <Menu.Item onClick={() => handleClosess(araListss[0])}>
+        上传试卷
+      </Menu.Item>
+      <Menu.Item onClick={() => handleClosess(araListss[1])}>
+        试卷列表
+      </Menu.Item>
+    </Menu>
+  )
   return (
     <div id="AI_header">
       <div className="title_box">
@@ -121,13 +148,19 @@ function AI_header({ homeInfo, props, setData }) {
                 className={current == index ? 'cenItem index' : 'cenItem'}
                 onClick={(e) => headMenuClick(e, index)}
               >
-                {index != 4 ? (
-                  item.text
-                ) : (
-                  <Dropdown overlay={menu} placement="bottomCenter">
-                    <button>{item.text}</button>
-                  </Dropdown>
-                )}
+                {
+                  index == 4 ? (
+                    <Dropdown overlay={menu} placement="bottomCenter">
+                      <button>{item.text}</button>
+                    </Dropdown>
+                  ) : index == 5 ? (
+                    <Dropdown overlay={menuss} placement="bottomCenter">
+                      <button>{item.text}</button>
+                    </Dropdown>
+                  ) : (
+                    item.text
+                  )
+                }
               </div>
             )
           })}

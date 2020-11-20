@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { GET_CLASS_INFO } from '@/store/actionType'
 import { getTeamList } from '@/services/class'
 import T_modelbox from '@/common/T_modelbox'
-import { Button, Avatar } from 'antd'
+import { Button, Avatar, Select } from 'antd'
+const { Option } = Select
 
 /**
  *  Class 路由
@@ -35,9 +36,7 @@ function Class(props) {
    * @param {Number} iid
    */
   const get_Details = (iid) => {
-    history.push('/main/classdetail', {
-      iid,
-    })
+    history.push(`/main/classdetail?id=${iid}`)
   }
 
   /**
@@ -45,7 +44,6 @@ function Class(props) {
    *
    */
   const newClassClick = () => {
-    console.log('newClassClick')
     setOpen(true)
   }
 
@@ -53,6 +51,9 @@ function Class(props) {
     setOpen(false)
   }
 
+  const handleChange = (value) => {
+    console.log(`selected ${value}`)
+  }
   return (
     <div id="Class">
       <div className="teacher_info">
@@ -74,11 +75,9 @@ function Class(props) {
             </div>
           </div>
         </div>
-        <div className="right_box" onClick={newClassClick}>
+        <Button className="right_box" danger onClick={newClassClick}>
           创建新的班级
-          {/* 已加入<span className="focus">{classInfo.teamList?.length}</span>
-          个班级 */}
-        </div>
+        </Button>
       </div>
       <div className="class_box">
         {classInfo.teamList?.map((item) => {
@@ -123,8 +122,29 @@ function Class(props) {
         width="41.71rem"
         height="23.5rem"
       >
-        <div className="tmodelbox">
-          <div className="title">扬州测试学校</div>
+        <div id="tmodelbox">
+          <div className="title">{classInfo.teacher?.get_school?.name}</div>
+          <Select
+            className="selectgrade"
+            defaultValue="请选择年级"
+            style={{ width: '34.57rem' }}
+            onChange={handleChange}
+          >
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+          </Select>
+          <Select
+            className="selectclass"
+            defaultValue="请选择班级"
+            style={{ width: '34.57rem' }}
+            onChange={handleChange}
+          >
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+          </Select>
+          <Button type="primary" className="btn">
+            确定
+          </Button>
         </div>
       </T_modelbox>
     </div>

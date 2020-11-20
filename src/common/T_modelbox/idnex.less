@@ -1,38 +1,22 @@
-#T_modelbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, .382);
+.T_modelbox {
+  background: #FFFFFF;
+  border-radius: 1rem;
+  overflow: hidden;
 
-  .gord_warp {
-    background: #FFFFFF;
-    border-radius: 1rem;
+  /deep/.ant-modal-header {
+    height: 4.64rem;
+    background: #E50304;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.71rem;
+    font-size: 1.43rem;
+    font-weight: bold;
+    color: #FFFFFF;
 
-    .title_box {
-      height: 4.64rem;
-      background: #E50304;
-      border-radius: 1rem 1rem 0 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 1.71rem;
-      font-size: 1.43rem;
-      font-weight: bold;
-      color: #FFFFFF;
-    }
-
-    .right_box {
-      cursor: pointer;
-
-      .delete_icon {
-        width: 1.29rem;
-        height: 1.29rem;
-      }
+    .ant-modal-title {
+      color: #Fff;
     }
   }
+
 }

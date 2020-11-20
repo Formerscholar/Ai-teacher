@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { getTeamDetail, delTeamTeacher, delTeamStudent } from '@/services/class'
 import { Avatar } from 'antd'
-import { setTimerType } from '@/utils'
+import { setTimerType, splitSearch } from '@/utils'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 
@@ -20,7 +20,7 @@ function ClassDetails(props) {
 
   const getTeamDetails = async () => {
     const { code, data, msg } = await getTeamDetail({
-      team_id: location.state.iid,
+      team_id: splitSearch(location.search).id,
     })
     if (code == 200) {
       setDetailData(data)

@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { getExercisesDetail } from '@/services/knowledge'
 import { Button, Breadcrumb } from 'antd'
-import { setTimerType } from '@/utils'
+import { setTimerType ,splitSearch} from '@/utils'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 
@@ -11,7 +11,7 @@ function Questiondetails(props) {
   const [ExercisesData, setExercisesData] = useState({})
 
   useEffect(() => {
-    getDetails(location.state.id)
+    getDetails(splitSearch(location.search).id)
     return () => {}
   }, [])
 

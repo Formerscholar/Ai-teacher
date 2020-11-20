@@ -70,7 +70,6 @@ const BasicRoute = (props) => (
     <Route path="/main/classdetail" component={classDetails} />
     <Route path="/main/chapter" component={Chapter} />
     <Route path="/main/questiondetails" component={Questiondetails} />
-    <Redirect to="/main/index"></Redirect>
     <AI_footer />
   </>
 )
