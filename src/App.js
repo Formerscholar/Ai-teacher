@@ -23,6 +23,7 @@ function App() {
           <Switch>
             <Route path="/main" component={BasicRoute} />
             <Route path="/login" component={Login} />
+            <Redirect to="/main/index"></Redirect>
           </Switch>
         </BrowserRouter>
       </Provider>
