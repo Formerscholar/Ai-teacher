@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react'
 import './AI_header.less'
-import { Avatar, message, Menu, Dropdown, Button } from 'antd'
+import { Avatar, message, Menu, Dropdown } from 'antd'
 import { getLogout } from '@/services/login'
 import { headMenu } from '@/conf'
 import { getCookie, delCookie } from '@/utils'
@@ -15,9 +15,14 @@ const araListss = ['Uploadpaper', 'paperList']
 function AI_header({ homeInfo, props, setData }) {
   const [current, setcurrent] = useState(0)
   const [indexData, setIndexData] = useState({})
-
+  
   useEffect(() => {
     gethomeData()
+    headMenu?.forEach((item, index) => {
+      if (item?.url === props.location.pathname) {
+        setcurrent(index)
+      }
+    })
     return () => {}
   }, [])
 
@@ -32,7 +37,7 @@ function AI_header({ homeInfo, props, setData }) {
   const headMenuClick = (event, id) => {
     setcurrent(id)
     if (id !== 4 && id !== 5) {
-      props.history.push(`/${headMenu[id].url}`)
+      props.history.push(`${headMenu[id].url}`)
     }
   }
 
@@ -148,19 +153,17 @@ function AI_header({ homeInfo, props, setData }) {
                 className={current == index ? 'cenItem index' : 'cenItem'}
                 onClick={(e) => headMenuClick(e, index)}
               >
-                {
-                  index == 4 ? (
-                    <Dropdown overlay={menu} placement="bottomCenter">
-                      <button>{item.text}</button>
-                    </Dropdown>
-                  ) : index == 5 ? (
-                    <Dropdown overlay={menuss} placement="bottomCenter">
-                      <button>{item.text}</button>
-                    </Dropdown>
-                  ) : (
-                    item.text
-                  )
-                }
+                {index == 4 ? (
+                  <Dropdown overlay={menu} placement="bottomCenter">
+                    <button>{item.text}</button>
+                  </Dropdown>
+                ) : index == 5 ? (
+                  <Dropdown overlay={menuss} placement="bottomCenter">
+                    <button>{item.text}</button>
+                  </Dropdown>
+                ) : (
+                  item.text
+                )}
               </div>
             )
           })}
