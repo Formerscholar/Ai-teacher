@@ -13,7 +13,7 @@ const araLists = ['Chapter', 'Knowledge']
 const araListss = ['Uploadpaper', 'paperList']
 
 function AI_header({ homeInfo, props, setData }) {
-  const [current, setcurrent] = useState(localStorage.getItem('menuIndex'))
+  const [current, setcurrent] = useState(localStorage.getItem('menuIndex') || 0)
   const [indexData, setIndexData] = useState({})
   useEffect(() => {
     gethomeData()
