@@ -40,4 +40,6 @@ const headMenu = [
   },
 ]
 
-export { baseURL, phoneRegular, appid, callBackUrl, headMenu }
+const downURL = 'http://aictb.com'
+
+export { baseURL, phoneRegular, appid, callBackUrl, headMenu, downURL }

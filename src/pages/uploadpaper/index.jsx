@@ -1,13 +1,15 @@
 import React, { memo, useRef, useState } from 'react'
 import './index.less'
 import { Breadcrumb, Input, Button, message, Image } from 'antd'
-import { getUploadImage } from '@/services/paper'
+import { getUploadImage, addTeacherUpload } from '@/services/paper'
 
 const { TextArea } = Input
 
 function Uploadpaper(props) {
   const inputEl = useRef(null)
   const [fileList, setFileList] = useState([])
+  const [PaperName, setPaperName] = useState('')
+  const [Remark, setRemark] = useState('')
 
   /**
    *
@@ -15,25 +17,77 @@ function Uploadpaper(props) {
    */
   const UploadClick = () => {
     inputEl.current.click()
-    inputEl.current.addEventListener('change', async (e) => {
-      let { files } = e.target
-      if (!files.length) return
-      let formData = new FormData()
-      formData.append('img_url', files[0], files[0].name)
-      const { code, data, msg } = await getUploadImage(formData)
-      if (code === 200) {
-        setFileList([...fileList, data.img])
-        message.success(msg)
-      } else {
-        message.error(msg)
-      }
-    })
+    inputEl.current.addEventListener('change', inputChange)
+  }
+
+  /**
+   *
+   *  上传文件change事件
+   * @param {*} e
+   */
+  const inputChange = async (e) => {
+    console.log('执行addEventListener')
+    let { files } = e.target
+    if (!files.length) return
+    let formData = new FormData()
+    formData.append('img_url', files[0], files[0].name)
+    const { code, data, msg } = await getUploadImage(formData)
+    if (code === 200) {
+      setFileList([...fileList, data.img])
+      message.success(msg)
+      inputEl.current.removeEventListener('change', inputChange)
+      inputEl.current.value = ''
+    } else {
+      message.error(msg)
+      inputEl.current.removeEventListener('change', inputChange)
+      inputEl.current.value = ''
+    }
   }
 
   const delectClick = (idx) => {
     let arr = [...fileList]
     arr.splice(idx, 1)
     setFileList(arr)
+  }
+
+  /**
+   *
+   *  点击上传按钮
+   */
+  const addClick = async() => {
+    const { code, msg } = await addTeacherUpload({
+      image_urls: fileList,
+      remark: Remark,
+      paper_name:PaperName
+    })
+    if (code === 200) {
+      message.success(msg)
+      setFileList([])
+      setPaperName('')
+      setRemark('')
+    } else {
+      message.error(msg)
+    }
+  }
+
+  /**
+   *
+   *  试卷名称输入框change事件
+   * @param {*} e
+   */
+  const paperNameChange = (e) => {
+    const { value } = e.target
+    setPaperName(value)
+  }
+
+  /**
+   *
+   *  备注输入框change事件
+   * @param {*} e
+   */
+  const remarkChange = (e) => {
+    const { value } = e.target
+    setRemark(value)
   }
 
   return (
@@ -59,11 +113,11 @@ function Uploadpaper(props) {
       <div className="content_box">
         <div className="paperName">
           <span>试卷名称</span>
-          <Input className="myInput" placeholder="请填写试卷名称" />
+          <Input className="myInput" placeholder="请填写试卷名称" onChange={paperNameChange} value={PaperName} />
         </div>
         <div className="Remarks">
           <span>备注</span>
-          <TextArea className="myInput" placeholder="请填写备注" />
+          <TextArea className="myInput" placeholder="请填写备注" onChange={remarkChange} value={Remark} />
         </div>
         {!fileList.length ? (
           <div className="upload_box" onClick={UploadClick}>
@@ -79,10 +133,9 @@ function Uploadpaper(props) {
           <div className="upload_insert">
             {fileList?.map((item, idx) => {
               return (
-                <div className="iamge_warp">
+                <div className="iamge_warp" key={idx}>
                   <Image
                     className="itemImg"
-                    key={idx}
                     width="11.43rem"
                     height="14.29rem"
                     src={item}
@@ -106,7 +159,7 @@ function Uploadpaper(props) {
             </div>
           </div>
         )}
-        <Button type="primary" className="btns">
+        <Button type="primary" className="btns" onClick={addClick}>
           保存
         </Button>
       </div>

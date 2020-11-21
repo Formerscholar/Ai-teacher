@@ -7,3 +7,11 @@ export function getSchoolBasedList(params) {
     params
   })
 }
+
+export function getSchoolBasedDetail(params) {
+  return request({
+    url: '/getSchoolBasedDetail',
+    method: 'GET',
+    params
+  })
+}

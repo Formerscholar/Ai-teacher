@@ -60,6 +60,11 @@ const Paperlist = Loadable({
   loading: G_spin,
 })
 
+const Schoolbaseddetail = Loadable({
+  loader: () => import('@/pages/schoolbaseddetail'),
+  loading: G_spin,
+})
+
 const BasicRoute = (props) => (
   <>
     <AI_header props={props} />
@@ -74,6 +79,7 @@ const BasicRoute = (props) => (
     <Route path="/main/classdetail" component={classDetails} />
     <Route path="/main/chapter" component={Chapter} />
     <Route path="/main/questiondetails" component={Questiondetails} />
+    <Route path="/main/schoolbaseddetail" component={Schoolbaseddetail} />
     <AI_footer />
   </>
 )

@@ -151,5 +151,59 @@
     }
   }
 
- 
+
+}
+
+#tmodelbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .title {
+    font-size: 1.57rem;
+    font-weight: bold;
+    color: #222222;
+    margin-bottom: 1.71rem;
+  }
+
+  .radioGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /deep/.ant-radio-wrapper {
+      width: 34.57rem;
+      border-bottom: 1px dashed #E5E5E5;
+      margin-bottom: 1.14rem;
+      font-size: 1.14rem;
+      font-weight: 400;
+      color: #222222;
+      padding-bottom: 1.07rem;
+
+      i {
+        font-style: normal;
+        font-size: 1rem;
+        font-weight: 400;
+        color: #999999;
+
+      }
+
+    }
+  }
+
+  .btn {
+    width: 9.64rem;
+    height: 2.5rem;
+    background: #E50304 !important;
+    background-image: none !important;
+    border-radius: 0.357143rem;
+    font-size: 1.14rem;
+    font-weight: 400;
+    color: #FFFFFF;
+
+  }
 }

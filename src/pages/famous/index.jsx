@@ -1,14 +1,21 @@
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useState, useEffect, useRef } from 'react'
 import './index.less'
-import { Button, Input, Pagination } from 'antd'
+import { Button, Input, Pagination, Radio } from 'antd'
 import { getSchoolResourcesList } from '@/services/famous'
 import { setTimerType, Trim } from '@/utils'
+import T_modelbox from '@/common/T_modelbox'
+import { downURL } from '@/conf'
 
 function Famous(props) {
   const [searchName, setSearchName] = useState('')
   const [searchdata, setsearchdata] = useState('')
   const [Listpage, setListpage] = useState(1)
   const [ResourcesList, setResourcesList] = useState({})
+  const [Open, setOpen] = useState(false)
+  const [RadioId, setRadioId] = useState('')
+  const [downfile, setdownfile] = useState([])
+  const [formData, setformData] = useState('')
+  const formRefs = useRef(null)
 
   useEffect(() => {
     getResourcesList()
@@ -69,7 +76,31 @@ function Famous(props) {
    *
    *  下载试卷事件
    */
-  const downloadClick = () => {}
+  const downloadClick = (pdf1, pdf2) => {
+    let arr = [pdf1, pdf2]
+    console.log(arr)
+    setdownfile(arr)
+    setOpen(true)
+  }
+
+  const closeClick = () => {
+    setOpen(false)
+  }
+
+  /**
+   *  单选类型
+   * @param {*} e
+   */
+  const RadioChange = (e) => {
+    const { value } = e.target
+    setRadioId(value)
+    setformData(downURL + downfile[value])
+  }
+
+  const downClick = () => {
+    formRefs.current.submit()
+    setOpen(false)
+  }
 
   return (
     <div id="Famous">
@@ -118,15 +149,16 @@ function Famous(props) {
                     </div>
                   </div>
                 </div>
-                <div className="right_box">
+                <div
+                  className="right_box"
+                  onClick={() => downloadClick(item?.pdf1, item?.pdf2)}
+                >
                   <img
                     className="download_icon"
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/download_icon.png"
                     alt="download_icon"
                   />
-                  <span className="text" onClick={downloadClick}>
-                    下载
-                  </span>
+                  <span className="text">下载</span>
                 </div>
               </div>
             )
@@ -144,6 +176,33 @@ function Famous(props) {
           />
         </div>
       </div>
+      <T_modelbox
+        isOpen={Open}
+        title="【下载】"
+        closeClick={closeClick}
+        width="41.71rem"
+        height="23.5rem"
+      >
+        <div id="tmodelbox">
+          <div className="title">试卷类型选择</div>
+          <Radio.Group
+            className="radioGroup"
+            onChange={RadioChange}
+            value={RadioId}
+          >
+            <Radio value={1}>
+              教师用卷 <i>（含答案和解析）</i>
+            </Radio>
+            <Radio value={0}>
+              学生用卷<i>（不含答案和解析）</i>
+            </Radio>
+          </Radio.Group>
+          <Button type="primary" className="btn" onClick={downClick}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
+      <form action={formData} ref={formRefs} method="get" hidden></form>
     </div>
   )
 }

@@ -1,0 +1,124 @@
+#Paperlist {
+  min-height: 19.428571rem;
+  margin: 0 26rem;
+
+  .content_warp {
+    width: 85.14rem;
+    // height: 40.93rem;
+    background: #FFFFFF;
+    box-shadow: 0rem 0rem 3rem 0rem rgba(149, 149, 149, 0.13);
+    border-radius: 1rem;
+    margin-top: 1.07rem;
+    margin-bottom: 4.57rem;
+    overflow: hidden;
+
+    .top_box {
+      height: 4.86rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.71rem;
+
+      .left_text {
+        font-size: 1.43rem;
+        font-weight: 400;
+        color: #222222;
+
+      }
+
+      .updateBtn {
+        width: 8.57rem;
+        height: 2.29rem;
+        border-radius: 0.357143rem;
+        background-color: #E50304 !important;
+        background-image: none !important;
+      }
+    }
+
+    .body {
+      // height: calc(100% - 4.86rem);
+
+      .title {
+        height: 4.64rem;
+        background: #FFF7F3;
+        font-size: 1.14rem;
+        font-weight: 400;
+        color: #222222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 2.86rem;
+
+        .name {
+          flex: 6;
+        }
+
+        .uptime {
+          flex: 3;
+
+        }
+
+        .Review {
+          flex: 1;
+        }
+      }
+
+      .lists {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // height: calc(100% - 4.64rem);
+
+        .listNoData {
+          width: 24.86rem;
+          height: 16.64rem;
+        }
+      }
+
+      .datalist {
+        padding: 1.71rem;
+
+        .items {
+          height: 3.5rem;
+          border: 1px solid #FDF5F0;
+          border-radius: 0.357143rem;
+          font-size: 1.14rem;
+          font-weight: 400;
+          color: #222222;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 1.14rem;
+          margin-bottom: 1.71rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .name {
+            flex: 6;
+          }
+
+          .uptime {
+            flex: 3;
+
+          }
+
+          .Review {
+            flex: 1;
+            color: #999999;
+
+          }
+
+          .Reviews {
+            flex: 1;
+            color: #E50304;
+
+          }
+
+        }
+      }
+    }
+
+  }
+}

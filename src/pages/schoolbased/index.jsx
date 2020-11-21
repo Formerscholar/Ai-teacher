@@ -6,6 +6,7 @@ import { getSchoolBasedList } from '@/services/Schoolbased'
 import { setTimerType, Trim } from '@/utils'
 
 function Schoolbased(props) {
+  const { history } = props
   const [searchName, setSearchName] = useState('')
   const [searchdata, setsearchdata] = useState('')
   const [Listpage, setListpage] = useState(1)
@@ -66,6 +67,14 @@ function Schoolbased(props) {
     setSearchName('')
   }
 
+  /**
+   *
+   *  跳转试卷详情
+   */
+  const paperDetail = (id) => {
+    history.push(`/main/schoolbaseddetail?id=${id}`)
+  }
+
   return (
     <div id="Schoolbased">
       <div className="top_box">
@@ -114,7 +123,10 @@ function Schoolbased(props) {
                     </div>
                   </div>
                 </div>
-                <div className="right_box">
+                <div
+                  className="right_box"
+                  onClick={() => paperDetail(item?.based_id)}
+                >
                   <img
                     className="download_icon"
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right.png"
