@@ -65,10 +65,21 @@ const Schoolbaseddetail = Loadable({
   loading: G_spin,
 })
 
+const User = Loadable({
+  loader: () => import('@/pages/user'),
+  loading: G_spin,
+})
+
+const StudyReport = Loadable({
+  loader: () => import('@/pages/StudyReport'),
+  loading: G_spin,
+})
+
 const BasicRoute = (props) => (
   <>
     <AI_header props={props} />
     <Route path="/main/index" component={Main} />
+    <Route path="/main/user" component={User} />
     <Route path="/main/class" component={Class} />
     <Route path="/main/famous" component={Famous} />
     <Route path="/main/schoolbased" component={Schoolbased} />
@@ -80,6 +91,7 @@ const BasicRoute = (props) => (
     <Route path="/main/chapter" component={Chapter} />
     <Route path="/main/questiondetails" component={Questiondetails} />
     <Route path="/main/schoolbaseddetail" component={Schoolbaseddetail} />
+    <Route path="/main/studyreport" component={StudyReport} />
     <AI_footer />
   </>
 )

@@ -8,6 +8,7 @@ import { GET_HOME_INFO } from '@/store/actionType'
 
 function ClassDetails(props) {
   const { location, history, homeInfo } = props
+  const iid = splitSearch(location.search).id
   const [detailData, setDetailData] = useState({})
   useEffect(() => {
     getTeamDetails()
@@ -17,7 +18,7 @@ function ClassDetails(props) {
 
   const getTeamDetails = async () => {
     const { code, data, msg } = await getTeamDetail({
-      team_id: splitSearch(location.search).id,
+      team_id: iid,
     })
     if (code == 200) {
       setDetailData(data)
@@ -65,6 +66,10 @@ function ClassDetails(props) {
       message.error(msg)
     }
     getTeamDetails()
+  }
+
+  const StudyReportClick = (id) => {
+    history.push(`/main/studyreport?id=${id}&iid=${iid}`)
   }
 
   return (
@@ -182,7 +187,9 @@ function ClassDetails(props) {
                   </span>
                 </div>
                 <div className="operate_box flex_box">
-                  <span>学情报告</span>
+                  <span onClick={() => StudyReportClick(item?.id)}>
+                    学情报告
+                  </span>
                   {detailData?.team?.teacher_id !== item?.id &&
                   detailData?.team?.is_active === 0 ? (
                     <span

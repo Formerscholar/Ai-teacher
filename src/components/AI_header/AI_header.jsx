@@ -8,13 +8,19 @@ import { gethome } from '@/services/home'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 
-const araList = ['data', 'integral', '', '', 'logout']
+const araList = ['data', 'integral', 'download', 'volume', 'logout']
 const araLists = ['Chapter', 'Knowledge']
 const araListss = ['Uploadpaper', 'paperList']
 
 function AI_header({ homeInfo, props, setData }) {
-  const [current, setcurrent] = useState(localStorage.getItem('menuIndex') || 0)
+  const { history } = props
+  const [current, setcurrent] = useState(0)
   const [indexData, setIndexData] = useState({})
+
+  useEffect(() => {
+    setcurrent(localStorage.getItem('menuIndex') || 0)
+  })
+
   useEffect(() => {
     gethomeData()
     return () => {}
@@ -38,10 +44,16 @@ function AI_header({ homeInfo, props, setData }) {
 
   const handleClose = (info) => {
     const datafunc = () => {
-      console.log('datafunc')
+      history.push('/main/user?type=datafunc')
     }
     const integralfunc = () => {
       console.log('integralfunc')
+    }
+    const downloadfunc = () => {
+      console.log('downloadfunc')
+    }
+    const volumefunc = () => {
+      console.log('volumefunc')
     }
     const logoutfunc = async () => {
       let id = getCookie('id')
@@ -61,6 +73,8 @@ function AI_header({ homeInfo, props, setData }) {
     const keymap = new Map([
       [araList[0], datafunc],
       [araList[1], integralfunc],
+      [araList[2], downloadfunc],
+      [araList[3], volumefunc],
       [araList[4], logoutfunc],
     ])
     keymap.get(info) && keymap.get(info)()

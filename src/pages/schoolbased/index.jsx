@@ -95,7 +95,7 @@ function Schoolbased(props) {
         <div className="lists">
           {ResourcesList?.examsSchool?.data?.map((item) => {
             return (
-              <div className="item" key={item?.id}>
+              <div className="item" key={item?.id}  onClick={() => paperDetail(item?.based_id)}>
                 <div className="left_box">
                   <img
                     className="paper_icon"
@@ -125,7 +125,7 @@ function Schoolbased(props) {
                 </div>
                 <div
                   className="right_box"
-                  onClick={() => paperDetail(item?.based_id)}
+                 
                 >
                   <img
                     className="download_icon"
