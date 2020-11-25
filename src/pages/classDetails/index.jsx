@@ -68,8 +68,8 @@ function ClassDetails(props) {
     getTeamDetails()
   }
 
-  const StudyReportClick = (id) => {
-    history.push(`/main/studyreport?id=${id}&iid=${iid}`)
+  const StudyReportClick = (id, name) => {
+    history.push(`/main/studyreport?id=${id}&iid=${iid}&name=${encodeURI(name)}`)
   }
 
   return (
@@ -187,7 +187,9 @@ function ClassDetails(props) {
                   </span>
                 </div>
                 <div className="operate_box flex_box">
-                  <span onClick={() => StudyReportClick(item?.id)}>
+                  <span
+                    onClick={() => StudyReportClick(item?.id, item?.true_name)}
+                  >
                     学情报告
                   </span>
                   {detailData?.team?.teacher_id !== item?.id &&
