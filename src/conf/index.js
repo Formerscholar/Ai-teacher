@@ -19,6 +19,10 @@ const headMenu = [
     url: '/main/class',
   },
   {
+    text: '学情报告',
+    url: '/main/classreport',
+  },
+  {
     text: '名校资源',
     url: '/main/famous',
   },
@@ -29,10 +33,6 @@ const headMenu = [
   {
     text: '知识库',
     url: '/main/knowledge',
-  },
-  {
-    text: '上传试卷',
-    url: '/main/uploadpaper',
   },
   {
     text: '我的试卷',

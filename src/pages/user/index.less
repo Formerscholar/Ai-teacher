@@ -15,44 +15,116 @@
 
       .top_info {
         width: 23.43rem;
-        height: 10.86rem;
-        background: #FFFFFF;
+        height: 15.5rem;
         box-shadow: 0rem 0rem 3rem 0rem rgba(149, 149, 149, 0.13);
         border-radius: 1rem;
+        background-color: #fff;
+        background-image: url('https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/info_bg.png');
+        background-repeat: no-repeat;
+        background-size: 18.29rem 2.43rem;
+        background-position: 6.428571rem 0;
         margin-bottom: 1.14rem;
-        padding-left: 2.29rem;
         display: flex;
-        justify-content: flex-start;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
 
-        .Avatar {
-          margin-right: 1.14rem;
-        }
+        .perpo {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
 
-        .info {
+          .Avatar {
+            margin-bottom: 1.79rem;
+          }
+
           .name {
             font-size: 1.71rem;
             font-weight: 400;
             color: #222222;
-            margin-bottom: .93rem;
+
           }
+        }
+
+
+
+
+        .info {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          width: 100%;
+          padding: 0 1.71rem;
+          font-size: 1.14rem;
+          font-weight: 400;
+          color: #222222;
 
           .subject {
-            font-size: 0.91rem;
-            font-weight: 400;
-            color: #222222;
 
+
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+
+            img {
+              margin-right: 1rem;
+              width: 1.79rem;
+              height: 1.43rem;
+            }
+          }
+
+          .integral {
+
+
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+
+            img {
+              margin-right: 1rem;
+              width: 1.43rem;
+              height: 1.43rem;
+            }
           }
         }
       }
 
       .bot_menu {
         width: 23.43rem;
-        height: 61.43rem;
+        height: 56.79rem;
         background: #FFFFFF;
         box-shadow: 0rem 0rem 3rem 0rem rgba(149, 149, 149, 0.13);
         border-radius: 1rem;
+        overflow: hidden;
 
+        .items {
+          height: 5.06rem;
+          background: #fff;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 1.71rem;
+          cursor: pointer;
+
+          .pic_icon {
+            margin-right: 1.14rem;
+          }
+
+          .text {
+            font-size: 1.19rem;
+            font-weight: 400;
+            color: #222222;
+
+          }
+        }
+
+        .current_bg {
+
+          background: #FFF7F3;
+        }
       }
     }
 
@@ -62,6 +134,124 @@
       background: #FFFFFF;
       box-shadow: 0rem 0rem 3rem 0rem rgba(149, 149, 149, 0.13);
       border-radius: 1rem;
+
+      .title {
+        font-size: 1.43rem;
+        font-weight: bold;
+        color: #222222;
+        border-bottom: 1px solid #E5E5E5;
+        padding: 2.14rem;
+      }
+
+      .body_box {
+        padding: 1.71rem 4.57rem;
+
+        .name {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-left: 1.14rem;
+          margin-bottom: 2.14rem;
+
+          .lable {
+            font-size: 1.14rem;
+            font-weight: 400;
+            color: #222222;
+            margin-right: 1.14rem;
+          }
+
+          .iteminput {
+            width: 38.07rem;
+            height: 2.5rem;
+            background: #F1F1F1;
+            border: 1px solid #E5E5E5;
+            border-radius: 0.357143rem;
+
+          }
+        }
+
+        .sex {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-left: 1.14rem;
+          margin-bottom: 2.14rem;
+
+          .lable {
+            font-size: 1.14rem;
+            font-weight: 400;
+            color: #222222;
+            margin-right: 1.14rem;
+          }
+
+          .itemSelect {
+            background: #F1F1F1;
+            border-radius: 0.357143rem;
+          }
+        }
+
+        .avatarBox {
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+          margin-left: 1.14rem;
+          margin-bottom: 2.14rem;
+
+          .lable {
+            width: 3.928571rem;
+            font-size: 1.14rem;
+            font-weight: 400;
+            color: #222222;
+            margin-right: 1.14rem;
+          }
+
+          .Upload_warp {
+            .Upload_tip {
+              font-size: 1.14rem;
+              font-weight: 400;
+              color: #999999;
+              margin-top: 1.14rem;
+            }
+          }
+        }
+
+        .email {
+          .changeTip {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #E50304;
+            margin-left: 1rem;
+            cursor: pointer;
+          }
+
+        }
+
+        .phone {
+          margin-left: 0;
+
+          .changeTip {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #E50304;
+            margin-left: 1rem;
+            cursor: pointer;
+
+          }
+
+        }
+
+        .btns {
+          padding-left: 5.714286rem;
+          .btn {
+            width: 9.64rem;
+            height: 2.5rem;
+            background: #E50304 !important;
+            background-image: none !important;
+            border-radius: 0.357143rem;
+
+          }
+        }
+      }
 
     }
   }

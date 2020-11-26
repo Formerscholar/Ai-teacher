@@ -20,7 +20,7 @@ export function delTeamTeacher(data) {
   return request({
     url: '/delTeamTeacher',
     method: 'POST',
-    data,
+    data: Qs.stringify(data),
   })
 }
 
@@ -28,7 +28,7 @@ export function delTeamStudent(data) {
   return request({
     url: '/delTeamStudent',
     method: 'POST',
-    data,
+    data: Qs.stringify(data),
   })
 }
 

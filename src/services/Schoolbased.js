@@ -4,7 +4,7 @@ export function getSchoolBasedList(params) {
   return request({
     url: '/getSchoolBasedList',
     method: 'GET',
-    params
+    params,
   })
 }
 
@@ -12,6 +12,14 @@ export function getSchoolBasedDetail(params) {
   return request({
     url: '/getSchoolBasedDetail',
     method: 'GET',
-    params
+    params,
+  })
+}
+
+export function teamAcademicReport(params) {
+  return request({
+    url: '/teamAcademicReport',
+    method: 'GET',
+    params,
   })
 }

@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import AI_header from 'components/AI_header/AI_header'
 import AI_footer from 'components/AI_footer/AI_footer'
 import Loadable from 'react-loadable'
@@ -30,10 +30,14 @@ const Knowledge = Loadable({
   loading: G_spin,
 })
 
-const Uploadpaper = Loadable({
-  loader: () => import('@/pages/uploadpaper'),
-  loading: G_spin,
-})
+// const Uploadpaper = Loadable({
+//   loader: () => import('@/pages/uploadpaper'),
+//   loading: G_spin,
+// })
+// const Paperlist = Loadable({
+//   loader: () => import('@/pages/paperlist'),
+//   loading: G_spin,
+// })
 
 const Mypaper = Loadable({
   loader: () => import('@/pages/mypaper'),
@@ -55,11 +59,6 @@ const Questiondetails = Loadable({
   loading: G_spin,
 })
 
-const Paperlist = Loadable({
-  loader: () => import('@/pages/paperlist'),
-  loading: G_spin,
-})
-
 const Schoolbaseddetail = Loadable({
   loader: () => import('@/pages/schoolbaseddetail'),
   loading: G_spin,
@@ -75,25 +74,33 @@ const StudyReport = Loadable({
   loading: G_spin,
 })
 
-const BasicRoute = (props) => (
-  <>
-    <AI_header props={props} />
-    <Route path="/main/index" component={Main} />
-    <Route path="/main/user" component={User} />
-    <Route path="/main/class" component={Class} />
-    <Route path="/main/famous" component={Famous} />
-    <Route path="/main/schoolbased" component={Schoolbased} />
-    <Route path="/main/knowledge" component={Knowledge} />
-    <Route path="/main/uploadpaper" component={Uploadpaper} />
-    <Route path="/main/paperlist" component={Paperlist} />
-    <Route path="/main/mypaper" component={Mypaper} />
-    <Route path="/main/classdetail" component={classDetails} />
-    <Route path="/main/chapter" component={Chapter} />
-    <Route path="/main/questiondetails" component={Questiondetails} />
-    <Route path="/main/schoolbaseddetail" component={Schoolbaseddetail} />
-    <Route path="/main/studyreport" component={StudyReport} />
-    <AI_footer />
-  </>
-)
+const ClassReport = Loadable({
+  loader: () => import('@/pages/ClassReport'),
+  loading: G_spin,
+})
+
+const BasicRoute = (props) => {
+  return (
+    <>
+      <AI_header props={props} />
+      <Route path="/main/index" component={Main} />
+      <Route path="/main/user" component={User} />
+      <Route path="/main/class" component={Class} />
+      <Route path="/main/famous" component={Famous} />
+      <Route path="/main/schoolbased" component={Schoolbased} />
+      <Route path="/main/knowledge" component={Knowledge} />
+      {/* <Route path="/main/uploadpaper" component={Uploadpaper} /> */}
+      {/* <Route path="/main/paperlist" component={Paperlist} /> */}
+      <Route path="/main/mypaper" component={Mypaper} />
+      <Route path="/main/classdetail" component={classDetails} />
+      <Route path="/main/chapter" component={Chapter} />
+      <Route path="/main/questiondetails" component={Questiondetails} />
+      <Route path="/main/schoolbaseddetail" component={Schoolbaseddetail} />
+      <Route path="/main/studyreport" component={StudyReport} />
+      <Route path="/main/classreport" component={ClassReport} />
+      <AI_footer />
+    </>
+  )
+}
 
 export default memo(BasicRoute)

@@ -102,7 +102,7 @@ function Login(props) {
     if (code == 200) {
       setCookie('id', data.id)
       setCookie('token', data.token)
-      props.history.push('/main')
+      props.history.push('/main/index')
     } else {
       message.error(msg)
     }

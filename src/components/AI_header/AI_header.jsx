@@ -10,7 +10,7 @@ import { GET_HOME_INFO } from '@/store/actionType'
 
 const araList = ['data', 'integral', 'download', 'volume', 'logout']
 const araLists = ['Chapter', 'Knowledge']
-const araListss = ['Uploadpaper', 'paperList']
+// const araListss = ['Uploadpaper', 'paperList']
 
 function AI_header({ homeInfo, props, setData }) {
   const { history } = props
@@ -37,7 +37,7 @@ function AI_header({ homeInfo, props, setData }) {
   const headMenuClick = (event, id) => {
     setcurrent(id)
     localStorage.setItem('menuIndex', id)
-    if (id !== 4 && id !== 5) {
+    if ( id !== 5) {
       props.history.push(`${headMenu[id].url}`)
     }
   }
@@ -48,13 +48,13 @@ function AI_header({ homeInfo, props, setData }) {
       history.push('/main/user?type=datafunc')
     }
     const integralfunc = () => {
-      console.log('integralfunc')
+      history.push('/main/user?type=integralfunc')
     }
     const downloadfunc = () => {
-      console.log('downloadfunc')
+      history.push('/main/user?type=downloadfunc')
     }
     const volumefunc = () => {
-      console.log('volumefunc')
+      history.push('/main/user?type=volumefunc')
     }
     const logoutfunc = async () => {
       let id = getCookie('id')
@@ -97,20 +97,20 @@ function AI_header({ homeInfo, props, setData }) {
     localStorage.setItem('menuIndex', 4)
   }
 
-  const handleClosess = (info) => {
-    const uploadpaperfunc = () => {
-      props.history.push('/main/uploadpaper')
-    }
-    const paperlistfunc = () => {
-      props.history.push('/main/paperlist')
-    }
-    const keymap = new Map([
-      [araListss[0], uploadpaperfunc],
-      [araListss[1], paperlistfunc],
-    ])
-    keymap.get(info) && keymap.get(info)()
-    localStorage.setItem('menuIndex', 5)
-  }
+  // const handleClosess = (info) => {
+  //   const uploadpaperfunc = () => {
+  //     props.history.push('/main/uploadpaper')
+  //   }
+  //   const paperlistfunc = () => {
+  //     props.history.push('/main/paperlist')
+  //   }
+  //   const keymap = new Map([
+  //     [araListss[0], uploadpaperfunc],
+  //     [araListss[1], paperlistfunc],
+  //   ])
+  //   keymap.get(info) && keymap.get(info)()
+  //   localStorage.setItem('menuIndex', 5)
+  // }
 
   const menu = (
     <Menu>
@@ -128,7 +128,7 @@ function AI_header({ homeInfo, props, setData }) {
       <Menu.Item onClick={() => handleClose(araList[0])}>个人资料</Menu.Item>
       <Menu.Item onClick={() => handleClose(araList[1])}>我的积分</Menu.Item>
       <Menu.Item onClick={() => handleClose(araList[2])}>下载记录</Menu.Item>
-      <Menu.Item onClick={() => handleClose(araList[3])}>组卷记录</Menu.Item>
+      <Menu.Item onClick={() => handleClose(araList[3])}>上传试卷</Menu.Item>
       <Menu.Item
         onClick={() => handleClose(araList[4])}
         style={{ color: '#E9140A' }}
@@ -138,16 +138,16 @@ function AI_header({ homeInfo, props, setData }) {
     </Menu>
   )
 
-  const menuss = (
-    <Menu>
-      <Menu.Item onClick={() => handleClosess(araListss[0])}>
-        上传试卷
-      </Menu.Item>
-      <Menu.Item onClick={() => handleClosess(araListss[1])}>
-        试卷列表
-      </Menu.Item>
-    </Menu>
-  )
+  // const menuss = (
+  //   <Menu>
+  //     <Menu.Item onClick={() => handleClosess(araListss[0])}>
+  //       上传试卷
+  //     </Menu.Item>
+  //     <Menu.Item onClick={() => handleClosess(araListss[1])}>
+  //       试卷列表
+  //     </Menu.Item>
+  //   </Menu>
+  // )
   return (
     <div id="AI_header">
       <div className="title_box">
@@ -166,15 +166,16 @@ function AI_header({ homeInfo, props, setData }) {
                 className={current == index ? 'cenItem index' : 'cenItem'}
                 onClick={(e) => headMenuClick(e, index)}
               >
-                {index == 4 ? (
-                  <Dropdown overlay={menu} placement="bottomCenter">
-                    <button>{item.text}</button>
-                  </Dropdown>
-                ) : index == 5 ? (
+                {/*  index == 5 ? (
                   <Dropdown overlay={menuss} placement="bottomCenter">
                     <button>{item.text}</button>
                   </Dropdown>
-                ) : (
+                ) :  */}
+                {index == 5 ? (
+                  <Dropdown overlay={menu} placement="bottomCenter">
+                    <button>{item.text}</button>
+                  </Dropdown>
+                ) :(
                   item.text
                 )}
               </div>
