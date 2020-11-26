@@ -15,7 +15,6 @@ function Login(props) {
   const [Code, setCode] = useState('')
 
   let OutTimeinval = null
-  let OutTimeout = null
 
   useEffect(() => {
     window.WxLogin({
@@ -30,7 +29,6 @@ function Login(props) {
     })
     return () => {
       clearInterval(OutTimeinval)
-      clearTimeout(OutTimeout)
     }
   }, [])
 
@@ -50,19 +48,23 @@ function Login(props) {
   const openCode = async () => {
     if (phoneRegular.test(Phone)) {
       setbtndis(true)
-      let num = 60
+      let num = outtime
       OutTimeinval = setInterval(() => {
-        num--
-        setOutTime(num)
+        if (num == 0) {
+          setOutTime('60')
+          setbtndis(false)
+          clearInterval(OutTimeinval)
+        } else {
+          num--
+          setOutTime(num)
+        }
       }, 1000)
-      console.log(outtime)
-      OutTimeout = setTimeout(() => {
-        setbtndis(false)
-      }, 60000)
-      const { code, data, msg } = await getLoginCode({
+      const { code, msg } = await getLoginCode({
         mobile: Phone,
       })
-      console.log('getLoginCode', code, data, msg)
+      if (code !== 200) {
+        message.error(msg)
+      }
     } else {
       message.error('请输入正确手机号码!')
     }
@@ -130,85 +132,79 @@ function Login(props) {
             )}
             {isSMS ? (
               <>
-                <>
-                  <img
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/SMSlogin.png"
-                    className="phone_right_icon"
-                  />
-                  <img
-                    className="QRcode"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/computer.png"
-                    alt="QRcode"
-                  />
-                </>
+                <img
+                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/SMSlogin.png"
+                  className="phone_right_icon"
+                />
+                <img
+                  className="QRcode"
+                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/computer.png"
+                  alt="QRcode"
+                />
               </>
             ) : (
               ''
             )}
           </div>
           {isWechat ? (
-            <>
-              <div className="form_box">
-                <div className="title">老师后台管理系统</div>
-                <div className="phone">
-                  <span>手机号</span>
-                  <Input
-                    className="userinput"
-                    placeholder="请输入手机号"
-                    onInput={phoneText}
-                  />
-                </div>
-                <div className="Verification">
-                  <span>验证码</span>
-                  <Input
-                    className="userinput"
-                    placeholder="请输入验证码"
-                    onInput={codeText}
-                    suffix={
-                      <button disabled={btndis} onClick={openCode}>
-                        {!btndis ? '获取验证码' : `再次获取(${outtime})`}
-                      </button>
-                    }
-                  />
-                </div>
-                <div className="btns">
-                  <Button
-                    variant="contained"
-                    disabled={btnlogin}
-                    className="login"
-                    onClick={clickLogin}
-                  >
-                    登录
-                  </Button>
-                </div>
-                <div className="tip">客服电话:0514-82885886</div>
+            <div className="form_box">
+              <div className="title">老师后台管理系统</div>
+              <div className="phone">
+                <span>手机号</span>
+                <Input
+                  className="userinput"
+                  placeholder="请输入手机号"
+                  onInput={phoneText}
+                />
               </div>
-            </>
+              <div className="Verification">
+                <span>验证码</span>
+                <Input
+                  className="userinput"
+                  placeholder="请输入验证码"
+                  onInput={codeText}
+                  suffix={
+                    <button disabled={btndis} onClick={openCode}>
+                      {!btndis ? '获取验证码' : `再次获取(${outtime})`}
+                    </button>
+                  }
+                />
+              </div>
+              <div className="btns">
+                <Button
+                  variant="contained"
+                  disabled={btnlogin}
+                  className="login"
+                  onClick={clickLogin}
+                >
+                  登录
+                </Button>
+              </div>
+              <div className="tip">客服电话:0514-82885886</div>
+            </div>
           ) : (
             ''
           )}
           {isSMS ? (
-            <>
-              <div className="wechatForm">
-                <div className="title_box">
-                  <img
-                    className="wechat_icon"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/wechat_icon.png"
-                    alt="wechat_icon"
-                  />
-                  <span className="text">微信扫码登录</span>
-                </div>
-                <div className="content_box">
-                  <div id="login_container"></div>
-                  <img
-                    className="MobileWeChattip"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/MobileWeChattip.png"
-                    alt="MobileWeChattip"
-                  />
-                </div>
-                <div className="footer_box">打开微信,扫一扫登录</div>
+            <div className="wechatForm">
+              <div className="title_box">
+                <img
+                  className="wechat_icon"
+                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/wechat_icon.png"
+                  alt="wechat_icon"
+                />
+                <span className="text">微信扫码登录</span>
               </div>
-            </>
+              <div className="content_box">
+                <div id="login_container"></div>
+                <img
+                  className="MobileWeChattip"
+                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/MobileWeChattip.png"
+                  alt="MobileWeChattip"
+                />
+              </div>
+              <div className="footer_box">打开微信,扫一扫登录</div>
+            </div>
           ) : (
             ''
           )}

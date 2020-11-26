@@ -1,7 +1,15 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
 import './index.less'
 import { splitSearch, setTimerType, getCurrentWeek, getNearDate } from '@/utils'
-import { Breadcrumb, message, Radio, DatePicker, Space, Button } from 'antd'
+import {
+  Breadcrumb,
+  message,
+  Radio,
+  DatePicker,
+  Space,
+  Button,
+  Pagination,
+} from 'antd'
 import { studentAcademicReport } from '@/services/class'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
@@ -15,6 +23,9 @@ function StudyReport(props) {
   const name = decodeURI(splitSearch(location.search).name)
   const [AcademicData, setAcademicData] = useState({})
   const [PickerData, setPickerData] = useState([])
+  const [Listpage, setListpage] = useState(1)
+  const [startTime, setstartTime] = useState(getCurrentWeek(new Date())[0])
+  const [endTime, setendTime] = useState(getCurrentWeek(new Date())[1])
   const [options, setoptions] = useState({
     title: {
       text: '错题知识点分布图',
@@ -62,17 +73,20 @@ function StudyReport(props) {
 
   /**
    *  获取 初始化信息
-   * @param {*} [start_time=getCurrentWeek(new Date())[0]]
-   * @param {*} [end_time=getCurrentWeek(new Date())[1]]
+   * @param {dateString} [start_time=getCurrentWeek(new Date())[0]]
+   * @param {dateString} [end_time=getCurrentWeek(new Date())[1]]
+   * @param {number} [page=1]
    */
   const getstudentAcademicReport = async (
-    start_time = getCurrentWeek(new Date())[0],
-    end_time = getCurrentWeek(new Date())[1]
+    page = Listpage,
+    start_time = startTime,
+    end_time = endTime
   ) => {
     const { code, data, msg } = await studentAcademicReport({
       student_id: id,
       start_time,
       end_time,
+      page,
     })
     if (code === 200) {
       setAcademicData(data)
@@ -124,15 +138,21 @@ function StudyReport(props) {
     const { value } = e.target
     const weekfunc = () => {
       const arr = getNearDate(new Date(), 7)
-      getstudentAcademicReport(arr[0], arr[1])
+      setstartTime(arr[0])
+      setendTime(arr[1])
+      getstudentAcademicReport(Listpage, arr[0], arr[1])
     }
     const monthfunc = () => {
       const arr = getNearDate(new Date(), 30)
-      getstudentAcademicReport(arr[0], arr[1])
+      setstartTime(arr[0])
+      setendTime(arr[1])
+      getstudentAcademicReport(Listpage, arr[0], arr[1])
     }
     const yearfunc = () => {
       const arr = getNearDate(new Date(), 365)
-      getstudentAcademicReport(arr[0], arr[1])
+      setstartTime(arr[0])
+      setendTime(arr[1])
+      getstudentAcademicReport(Listpage, arr[0], arr[1])
     }
     const keymap = new Map([
       ['0', weekfunc],
@@ -163,7 +183,20 @@ function StudyReport(props) {
   }
 
   const SearchClick = () => {
-    getstudentAcademicReport(PickerData[0], PickerData[1])
+    setstartTime(PickerData[0])
+    setendTime(PickerData[1])
+    getstudentAcademicReport(Listpage, PickerData[0], PickerData[1])
+  }
+
+  /**
+   *
+   *  页面变化请求数据
+   * @param {Object} event
+   * @param {Number} page
+   */
+  const PaginationChange = (page, pageSize) => {
+    setListpage(page * 1)
+    getstudentAcademicReport(page * 1)
   }
 
   return (
@@ -299,6 +332,18 @@ function StudyReport(props) {
             </div>
           )
         })}
+      </div>
+      <div className="pages">
+        <Pagination
+          hideOnSinglePage={false}
+          total={AcademicData?.userExercises?.total}
+          defaultPageSize={20}
+          showSizeChanger={false}
+          showQuickJumper={true}
+          pageSize={AcademicData?.userExercises?.per_page || 20}
+          onChange={PaginationChange}
+          current={Listpage}
+        />
       </div>
     </div>
   )

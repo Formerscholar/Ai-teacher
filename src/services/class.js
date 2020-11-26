@@ -1,4 +1,5 @@
 import request from './axios'
+import Qs from 'qs'
 
 export function getTeamList() {
   return request({
@@ -42,7 +43,7 @@ export function addTeam(data) {
   return request({
     url: '/addTeam',
     method: 'POST',
-    data,
+    data: Qs.stringify(data),
   })
 }
 

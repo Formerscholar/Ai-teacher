@@ -365,7 +365,7 @@ function Knowledge(props) {
           </Button> */}
         </div>
       </div>
-      {/* 悬浮篮 */}
+      {/* 悬浮框 */}
       <div className="fled_basket">
         <img
           className="basket_icon"
