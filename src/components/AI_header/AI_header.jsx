@@ -45,16 +45,16 @@ function AI_header({ homeInfo, props, setData }) {
   const handleClose = (info) => {
     localStorage.setItem('menuIndex', -1)
     const datafunc = () => {
-      history.push('/main/user?type=datafunc')
+      history.push('/main/user?type=0')
     }
     const integralfunc = () => {
-      history.push('/main/user?type=integralfunc')
+      history.push('/main/user?type=1')
     }
     const downloadfunc = () => {
-      history.push('/main/user?type=downloadfunc')
+      history.push('/main/user?type=2')
     }
     const volumefunc = () => {
-      history.push('/main/user?type=volumefunc')
+      history.push('/main/user?type=3')
     }
     const logoutfunc = async () => {
       let id = getCookie('id')

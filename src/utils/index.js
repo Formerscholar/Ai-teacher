@@ -9,6 +9,12 @@ function setTimerType(timer) {
   return `${ConvertedYear}-${ConvertedMonth}-${ConvertedDate}`
 }
 
+/**
+ *
+ *  cookie 操作
+ * @param {*} key
+ * @param {*} value
+ */
 const setCookie = (key, value) => {
   const d = new Date()
   d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)

@@ -42,4 +42,35 @@ const headMenu = [
 
 const downURL = 'http://aictb.com'
 
-export { baseURL, phoneRegular, appid, callBackUrl, headMenu, downURL }
+const info_menu = [
+  {
+    img:
+      'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/setup_icon_small.png',
+    text: '个人资料',
+  },
+  {
+    img:
+      'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/integral_icon_small.png',
+    text: '我的积分',
+  },
+  {
+    img:
+      'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/download_icon_small.png',
+    text: '下载记录',
+  },
+  {
+    img:
+      'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/Group_icon_small.png',
+    text: '上传试卷',
+  },
+]
+
+export {
+  baseURL,
+  phoneRegular,
+  appid,
+  callBackUrl,
+  headMenu,
+  downURL,
+  info_menu,
+}
