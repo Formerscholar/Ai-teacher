@@ -10,10 +10,18 @@ import {
   Button,
   Cascader,
 } from 'antd'
-import { information, getAllArea, getSchools, pointLog } from '@/services/user'
+import {
+  information,
+  getAllArea,
+  getSchools,
+  pointLog,
+  getUploadList,
+} from '@/services/user'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { info_menu } from '@/conf'
-import { splitSearch } from '@/utils'
+import { splitSearch, setTimerType } from '@/utils'
+import { connect } from 'react-redux'
+import { GET_HOME_INFO } from '@/store/actionType'
 
 const { Option } = Select
 
@@ -36,7 +44,7 @@ function beforeUpload(file) {
 }
 
 function User(props) {
-  const { history, location } = props
+  const { history, location, homeInfo } = props
   const [userData, setUserData] = useState({})
   const [loading, setloading] = useState(false)
   const [imageUrl, setimageUrl] = useState('')
@@ -48,6 +56,7 @@ function User(props) {
   const [SchoolList, setSchoolList] = useState([])
   const [SchoolData, setSchoolData] = useState(0)
   const [pointLogData, setpointLogData] = useState({})
+  const [UploadListData, setUploadListData] = useState([])
 
   useEffect(() => {
     getAllAreaList()
@@ -60,14 +69,26 @@ function User(props) {
   })
 
   const initData = (type) => {
-    const keymap = new Map([[0, getinformation], [1, getpointLog], [2], [3]])
+    const keymap = new Map([
+      [0, getinformation],
+      [1, getpointLog],
+      [2],
+      [3, getUploadListData],
+    ])
     keymap.get(type) && keymap.get(type)()
+  }
+
+  const getUploadListData = async () => {
+    const { code, data } = await getUploadList()
+    if (code === 200) {
+      setUploadListData(data?.teacherUploadList)
+    }
   }
 
   const getpointLog = async () => {
     const { code, data } = await pointLog()
     if (code === 200) {
-      setpointLogData(data)
+      setpointLogData(data?.pointLog)
     }
   }
 
@@ -246,12 +267,12 @@ function User(props) {
                 icon={
                   <img
                     style={{ width: '5.64rem', height: '5.64rem' }}
-                    src={userData?.avatar_file}
+                    src={homeInfo?.teacher?.avatar_file}
                     alt="avatar"
                   />
                 }
               />
-              <div className="name">{userData?.true_name}</div>
+              <div className="name">{homeInfo?.teacher?.true_name}</div>
             </div>
             <div className="info">
               <div className="subject">
@@ -260,7 +281,7 @@ function User(props) {
                   src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/subject_icon.png"
                   alt="subject_icon"
                 />
-                <span>{userData?.get_subject?.title}</span>
+                <span>{homeInfo?.teacher?.get_subject?.title}</span>
               </div>
               <div className="integral">
                 <img
@@ -268,7 +289,7 @@ function User(props) {
                   src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/integral_icon.png"
                   alt="integral_icon"
                 />
-                <span>积分：5</span>
+                <span>积分：{homeInfo?.teacher?.points}</span>
               </div>
             </div>
           </div>
@@ -388,10 +409,25 @@ function User(props) {
           <div className="right_box">
             <div className="integraltitle">
               <div className="left_title">积分记录</div>
-              <div className="current_title">当年积分：5</div>
+              <div className="current_title">
+                当年积分：{homeInfo?.teacher?.points}
+              </div>
             </div>
             <div className="integral_body">
-              <div className="integral_items current_integral">
+              {pointLogData?.data?.map((item) => {
+                return (
+                  <div className="integral_items " key={item?.id}>
+                    <div className="left_integrals">
+                      <div className="left_integrals_title">{item?.remark}</div>
+                      <div className="left_integrals_info">
+                        更新时间：{setTimerType(item?.add_time * 1000, true)}
+                      </div>
+                    </div>
+                    <div className="right_integrals">+{item?.point}</div>
+                  </div>
+                )
+              })}
+              {/* <div className="integral_items current_integral">
                 <div className="left_integrals">
                   <div className="left_integrals_title">兑换商品</div>
                   <div className="left_integrals_info">
@@ -399,40 +435,7 @@ function User(props) {
                   </div>
                 </div>
                 <div className="right_integrals">-10</div>
-              </div>
-              <div className="integral_items ">
-                <div className="left_integrals">
-                  <div className="left_integrals_title">
-                    上传试卷《第一学期期中考试质量检测-七年级数学试题》
-                  </div>
-                  <div className="left_integrals_info">
-                    更新时间：2020-09-10 10:00:00
-                  </div>
-                </div>
-                <div className="right_integrals">+5</div>
-              </div>
-              <div className="integral_items ">
-                <div className="left_integrals">
-                  <div className="left_integrals_title">
-                    上传试卷《七年级上学期数学第一次月考试题》
-                  </div>
-                  <div className="left_integrals_info">
-                    更新时间：2020-09-10 10:00:00
-                  </div>
-                </div>
-                <div className="right_integrals">+5</div>
-              </div>
-              <div className="integral_items ">
-                <div className="left_integrals">
-                  <div className="left_integrals_title">
-                    上传试卷《七年级上学期数学期末试卷》
-                  </div>
-                  <div className="left_integrals_info">
-                    更新时间：2020-09-10 10:00:00
-                  </div>
-                </div>
-                <div className="right_integrals">+5</div>
-              </div>
+              </div>*/}
             </div>
           </div>
         ) : info_current == 2 ? (
@@ -509,7 +512,16 @@ function User(props) {
                 <div className="time">上传时间</div>
                 <div className="isreview">审核状态</div>
               </div>
-              <div className="down_body_table">
+              {UploadListData?.data?.map((item) => {
+                return (
+                  <div className="down_body_table" key={item?.upload_id}>
+                    <div className="name">{item?.paper_name}</div>
+                    <div className="time">{setTimerType(item?.add_time)}</div>
+                    <div className="isreview Pending">待审核</div>
+                  </div>
+                )
+              })}
+              {/* <div className="down_body_table">
                 <div className="name">扬州测试学校七年级上学期期中考试数学</div>
                 <div className="time">2020-08-08</div>
                 <div className="isreview Pending">待审核</div>
@@ -523,7 +535,7 @@ function User(props) {
                 <div className="name">扬州测试学校七年级上学期期中考试数学</div>
                 <div className="time">2020-08-08</div>
                 <div className="isreview passed">已通过</div>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -531,4 +543,23 @@ function User(props) {
     </div>
   )
 }
-export default memo(User)
+
+const mapStateToProps = (state) => {
+  return {
+    homeInfo: state.homeInfo,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setData(value) {
+      let action = {
+        type: GET_HOME_INFO,
+        value: value,
+      }
+      dispatch(action)
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(User))

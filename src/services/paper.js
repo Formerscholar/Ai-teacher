@@ -17,10 +17,3 @@ export function addTeacherUpload(data) {
   })
 }
 
-export function getUploadList(params) {
-  return request({
-    url: '/getUploadList',
-    method: 'GET',
-    params,
-  })
-}

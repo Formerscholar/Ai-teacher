@@ -28,3 +28,11 @@ export function pointLog() {
     method: 'GET',
   })
 }
+
+export function getUploadList(params) {
+  return request({
+    url: '/getUploadList',
+    method: 'GET',
+    params,
+  })
+}
