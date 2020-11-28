@@ -10,7 +10,7 @@ import { GET_HOME_INFO } from '@/store/actionType'
 
 const araList = ['data', 'integral', 'download', 'volume', 'logout']
 const araLists = ['Chapter', 'Knowledge']
-// const araListss = ['Uploadpaper', 'paperList']
+const araListss = ['Uploadpaper', 'paperList']
 
 function AI_header({ homeInfo, props, setData }) {
   const { history } = props
@@ -37,7 +37,7 @@ function AI_header({ homeInfo, props, setData }) {
   const headMenuClick = (event, id) => {
     setcurrent(id)
     localStorage.setItem('menuIndex', id)
-    if ( id !== 5) {
+    if (id !== 5 &&  id !== 6 ) {
       props.history.push(`${headMenu[id].url}`)
     }
   }
@@ -97,20 +97,20 @@ function AI_header({ homeInfo, props, setData }) {
     localStorage.setItem('menuIndex', 4)
   }
 
-  // const handleClosess = (info) => {
-  //   const uploadpaperfunc = () => {
-  //     props.history.push('/main/uploadpaper')
-  //   }
-  //   const paperlistfunc = () => {
-  //     props.history.push('/main/paperlist')
-  //   }
-  //   const keymap = new Map([
-  //     [araListss[0], uploadpaperfunc],
-  //     [araListss[1], paperlistfunc],
-  //   ])
-  //   keymap.get(info) && keymap.get(info)()
-  //   localStorage.setItem('menuIndex', 5)
-  // }
+  const handleClosess = (info) => {
+    const uploadpaperfunc = () => {
+      props.history.push('/main/mypaper')
+    }
+    const paperlistfunc = () => {
+      props.history.push('/main/mypaperlist')
+    }
+    const keymap = new Map([
+      [araListss[0], uploadpaperfunc],
+      [araListss[1], paperlistfunc],
+    ])
+    keymap.get(info) && keymap.get(info)()
+    localStorage.setItem('menuIndex', 6)
+  }
 
   const menu = (
     <Menu>
@@ -138,16 +138,17 @@ function AI_header({ homeInfo, props, setData }) {
     </Menu>
   )
 
-  // const menuss = (
-  //   <Menu>
-  //     <Menu.Item onClick={() => handleClosess(araListss[0])}>
-  //       上传试卷
-  //     </Menu.Item>
-  //     <Menu.Item onClick={() => handleClosess(araListss[1])}>
-  //       试卷列表
-  //     </Menu.Item>
-  //   </Menu>
-  // )
+  const menuss = (
+    <Menu>
+      <Menu.Item onClick={() => handleClosess(araListss[0])}>
+        试卷组卷
+      </Menu.Item>
+      <Menu.Item onClick={() => handleClosess(araListss[1])}>
+        组卷记录
+      </Menu.Item>
+    </Menu>
+  )
+
   return (
     <div id="AI_header">
       <div className="title_box">
@@ -166,16 +167,15 @@ function AI_header({ homeInfo, props, setData }) {
                 className={current == index ? 'cenItem index' : 'cenItem'}
                 onClick={(e) => headMenuClick(e, index)}
               >
-                {/*  index == 5 ? (
-                  <Dropdown overlay={menuss} placement="bottomCenter">
-                    <button>{item.text}</button>
-                  </Dropdown>
-                ) :  */}
                 {index == 5 ? (
                   <Dropdown overlay={menu} placement="bottomCenter">
                     <button>{item.text}</button>
                   </Dropdown>
-                ) :(
+                ) : index == 6 ? (
+                  <Dropdown overlay={menuss} placement="bottomCenter">
+                    <button>{item.text}</button>
+                  </Dropdown>
+                ) : (
                   item.text
                 )}
               </div>

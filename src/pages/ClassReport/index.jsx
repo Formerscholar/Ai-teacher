@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
 import './index.less'
-import { splitSearch, setTimerType, getCurrentWeek, getNearDate } from '@/utils'
+import { setTimerType, getCurrentWeek, getNearDate } from '@/utils'
 import {
   Breadcrumb,
   message,
@@ -17,7 +17,7 @@ import { GET_HOME_INFO } from '@/store/actionType'
 const { RangePicker } = DatePicker
 
 function ClassReport(props) {
-  const { location, history, homeInfo } = props
+  const { history, homeInfo } = props
   const [Id, setid] = useState(homeInfo?.team[0]?.id)
   const [AcademicData, setAcademicData] = useState({})
   const [PickerData, setPickerData] = useState([])

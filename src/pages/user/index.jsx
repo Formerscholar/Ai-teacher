@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState, useRef } from 'react'
 import './index.less'
 import {
   Avatar,
@@ -9,6 +9,7 @@ import {
   Upload,
   Button,
   Cascader,
+  Image,
 } from 'antd'
 import {
   information,
@@ -16,6 +17,10 @@ import {
   getSchools,
   pointLog,
   getUploadList,
+  getUploadImage,
+  addTeacherUpload,
+  getOrganizingPapersLog,
+  editInformation,
 } from '@/services/user'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { info_menu } from '@/conf'
@@ -24,23 +29,12 @@ import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 
 const { Option } = Select
+const { TextArea } = Input
 
 function getBase64(img, callback) {
   const reader = new FileReader()
   reader.addEventListener('load', () => callback(reader.result))
   reader.readAsDataURL(img)
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!')
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!')
-  }
-  return isJpgOrPng && isLt2M
 }
 
 function User(props) {
@@ -49,7 +43,7 @@ function User(props) {
   const [loading, setloading] = useState(false)
   const [imageUrl, setimageUrl] = useState('')
   const [info_current, setinfo_current] = useState(0)
-  const [options, setOptions] = React.useState([])
+  const [options, setOptions] = useState([])
   const [gender, setgender] = useState('1')
   const [AreaList, setAreaList] = useState([])
   const [AreaData, setAreaData] = useState([])
@@ -57,6 +51,13 @@ function User(props) {
   const [SchoolData, setSchoolData] = useState(0)
   const [pointLogData, setpointLogData] = useState({})
   const [UploadListData, setUploadListData] = useState([])
+  const [isUploadPaper, setIsUploadPaper] = useState(false)
+  const [PaperName, setPaperName] = useState('')
+  const [fileList, setFileList] = useState([])
+  const [Remark, setRemark] = useState('')
+  const [PapersLogList, setPapersLogList] = useState({})
+  const [down_Select, setdown_Select] = useState('0')
+  const inputEl = useRef(null)
 
   useEffect(() => {
     getAllAreaList()
@@ -72,10 +73,28 @@ function User(props) {
     const keymap = new Map([
       [0, getinformation],
       [1, getpointLog],
-      [2],
+      [2, getOrganizingPapersLogList],
       [3, getUploadListData],
     ])
     keymap.get(type) && keymap.get(type)()
+  }
+
+  const getOrganizingPapersLogList = async (day = 0) => {
+    const { code, data } = await getOrganizingPapersLog({
+      day,
+    })
+    if (code === 200) {
+      setPapersLogList(data?.log)
+    }
+  }
+
+  /**
+   *
+   * 图片上传点击
+   */
+  const UploadClick = () => {
+    inputEl.current.click()
+    inputEl.current.addEventListener('change', inputChange)
   }
 
   const getUploadListData = async () => {
@@ -98,6 +117,67 @@ function User(props) {
       setOptions(RecursionAddress(data))
       setAreaList(data)
     }
+  }
+
+  const delectClick = (idx) => {
+    let arr = [...fileList]
+    arr.splice(idx, 1)
+    setFileList(arr)
+  }
+
+  /**
+   *
+   *  点击上传按钮
+   */
+  const addClick = async () => {
+    const { code, msg } = await addTeacherUpload({
+      image_urls: fileList,
+      remark: Remark,
+      paper_name: PaperName,
+    })
+    if (code === 200) {
+      message.success(msg)
+      setIsUploadPaper(false)
+      setFileList([])
+      setPaperName('')
+      setRemark('')
+      getUploadListData()
+    } else {
+      message.error(msg)
+    }
+  }
+
+  /**
+   *
+   *  上传文件change事件
+   * @param {*} e
+   */
+  const inputChange = async (e) => {
+    console.log('执行addEventListener', e)
+    let { files } = e.target
+    if (!files.length) return
+    let formData = new FormData()
+    formData.append('img_url', files[0], files[0].name)
+    formData.append('file_path', 'wx_xcx/paper/')
+    const { code, data, msg } = await getUploadImage(formData)
+    if (code === 200) {
+      setFileList([...fileList, data.img])
+      message.success(msg)
+    } else {
+      message.error(msg)
+    }
+    inputEl.current.removeEventListener('change', inputChange)
+    inputEl.current.value = ''
+  }
+
+  /**
+   *
+   *  备注输入框change事件
+   * @param {*} e
+   */
+  const remarkChange = (e) => {
+    const { value } = e.target
+    setRemark(value)
   }
 
   /**
@@ -185,16 +265,39 @@ function User(props) {
   )
 
   const handleChange = (info) => {
-    if (info.file.status === 'uploading') {
-      setloading(true)
-      return
+    setloading(true)
+    getBase64(info.file.originFileObj, (imageUrl) => {
+      setloading(false)
+    })
+  }
+
+  const genderChange = (value, option) => {
+    setgender(value)
+  }
+
+  function beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJpgOrPng) {
+      message.error('仅支持 JPG/PNG 文件!')
     }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl) => {
-        setimageUrl(imageUrl)
-        setloading(false)
-      })
+    const isLt2M = file.size / 1024 / 1024 < 2
+    if (!isLt2M) {
+      message.error('图片大小大于 2MB!')
+    }
+    console.log(file)
+    return isJpgOrPng && isLt2M
+  }
+
+  const customRequest = async ({ file }) => {
+    console.log('customRequest', file)
+    let formData = new FormData()
+    formData.append('img_url', file, file.name)
+    formData.append('file_path', 'wx_xcx/avatar/')
+    const { code, data, msg } = await getUploadImage(formData)
+    if (code === 200) {
+      setimageUrl(data?.img)
+    } else {
+      message.error(msg)
     }
   }
 
@@ -219,7 +322,49 @@ function User(props) {
   }
 
   function downhandleChange(value) {
-    console.log(`selected ${value}`)
+    setdown_Select(value)
+  }
+
+  const uploadPaper = () => {
+    setIsUploadPaper(true)
+  }
+
+  /**
+   *
+   *  试卷名称输入框change事件
+   * @param {*} e
+   */
+  const paperNameChange = (e) => {
+    const { value } = e.target
+    setPaperName(value)
+  }
+
+  const searchDownClick = () => {
+    const keymap = new Map([
+      ['0', '0'],
+      ['1', '90'],
+      ['2', '180'],
+      ['3', '365'],
+    ])
+    let day = keymap.get(down_Select) && keymap.get(down_Select)
+    console.log(day)
+    getOrganizingPapersLogList(day)
+  }
+
+  const saveInfoClick = async () => {
+    const { code, msg } = await editInformation({
+      name: userData?.true_name,
+      sex: gender,
+      img: imageUrl,
+      school_id: SchoolData,
+      email: userData?.email,
+      mobile: userData?.mobile,
+    })
+    if (code === 200) {
+      message.success(msg)
+    } else {
+      message.error(msg)
+    }
   }
 
   return (
@@ -308,7 +453,6 @@ function User(props) {
             })}
           </div>
         </div>
-
         {info_current == 0 ? (
           <div className="right_box">
             <div className="title">基本信息</div>
@@ -327,6 +471,7 @@ function User(props) {
                   className="itemSelect"
                   value={gender.toString()}
                   style={{ width: '38.07rem' }}
+                  onChange={genderChange}
                 >
                   <Option value="1">男</Option>
                   <Option value="2">女</Option>
@@ -340,9 +485,9 @@ function User(props) {
                     listType="picture-card"
                     className="avatar-uploader"
                     showUploadList={false}
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     beforeUpload={beforeUpload}
                     onChange={handleChange}
+                    customRequest={customRequest}
                   >
                     {imageUrl ? (
                       <img
@@ -399,7 +544,7 @@ function User(props) {
                 <span className="changeTip">更改</span>
               </div>
               <div className="btns">
-                <Button type="primary" className="btn">
+                <Button type="primary" className="btn" onClick={saveInfoClick}>
                   保存
                 </Button>
               </div>
@@ -415,6 +560,7 @@ function User(props) {
             </div>
             <div className="integral_body">
               {pointLogData?.data?.map((item) => {
+                // current_integral
                 return (
                   <div className="integral_items " key={item?.id}>
                     <div className="left_integrals">
@@ -427,15 +573,6 @@ function User(props) {
                   </div>
                 )
               })}
-              {/* <div className="integral_items current_integral">
-                <div className="left_integrals">
-                  <div className="left_integrals_title">兑换商品</div>
-                  <div className="left_integrals_info">
-                    更新时间：2020-09-10 10:00:00
-                  </div>
-                </div>
-                <div className="right_integrals">-10</div>
-              </div>*/}
             </div>
           </div>
         ) : info_current == 2 ? (
@@ -444,16 +581,20 @@ function User(props) {
               <div className="down_left_text">下载记录</div>
               <div className="down_right_box">
                 <Select
-                  defaultValue="0"
                   style={{ width: '11.43rem' }}
                   onChange={downhandleChange}
+                  value={down_Select}
                 >
                   <Option value="0">全部</Option>
                   <Option value="1">90天内</Option>
                   <Option value="2">半年内</Option>
                   <Option value="3">一年内</Option>
                 </Select>
-                <Button type="primary" className="down_btns">
+                <Button
+                  type="primary"
+                  className="down_btns"
+                  onClick={searchDownClick}
+                >
                   查询
                 </Button>
               </div>
@@ -463,83 +604,166 @@ function User(props) {
                 <div className="name">名称</div>
                 <div className="time">下载时间</div>
               </div>
-              <div className="down_body_table">
-                <div className="name">2020年11月13日xxx的初中数学试卷</div>
-                <div className="time">2020-08-08 12:12:10</div>
-              </div>
-              <div className="down_body_table">
-                <div className="name">
-                  树人2020-2021学年七年级上学期期中考试数学试题
+              {PapersLogList?.data ? (
+                PapersLogList?.data?.map((item) => {
+                  return (
+                    <div className="down_body_table" key={item?.id}>
+                      <div className="name">
+                        {item?.get_teacher_exam?.title}
+                      </div>
+                      <div className="time">
+                        {setTimerType(item?.update_time * 1000, true)}
+                      </div>
+                    </div>
+                  )
+                })
+              ) : (
+                <div className="nodata_down">
+                  <img
+                    className="nodata_down_img"
+                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/nodata_down.png"
+                    alt="nodata_down_img"
+                  />
+                  <div className="nodata_down_title">暂无下载记录</div>
                 </div>
-                <div className="time">2020-08-08 12:12:10</div>
-              </div>
-              <div className="down_body_table">
-                <div className="name">
-                  2020-2021学年梅岭中学七上数学期中试题
-                </div>
-                <div className="time">2020-08-08 12:12:10</div>
-              </div>
-              <div className="down_body_table">
-                <div className="name">
-                  邗江区2020-20201学年度第一学期期中测试七年级数学试题
-                </div>
-                <div className="time">2020-08-08 12:12:10</div>
-              </div>
-              <div className="down_body_table">
-                <div className="name">
-                  梅岭中学2019-2020学年七年级（上）数学第一次月考试题
-                </div>
-                <div className="time">2020-08-08 12:12:10</div>
-              </div>
+              )}
             </div>
           </div>
         ) : (
           <div className="right_box">
             <div className="upload_title">
-              <div className="upload_left_text">上传试卷列表</div>
-              <Button type="primary" className="upload_btn">
-                <img
-                  className="btn_plus"
-                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/btn_plus.png"
-                  alt="btn_plus"
-                />
-                上传试卷
-              </Button>
+              <div className="upload_left_text">上传的试卷</div>
+              {isUploadPaper ? (
+                ''
+              ) : (
+                <Button
+                  type="primary"
+                  className="upload_btn"
+                  onClick={uploadPaper}
+                >
+                  <img
+                    className="btn_plus"
+                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/btn_plus.png"
+                    alt="btn_plus"
+                  />
+                  上传的试卷
+                </Button>
+              )}
             </div>
-            <div className="upload_body">
-              <div className="upload_body_title">
-                <div className="name">名称</div>
-                <div className="time">上传时间</div>
-                <div className="isreview">审核状态</div>
-              </div>
-              {UploadListData?.data?.map((item) => {
-                return (
-                  <div className="down_body_table" key={item?.upload_id}>
-                    <div className="name">{item?.paper_name}</div>
-                    <div className="time">{setTimerType(item?.add_time)}</div>
-                    <div className="isreview Pending">待审核</div>
+            {isUploadPaper ? (
+              <div className="content_box">
+                <div className="paperName">
+                  <span>试卷名称</span>
+                  <Input
+                    className="myInput"
+                    placeholder="请填写试卷名称"
+                    onChange={paperNameChange}
+                    value={PaperName}
+                  />
+                </div>
+                <div className="Remarks">
+                  <span>备注</span>
+                  <TextArea
+                    className="myInput"
+                    placeholder="请填写备注"
+                    onChange={remarkChange}
+                    value={Remark}
+                  />
+                </div>
+                {!fileList.length ? (
+                  <div className="upload_box" onClick={UploadClick}>
+                    <img
+                      className="upload_icon"
+                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/upload_icon.png"
+                      alt="upload_icon"
+                    />
+                    <h1>点击上传图片</h1>
+                    <p>格式：JPG、JPEG2000、PNG</p>
                   </div>
-                )
-              })}
-              {/* <div className="down_body_table">
-                <div className="name">扬州测试学校七年级上学期期中考试数学</div>
-                <div className="time">2020-08-08</div>
-                <div className="isreview Pending">待审核</div>
+                ) : (
+                  <div className="upload_insert">
+                    {fileList?.map((item, idx) => {
+                      return (
+                        <div className="iamge_warp" key={idx}>
+                          <Image
+                            className="itemImg"
+                            width="11.43rem"
+                            height="14.29rem"
+                            src={item}
+                          />
+                          <img
+                            className="image_delete_icon"
+                            src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/image_delete_icon.png"
+                            alt="image_delete_icon"
+                            onClick={() => delectClick(idx)}
+                          />
+                        </div>
+                      )
+                    })}
+                    <div className="listUpload" onClick={UploadClick}>
+                      <img
+                        className="uploadlist"
+                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/uploadlist.png"
+                        alt="uploadlist"
+                      />
+                      <span>上传图片</span>
+                    </div>
+                  </div>
+                )}
+                <Button type="primary" className="btns" onClick={addClick}>
+                  保存
+                </Button>
               </div>
-              <div className="down_body_table">
-                <div className="name">扬州测试学校七年级上学期期中考试数学</div>
-                <div className="time">2020-08-08</div>
-                <div className="isreview notpass">未通过</div>
+            ) : (
+              <div className="upload_body">
+                <div className="upload_body_title">
+                  <div className="name">名称</div>
+                  <div className="time">上传时间</div>
+                  <div className="isreview">审核状态</div>
+                </div>
+                {UploadListData?.data ? (
+                  UploadListData?.data?.map((item) => {
+                    return (
+                      <div className="down_body_table" key={item?.upload_id}>
+                        <div className="name">{item?.paper_name}</div>
+                        <div className="time">
+                          {setTimerType(item?.add_time * 1000)}
+                        </div>
+                        {/* item?.status 1 待审核 2 已通过 3 未通过 */}
+                        <div
+                          className={
+                            item?.status == 1
+                              ? 'isreview Pending'
+                              : item?.status == 2
+                              ? 'isreview passed'
+                              : 'isreview notpass'
+                          }
+                        >
+                          {item?.status == 1
+                            ? '待审核'
+                            : item?.status == 2
+                            ? '已通过'
+                            : '未通过'}
+                        </div>
+                      </div>
+                    )
+                  })
+                ) : (
+                  <div className="nodata_down">
+                    <img
+                      className="nodata_down_img"
+                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/nodata_down.png"
+                      alt="nodata_down_img"
+                    />
+                    <div className="nodata_down_title">暂无上传的试卷</div>
+                  </div>
+                )}
               </div>
-              <div className="down_body_table">
-                <div className="name">扬州测试学校七年级上学期期中考试数学</div>
-                <div className="time">2020-08-08</div>
-                <div className="isreview passed">已通过</div>
-              </div> */}
-            </div>
+            )}
           </div>
         )}
       </div>
+      <input ref={inputEl} id="upload" type="file" name="file" hidden />
     </div>
   )
 }

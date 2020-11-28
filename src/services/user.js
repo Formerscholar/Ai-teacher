@@ -1,4 +1,22 @@
 import request from './axios'
+import Qs from 'qs'
+
+export function getUploadImage(data) {
+  return request({
+    url: '/getUploadImage',
+    method: 'POST',
+    data,
+  })
+}
+
+export function addTeacherUpload(data) {
+  return request({
+    url: '/addTeacherUpload',
+    method: 'POST',
+    data: Qs.stringify(data),
+  })
+}
+
 
 export function information() {
   return request({
@@ -34,5 +52,22 @@ export function getUploadList(params) {
     url: '/getUploadList',
     method: 'GET',
     params,
+  })
+}
+
+export function getOrganizingPapersLog(params) {
+  return request({
+    url: '/getOrganizingPapersLog',
+    method: 'GET',
+    params,
+  })
+}
+
+
+export function editInformation(data) {
+  return request({
+    url: '/editInformation',
+    method: 'POST',
+    data: Qs.stringify(data),
   })
 }

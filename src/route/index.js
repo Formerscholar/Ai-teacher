@@ -30,15 +30,6 @@ const Knowledge = Loadable({
   loading: G_spin,
 })
 
-// const Uploadpaper = Loadable({
-//   loader: () => import('@/pages/uploadpaper'),
-//   loading: G_spin,
-// })
-// const Paperlist = Loadable({
-//   loader: () => import('@/pages/paperlist'),
-//   loading: G_spin,
-// })
-
 const Mypaper = Loadable({
   loader: () => import('@/pages/mypaper'),
   loading: G_spin,
@@ -79,6 +70,12 @@ const ClassReport = Loadable({
   loading: G_spin,
 })
 
+
+const Mypaperlist = Loadable({
+  loader: () => import('@/pages/mypaperlist'),
+  loading: G_spin,
+})
+
 const BasicRoute = (props) => {
   return (
     <>
@@ -89,8 +86,6 @@ const BasicRoute = (props) => {
       <Route path="/main/famous" component={Famous} />
       <Route path="/main/schoolbased" component={Schoolbased} />
       <Route path="/main/knowledge" component={Knowledge} />
-      {/* <Route path="/main/uploadpaper" component={Uploadpaper} /> */}
-      {/* <Route path="/main/paperlist" component={Paperlist} /> */}
       <Route path="/main/mypaper" component={Mypaper} />
       <Route path="/main/classdetail" component={classDetails} />
       <Route path="/main/chapter" component={Chapter} />
@@ -98,6 +93,7 @@ const BasicRoute = (props) => {
       <Route path="/main/schoolbaseddetail" component={Schoolbaseddetail} />
       <Route path="/main/studyreport" component={StudyReport} />
       <Route path="/main/classreport" component={ClassReport} />
+      <Route path="/main/mypaperlist" component={Mypaperlist} />
       <AI_footer />
     </>
   )
