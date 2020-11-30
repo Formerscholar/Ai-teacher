@@ -36,7 +36,7 @@ const headMenu = [
   },
   {
     text: '我的试卷',
-    url: '/main/mypaper',
+    url: '/main/mypaperlist',
   },
 ]
 

@@ -1,13 +1,20 @@
 import React, { memo, useEffect, useState } from 'react'
 import './index.less'
-import { Button, Input, Pagination, Tree } from 'antd'
+import { Button, Pagination, Tree } from 'antd'
 import { getKnowledgeExercises } from '@/services/knowledge'
 import { connect } from 'react-redux'
-import { GET_HOME_INFO } from '@/store/actionType'
+import { GET_HOME_INFO, ADD_TOPIC, SUB_TOPIC } from '@/store/actionType'
 import { setTimerType } from '@/utils'
+import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 
 function Knowledge(props) {
-  const { homeInfo, history } = props
+  const {
+    homeInfo,
+    history,
+    addtopicData,
+    subtopicData,
+    volumeTopicslist,
+  } = props
   const [Knowledge, setKnowledge] = useState({})
   const [gradescrure, setgradescrure] = useState(0)
   const [levelscrure, setlevelscrure] = useState(0)
@@ -123,7 +130,13 @@ function Knowledge(props) {
    * 确定跳转点击
    */
   const TopageClick = () => {
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, topageValue)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      topageValue
+    )
     setListpage(topageValue * 1)
   }
 
@@ -145,12 +158,35 @@ function Knowledge(props) {
   const onCheck = (checkedKeys) => {
     console.log('onCheck', checkedKeys)
     setCheckedKeys(checkedKeys)
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, topageValue)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      topageValue
+    )
   }
 
   const onSelect = (selectedKeys, info) => {
     console.log('onSelect', info)
     setSelectedKeys(selectedKeys)
+  }
+
+  /**
+   *  组卷添加事件
+   *
+   * @param {*} id
+   * @param {*} type
+   */
+  const compositionClick = (id, type) => {
+    addtopicData({
+      id,
+      type,
+    })
+  }
+
+  const removeClick = (id) => {
+    subtopicData(id)
   }
 
   return (
@@ -322,14 +358,22 @@ function Knowledge(props) {
                       />
                       <span>试题详情</span>
                     </div>
-                    <Button className="add" variant="contained">
-                      <span>+</span>
+                    <Button
+                      className="add"
+                      variant="contained"
+                      onClick={() => compositionClick(item?.id, item?.type)}
+                    >
+                      <em>+</em>
                       组卷
                     </Button>
-                    {/* <Button className="sub" variant="contained">
-                  <em>-</em>
-                  移除
-                </Button> */}
+                    <Button
+                      className="sub"
+                      variant="contained"
+                      onClick={() => removeClick(item?.id)}
+                    >
+                      <em>-</em>
+                      移除
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -366,28 +410,14 @@ function Knowledge(props) {
         </div>
       </div>
       {/* 悬浮框 */}
-      <div className="fled_basket">
-        <img
-          className="basket_icon"
-          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/basket_icon.png"
-          alt="basket_icon"
-        />
-        <span className="count">
-          <em>0</em>/40
-        </span>
-        <span className="title">进入组卷</span>
-        <img
-          className="arrow_icon"
-          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/arrow_icon.png"
-          alt="arrow_icon"
-        />
-      </div>
+      <AI_floatBox props={props} />
     </div>
   )
 }
 const mapStateToProps = (state) => {
   return {
     homeInfo: state.homeInfo,
+    volumeTopicslist: state.volumeTopicslist,
   }
 }
 
@@ -397,6 +427,27 @@ const mapDispatchToProps = (dispatch) => {
       let action = {
         type: GET_HOME_INFO,
         value: value,
+      }
+      dispatch(action)
+    },
+    /**
+     * @param {*} value 
+        {
+          id: 120,
+          type: 14,
+        }
+     */
+    addtopicData(value) {
+      let action = {
+        type: ADD_TOPIC,
+        value: value,
+      }
+      dispatch(action)
+    },
+    subtopicData(id) {
+      let action = {
+        type: SUB_TOPIC,
+        value: id,
       }
       dispatch(action)
     },

@@ -25,7 +25,8 @@
       font-weight: bold;
       color: #222222;
     }
-    /deep/.ant-tree-list{
+
+    /deep/.ant-tree-list {
       padding: 1.71rem;
     }
 
@@ -276,10 +277,27 @@
             .add,
             .sub {
               border-radius: 0.357143rem;
+              width: 5rem;
+              height: 1.71rem;
+              background: #E50304 !important;
+              background-image: none !important;
+              border-radius: 0.357143rem;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 1.14rem;
+              font-weight: 400;
+              color: #FFFFFF;
+
+              em {
+                font-style: normal;
+                font-size: 1.428571rem;
+                margin-right: 0.357143rem;
+              }
             }
 
             .sub {
-              background: #999999;
+              background: #999999 !important;
 
               em {}
             }
@@ -321,54 +339,4 @@
       }
     }
   }
-
-
-  // 悬浮篮
-
-  .fled_basket {
-    width: 2.86rem;
-    height: 14.57rem;
-    position: fixed;
-    top: 34.64rem;
-    right: .29rem;
-    background: #E50304;
-    border-radius: 0.357143rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.21rem 0;
-    cursor: pointer;
-
-    .basket_icon {
-      width: 1.14rem;
-      height: 1rem;
-    }
-
-    .count {
-      font-size: 1rem;
-      font-weight: 400;
-      color: #FEC3A2;
-
-      em {
-        color: #fff;
-        font-style: normal;
-      }
-    }
-
-    .title {
-      font-size: 1.14rem;
-      font-weight: 400;
-      color: #FFFFFF;
-      writing-mode: vertical-rl;
-      letter-spacing: 0.357143rem;
-    }
-
-    .arrow_icon {
-      width: 1.93rem;
-      height: 1.43rem;
-    }
-  }
-
-
 }

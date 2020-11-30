@@ -6,6 +6,7 @@ import { splitSearch } from '@/utils'
 import { connect } from 'react-redux'
 import { GET_CLASS_INFO } from '@/store/actionType'
 import { setTimerType } from '@/utils'
+import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 
 function Schoolbaseddetail(props) {
   const [basedData, setBasedData] = useState({})
@@ -141,6 +142,8 @@ function Schoolbaseddetail(props) {
           )
         })}
       </div>
+      {/* 悬浮框 */}
+      <AI_floatBox props={props} />
     </div>
   )
 }

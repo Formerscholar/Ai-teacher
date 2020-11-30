@@ -1,4 +1,9 @@
-import { GET_HOME_INFO ,GET_CLASS_INFO } from './actionType'
+import {
+  GET_HOME_INFO,
+  GET_CLASS_INFO,
+  ADD_TOPIC,
+  SUB_TOPIC
+} from './actionType'
 
 export const GetListAction = (value) => {
   return {
@@ -14,22 +19,27 @@ export const GetClassAction = (value) => {
   }
 }
 
+export const Addtopicslist = (value) => {
+  return {
+    type: ADD_TOPIC,
+    value,
+  }
+}
+
+export const Subtopicslist = (value) => {
+  return {
+    type: SUB_TOPIC,
+    value,
+  }
+}
+
 
 // --------------------------------------------
 
-// export const GetList = (data) => {
+// export const GetTopics = (data) => {
 //   return (dispatch) => {
 //     setTimeout(() => {
-//       const action = GetListAction(data)
-//       dispatch(action)
-//     }, 2000)
-//   }
-// }
-
-// export const DeleteList = (data) => {
-//   return (dispatch) => {
-//     setTimeout(() => {
-//       const action = DeleteAction(data)
+//       const action = GetTopicslist(data)
 //       dispatch(action)
 //     }, 2000)
 //   }

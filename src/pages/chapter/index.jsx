@@ -4,6 +4,7 @@ import { Button, Pagination, Input } from 'antd'
 // import { TreeView, TreeItem, Pagination } from 'antd'
 //
 // import { Collapse, TextField, Button } from 'antd
+import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 
 function Chapter(props) {
   return (
@@ -182,6 +183,8 @@ function Chapter(props) {
           </Button>
         </div>
       </div>
+       {/* 悬浮框 */}
+       <AI_floatBox props={props} />
     </div>
   )
 }

@@ -13,12 +13,13 @@ import {
 import { teamAcademicReport } from '@/services/Schoolbased'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
+import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 
 const { RangePicker } = DatePicker
 
 function ClassReport(props) {
   const { history, homeInfo } = props
-  const [Id, setid] = useState(homeInfo?.team[0]?.id)
+  const [Id, setid] = useState(0)
   const [AcademicData, setAcademicData] = useState({})
   const [PickerData, setPickerData] = useState([])
   const [Listpage, setListpage] = useState(1)
@@ -345,6 +346,8 @@ function ClassReport(props) {
           current={Listpage}
         />
       </div>
+      {/* 悬浮框 */}
+      <AI_floatBox props={props} />
     </div>
   )
 }

@@ -13,6 +13,7 @@ import {
 import { studentAcademicReport } from '@/services/class'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
+import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 
 const { RangePicker } = DatePicker
 
@@ -347,6 +348,8 @@ function StudyReport(props) {
           current={Listpage}
         />
       </div>
+      {/* 悬浮框 */}
+      <AI_floatBox props={props} />
     </div>
   )
 }
