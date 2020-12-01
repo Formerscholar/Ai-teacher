@@ -25,6 +25,11 @@ function Schoolbaseddetail(props) {
     event.preventDefault()
     history.push('/main/schoolbased')
   }
+  const handleClicks = (event) => {
+    event.preventDefault()
+    localStorage.setItem('menuIndex', 0)
+    history.push('/main/index')
+  }
 
   const getSchoolBased = async () => {
     const { code, data } = await getSchoolBasedDetail({
@@ -51,6 +56,7 @@ function Schoolbaseddetail(props) {
   return (
     <div id="Schoolbaseddetail">
       <Breadcrumb
+        className="bread"
         separator={
           <img
             src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right_icon.png"
@@ -60,7 +66,7 @@ function Schoolbaseddetail(props) {
       >
         <Breadcrumb.Item
           style={{ cursor: 'pointer', color: '#222' }}
-          onClick={handleClick}
+          onClick={handleClicks}
         >
           <img
             className="position"
@@ -68,6 +74,12 @@ function Schoolbaseddetail(props) {
             alt="position"
             style={{ width: '0.86rem', height: '1.14rem', marginRight: '1rem' }}
           />
+          首页
+        </Breadcrumb.Item>
+        <Breadcrumb.Item
+          style={{ cursor: 'pointer', color: '#222' }}
+          onClick={handleClick}
+        >
           校本试卷
         </Breadcrumb.Item>
         <Breadcrumb.Item style={{ cursor: 'pointer', color: '#222' }}>

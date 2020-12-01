@@ -13,32 +13,123 @@
   padding: 1.21rem 0;
   cursor: pointer;
 
-  .basket_icon {
-    width: 1.14rem;
-    height: 1rem;
-  }
+  .top_float_warp {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 
-  .count {
-    font-size: 1rem;
-    font-weight: 400;
-    color: #FEC3A2;
+    .basket_icon {
+      width: 1.14rem;
+      height: 1rem;
+    }
 
-    em {
-      color: #fff;
-      font-style: normal;
+    .count {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #FEC3A2;
+
+      em {
+        color: #fff;
+        font-style: normal;
+      }
+    }
+
+    .title {
+      font-size: 1.14rem;
+      font-weight: 400;
+      color: #FFFFFF;
+      writing-mode: vertical-rl;
+      letter-spacing: 0.357143rem;
     }
   }
 
-  .title {
-    font-size: 1.14rem;
-    font-weight: 400;
-    color: #FFFFFF;
-    writing-mode: vertical-rl;
-    letter-spacing: 0.357143rem;
-  }
 
   .arrow_icon {
     width: 1.93rem;
     height: 1.43rem;
+  }
+
+  .unfold {
+    position: absolute;
+    top: 0;
+    left: -17.57rem;
+    width: 17.57rem;
+    min-height: 29.43rem;
+    background: #FFFFFF;
+    border: 0.07px solid #E5E5E5;
+    border-radius: 1rem;
+    padding: 1.14rem;
+
+    .gross {
+      font-size: 1.14rem;
+      font-weight: 400;
+      color: #222222;
+
+      span {
+        color: #E50304;
+      }
+    }
+
+    .typeList {
+      margin-top: 1.14rem;
+
+      .items {
+        width: 15.29rem;
+        height: 3rem;
+        border: 1px solid #E5E5E5;
+        border-radius: 0.357143rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: .71rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .type {
+          font-size: 1rem;
+          font-weight: 400;
+          color: #222222;
+
+        }
+
+        .numdel {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #222222;
+
+            em {
+              font-style: normal;
+              color: #E50304;
+
+            }
+          }
+
+          .tip_del_icon {
+            margin-left: .57rem;
+          }
+        }
+      }
+    }
+
+    .empty {
+      position: absolute;
+      bottom: 1.14rem;
+      right: 1.14rem;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #999999;
+
+    }
   }
 }

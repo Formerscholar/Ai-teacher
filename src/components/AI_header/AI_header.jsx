@@ -37,9 +37,9 @@ function AI_header({ homeInfo, props, setData }) {
   const headMenuClick = (event, id) => {
     setcurrent(id)
     localStorage.setItem('menuIndex', id)
-    if (id !== 5) {
-      props.history.push(`${headMenu[id].url}`)
-    }
+    // if (id !== 5) {
+    // }
+    props.history.push(`${headMenu[id].url}`)
   }
 
   const handleClose = (info) => {
@@ -167,13 +167,14 @@ function AI_header({ homeInfo, props, setData }) {
                 className={current == index ? 'cenItem index' : 'cenItem'}
                 onClick={(e) => headMenuClick(e, index)}
               >
-                {index == 5 ? (
+                {item.text}
+                {/* {index == 5 ? (
                   <Dropdown overlay={menu} placement="bottomCenter">
                     <button>{item.text}</button>
                   </Dropdown>
                 ) : (
                   item.text
-                )}
+                )} */}
                 {/* : index == 6 ? (
                   <Dropdown overlay={menuss} placement="bottomCenter">
                     <button>{item.text}</button>

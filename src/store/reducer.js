@@ -4,6 +4,7 @@ import {
   GET_CLASS_INFO,
   ADD_TOPIC,
   SUB_TOPIC,
+  SET_TOPIC
 } from './actionType'
 
 const reducer = (state = defaultState, action) => {
@@ -16,24 +17,13 @@ const reducer = (state = defaultState, action) => {
       newState.classInfo = action.value
       return newState
     case ADD_TOPIC:
-      if (newState.volumeTopicslist.length <= 40) {
-        const isexist = newState.volumeTopicslist.findIndex(
-          (item) => item.id == action.value.id
-        )
-        if (isexist == -1) {
-          newState.volumeTopicslist.push(action.value)
-        }
-        return newState
-      }
+      newState.volumeTopicCount += action.value
+      return newState
     case SUB_TOPIC:
-      if (newState.volumeTopicslist.length > 0) {
-        const index = newState.volumeTopicslist.findIndex(
-          (item) => item.id == action.value
-        )
-        if (index != -1) {
-          newState.volumeTopicslist.splice(index, 1)
-        }
-      }
+      newState.volumeTopicCount -= action.value
+      return newState
+    case SET_TOPIC:
+      newState.volumeTopicCount = action.value
       return newState
     default:
       break

@@ -2,7 +2,8 @@ import {
   GET_HOME_INFO,
   GET_CLASS_INFO,
   ADD_TOPIC,
-  SUB_TOPIC
+  SUB_TOPIC,
+  SET_TOPIC
 } from './actionType'
 
 export const GetListAction = (value) => {
@@ -19,21 +20,26 @@ export const GetClassAction = (value) => {
   }
 }
 
-export const Addtopicslist = (value) => {
+export const AddtopicCount = (value) => {
   return {
     type: ADD_TOPIC,
     value,
   }
 }
 
-export const Subtopicslist = (value) => {
+export const SubtopicCount = (value) => {
   return {
     type: SUB_TOPIC,
     value,
   }
 }
 
-
+export const SettopicCount = (value) => {
+  return {
+    type: SET_TOPIC,
+    value,
+  }
+}
 // --------------------------------------------
 
 // export const GetTopics = (data) => {

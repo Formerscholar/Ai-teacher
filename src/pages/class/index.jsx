@@ -113,6 +113,17 @@ function Class(props) {
     setclassId('请选择班级')
   }
 
+  /**
+   * menu click
+   *
+   * @param {*} event
+   */
+  const handleClick = (event) => {
+    event.preventDefault()
+    localStorage.setItem('menuIndex', 0)
+    history.push('/main/index')
+  }
+
   return (
     <div id="Class">
       <Breadcrumb
@@ -123,13 +134,19 @@ function Class(props) {
           />
         }
       >
-        <Breadcrumb.Item style={{ cursor: 'pointer', color: '#222' }}>
+        <Breadcrumb.Item
+          onClick={handleClick}
+          style={{ cursor: 'pointer', color: '#222' }}
+        >
           <img
             className="position"
             src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/position.png"
             alt="position"
             style={{ width: '0.86rem', height: '1.14rem', marginRight: '1rem' }}
           />
+          首页
+        </Breadcrumb.Item>
+        <Breadcrumb.Item style={{ cursor: 'pointer', color: '#222' }}>
           班级信息
         </Breadcrumb.Item>
       </Breadcrumb>

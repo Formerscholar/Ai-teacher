@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { Button, Input } from 'antd'
+import { Button, Input, Breadcrumb } from 'antd'
 import { Pagination } from 'antd'
 import { getSchoolBasedList } from '@/services/Schoolbased'
 import { setTimerType, Trim } from '@/utils'
@@ -74,79 +74,116 @@ function Schoolbased(props) {
   const paperDetail = (id) => {
     history.push(`/main/schoolbaseddetail?id=${id}`)
   }
+  /**
+   *  面包屑返回
+   * @param {*} event
+   */
+  const handleClick = (event) => {
+    event.preventDefault()
+    localStorage.setItem('menuIndex', 0)
+    history.push('/main/index')
+  }
 
   return (
     <div id="Schoolbased">
-      <div className="top_box">
-        <span className="name">试卷名称:</span>
-        <Input
-          className="outlined"
-          variant="outlined"
-          value={searchName}
-          style={{ width: '11.43rem', height: '2.29rem' }}
-          size="small"
-          onInput={InputChange}
-        />
-        <Button variant="contained" className="btn" onClick={searchClick}>
-          查询
-        </Button>
-      </div>
-      <div className="body_box">
-        <div className="lists">
-          {ResourcesList?.examsSchool?.data?.map((item) => {
-            return (
-              <div className="item" key={item?.id}  onClick={() => paperDetail(item?.based_id)}>
-                <div className="left_box">
-                  <img
-                    className="paper_icon"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
-                    alt="paper_icon"
-                  />
-                  <div className="info_box">
-                    <div className="title">{item?.get_base?.title}</div>
-                    <div className="bot_info">
-                      <img
-                        className="time_icon"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/time_icon.png"
-                        alt="time_icon"
-                      />
-                      <span className="time_text">
-                        更新时间：
-                        {setTimerType(item?.get_base?.update_time * 1000)}
-                      </span>
-                      <img
-                        className="View_icon"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
-                        alt="View_icon"
-                      />
-                      <span className="view_text">浏览次数：166</span>
+      <Breadcrumb
+        className="bread"
+        separator={
+          <img
+            src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right_icon.png"
+            style={{ width: '0.57rem', height: '0.79rem' }}
+          />
+        }
+      >
+        <Breadcrumb.Item
+          style={{ cursor: 'pointer', color: '#222' }}
+          onClick={handleClick}
+        >
+          <img
+            className="position"
+            src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/position.png"
+            alt="position"
+            style={{ width: '0.86rem', height: '1.14rem', marginRight: '1rem' }}
+          />
+          首页
+        </Breadcrumb.Item>
+        <Breadcrumb.Item style={{ cursor: 'pointer', color: '#222' }}>
+          校本试卷
+        </Breadcrumb.Item>
+      </Breadcrumb>
+      <div className="Schoolbased_box">
+        <div className="top_box">
+          <span className="name">试卷名称:</span>
+          <Input
+            className="outlined"
+            variant="outlined"
+            value={searchName}
+            style={{ width: '11.43rem', height: '2.29rem' }}
+            size="small"
+            onInput={InputChange}
+          />
+          <Button variant="contained" className="btn" onClick={searchClick}>
+            查询
+          </Button>
+        </div>
+        <div className="body_box">
+          <div className="lists">
+            {ResourcesList?.examsSchool?.data?.map((item) => {
+              return (
+                <div
+                  className="item"
+                  key={item?.id}
+                  onClick={() => paperDetail(item?.based_id)}
+                >
+                  <div className="left_box">
+                    <img
+                      className="paper_icon"
+                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
+                      alt="paper_icon"
+                    />
+                    <div className="info_box">
+                      <div className="title">{item?.get_base?.title}</div>
+                      <div className="bot_info">
+                        <img
+                          className="time_icon"
+                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/time_icon.png"
+                          alt="time_icon"
+                        />
+                        <span className="time_text">
+                          更新时间：
+                          {setTimerType(item?.get_base?.update_time * 1000)}
+                        </span>
+                        <img
+                          className="View_icon"
+                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
+                          alt="View_icon"
+                        />
+                        <span className="view_text">浏览次数：166</span>
+                      </div>
                     </div>
                   </div>
+                  <div className="right_box">
+                    <img
+                      className="download_icon"
+                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right.png"
+                      alt="download_icon"
+                    />
+                  </div>
                 </div>
-                <div
-                  className="right_box"
-                 
-                >
-                  <img
-                    className="download_icon"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right.png"
-                    alt="download_icon"
-                  />
-                </div>
-              </div>
-            )
-          })}
-        </div>
-        <div className="Pagination">
-          <Pagination
-            hideOnSinglePage={false}
-            showSizeChanger={false}
-            total={ResourcesList?.examsSchool?.total}
-            defaultPageSize={20}
-            pageSize={ResourcesList?.examsSchool?.per_page || 20}
-            onChange={PaginationChange}
-            current={Listpage}
-          />
+              )
+            })}
+          </div>
+          <div className="Pagination">
+            <Pagination
+              hideOnSinglePage={false}
+              showSizeChanger={false}
+              total={ResourcesList?.examsSchool?.total}
+              defaultPageSize={20}
+              pageSize={ResourcesList?.examsSchool?.per_page || 20}
+              onChange={PaginationChange}
+              current={Listpage}
+            />
+          </div>
         </div>
       </div>
     </div>

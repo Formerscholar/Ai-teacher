@@ -1,9 +1,27 @@
-import React, { memo } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { Breadcrumb, Checkbox, Row, Col, Button } from 'antd'
+import { Breadcrumb, Checkbox, Row, Col, Button, message } from 'antd'
+import { getPapersExercises } from '@/services/knowledge'
 
 function Mypaper(props) {
   const { history } = props
+  const [checkitems, setcheckitems] = useState([])
+  const [ExercisesData, setExercisesData] = useState({})
+
+  useEffect(() => {
+    getPapers()
+    return () => {}
+  }, [])
+
+  const getPapers = async () => {
+    const { code, data, msg } = await getPapersExercises()
+    if (code === 200) {
+      setExercisesData(data)
+    } else {
+      message.error(msg)
+    }
+  }
+
   /**
    *
    *  返回路由
@@ -21,6 +39,7 @@ function Mypaper(props) {
 
   function onChange(checkedValues) {
     console.log('checked = ', checkedValues)
+    setcheckitems(checkedValues)
   }
 
   return (
@@ -60,258 +79,210 @@ function Mypaper(props) {
       <div className="Group_body">
         <div className="left_box">
           {/* 封装线 */}
-          <div className="Packaging">
-            <img
-              className="peal_line"
-              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/peal_line.png"
-              alt="peal_line"
-            />
-          </div>
+          {checkitems?.map((item) => {
+            return (
+              item == '0' && (
+                <div className="Packaging">
+                  <img
+                    className="peal_line"
+                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/peal_line.png"
+                    alt="peal_line"
+                  />
+                </div>
+              )
+            )
+          })}
+
           {/* 主体 */}
           <div className="main">
             {/* 试卷标题 */}
             <div className="Papertitle">2020年11月13日xxx的初中数学试卷</div>
             {/* 试卷副标题 */}
-            <div className="subhead">试卷副标题</div>
+            {checkitems?.map((item) => {
+              return item == '1' && <div className="subhead">试卷副标题</div>
+            })}
             {/* 提示语 */}
-            <div className="prompt">
-              考试范围：xxx；考试时间：100分钟；命题人：xxx
-            </div>
+            {checkitems?.map((item) => {
+              return (
+                item == '3' && (
+                  <div className="prompt">
+                    考试范围：xxx；考试时间：100分钟；命题人：xxx
+                  </div>
+                )
+              )
+            })}
+
             {/* 考生信息 */}
-            <div className="examineeInfo">
-              学校:___________姓名：___________班级：___________考号：___________
-            </div>
+            {checkitems?.map((item) => {
+              return (
+                item == '5' && (
+                  <div className="examineeInfo">
+                    学校:___________姓名：___________班级：___________考号：___________
+                  </div>
+                )
+              )
+            })}
+
             {/* 总分栏 */}
-            <div className="TotalScore">
-              <table border="1" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td>题号</td>
-                  <td>一</td>
-                  <td>二</td>
-                  <td>三</td>
-                  <td>总分</td>
-                </tr>
-                <tr>
-                  <td>得分</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </table>
-            </div>
+            {checkitems?.map((item) => {
+              return (
+                item == '2' && (
+                  <div className="TotalScore">
+                    <table border="1" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td>题号</td>
+                        <td>一</td>
+                        <td>二</td>
+                        <td>三</td>
+                        <td>总分</td>
+                      </tr>
+                      <tr>
+                        <td>得分</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                )
+              )
+            })}
+
             {/* 提示语 */}
-            <div className="markedwords">
-              <div className="title">
-                <span>*</span>注意事项：
-              </div>
-              <div className="context">
-                1．答题前填写好自己的姓名、班级、考号等信息
-              </div>
-              <div className="context">2．请将答案正确填写在答题卡上</div>
-            </div>
+            {checkitems?.map((item) => {
+              return (
+                item == '6' && (
+                  <div className="markedwords">
+                    <div className="title">
+                      <span>*</span>注意事项：
+                    </div>
+                    <div className="context">
+                      1．答题前填写好自己的姓名、班级、考号等信息
+                    </div>
+                    <div className="context">2．请将答案正确填写在答题卡上</div>
+                  </div>
+                )
+              )
+            })}
+
             {/* 分卷头部 */}
-            <div className="subsectionhead">
-              {/* 标题 */}
-              <div className="title_warp">第Ⅰ卷（选择题）</div>
-              {/* 注释 */}
-              <div className="annotation">第I卷的注释</div>
-            </div>
-            {/* 分卷body */}
-            <div className="subsectionbody">
-              {/* 头部标题得分 */}
-              <div className="goaltable">
-                <table border="1" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td>评卷人</td>
-                    <td>得分</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </table>
-                <div className="title_box">一、单选题（共4题；共100分）</div>
-              </div>
-              {/* 题目列表 */}
-              <div className="titlelists">
-                {/* 单项 */}
-                <div className="items">
-                  {/* 顶部内容 */}
-                  <div className="topbody">
-                    1. 关于x的不等式组的解集表示在数轴上如图所
+            {checkitems?.map((item) => {
+              return (
+                item == '7' && (
+                  <div className="subsectionhead">
+                    {/* 标题 */}
+                    <div className="title_warp">第Ⅰ卷（选择题）</div>
+                    {/* 注释 */}
+                    <div className="annotation">第I卷的注释</div>
                   </div>
-                  {/* 底部操作按钮 */}
-                  <div className="bot_btns">
-                    <div className="btn_item check_btn ">
-                      <img
-                        className="items_check"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_check.png"
-                        alt="items_check"
-                      />
-                      <span className="text">查看答案</span>
-                    </div>
-                    <div className="btn_item set_btn">
-                      <img
-                        className="items_set"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_set.png"
-                        alt="items_set"
-                      />
-                      <span className="text">设置得分</span>
-                    </div>
-                    <div className="btn_item refsh_btn">
-                      <img
-                        className="items_refsh"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_refsh.png"
-                        alt="items_refsh"
-                      />
-                      <span className="text">换一题</span>
-                    </div>
-                    <div className="btn_item moveup_btn">
-                      <img
-                        className="items_moveup"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_moveup.png"
-                        alt="items_moveup"
-                      />
-                      <span className="text">上移</span>
-                    </div>
-                    <div className="btn_item movedow_btn">
-                      <img
-                        className="items_movedown"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_movedown.png"
-                        alt="items_movedown"
-                      />
-                      <span className="text">下移</span>
-                    </div>
-                    <div className="btn_item delete_btn">
-                      <img
-                        className="items_delete"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_delete.png"
-                        alt="items_delete"
-                      />
-                      <span className="text">删除</span>
-                    </div>
-                  </div>
-                </div>
-                {/* 单项 */}
+                )
+              )
+            })}
+            {ExercisesData?.exercisesData?.map((item1, idx1) => {
+              return (
+                <div className="subsectionbody" key={idx1}>
+                  {/* 头部标题得分 */}
+                  {checkitems?.map((item) => {
+                    return (
+                      item == '8' && (
+                        <div className="goaltable">
+                          <table border="1" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td>评卷人</td>
+                              <td>得分</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </table>
+                          <div className="title_box">
+                            {idx1 + 1}、{item1[0].typeName}（共{item1.length}
+                            题；共{item1[0].countScore}分）
+                          </div>
+                        </div>
+                      )
+                    )
+                  })}
 
-                <div className="items">
-                  {/* 顶部内容 */}
-                  <div className="topbody">
-                    1. 关于x的不等式组的解集表示在数轴上如图所
-                  </div>
-                  {/* 底部操作按钮 */}
-                  <div className="bot_btns">
-                    <div className="btn_item check_btn ">
-                      <img
-                        className="items_check"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_check.png"
-                        alt="items_check"
-                      />
-                      <span className="text">查看答案</span>
-                    </div>
-                    <div className="btn_item set_btn">
-                      <img
-                        className="items_set"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_set.png"
-                        alt="items_set"
-                      />
-                      <span className="text">设置得分</span>
-                    </div>
-                    <div className="btn_item refsh_btn">
-                      <img
-                        className="items_refsh"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_refsh.png"
-                        alt="items_refsh"
-                      />
-                      <span className="text">换一题</span>
-                    </div>
-                    <div className="btn_item moveup_btn">
-                      <img
-                        className="items_moveup"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_moveup.png"
-                        alt="items_moveup"
-                      />
-                      <span className="text">上移</span>
-                    </div>
-                    <div className="btn_item movedow_btn">
-                      <img
-                        className="items_movedown"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_movedown.png"
-                        alt="items_movedown"
-                      />
-                      <span className="text">下移</span>
-                    </div>
-                    <div className="btn_item delete_btn">
-                      <img
-                        className="items_delete"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_delete.png"
-                        alt="items_delete"
-                      />
-                      <span className="text">删除</span>
-                    </div>
-                  </div>
-                </div>
+                  {/* 题目列表 */}
+                  <div className="titlelists">
+                    {/* 单项 */}
 
-                <div className="items">
-                  {/* 顶部内容 */}
-                  <div className="topbody">
-                    1. 关于x的不等式组的解集表示在数轴上如图所
-                  </div>
-                  {/* 底部操作按钮 */}
-                  <div className="bot_btns">
-                    <div className="btn_item check_btn ">
-                      <img
-                        className="items_check"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_check.png"
-                        alt="items_check"
-                      />
-                      <span className="text">查看答案</span>
-                    </div>
-                    <div className="btn_item set_btn">
-                      <img
-                        className="items_set"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_set.png"
-                        alt="items_set"
-                      />
-                      <span className="text">设置得分</span>
-                    </div>
-                    <div className="btn_item refsh_btn">
-                      <img
-                        className="items_refsh"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_refsh.png"
-                        alt="items_refsh"
-                      />
-                      <span className="text">换一题</span>
-                    </div>
-                    <div className="btn_item moveup_btn">
-                      <img
-                        className="items_moveup"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_moveup.png"
-                        alt="items_moveup"
-                      />
-                      <span className="text">上移</span>
-                    </div>
-                    <div className="btn_item movedow_btn">
-                      <img
-                        className="items_movedown"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_movedown.png"
-                        alt="items_movedown"
-                      />
-                      <span className="text">下移</span>
-                    </div>
-                    <div className="btn_item delete_btn">
-                      <img
-                        className="items_delete"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_delete.png"
-                        alt="items_delete"
-                      />
-                      <span className="text">删除</span>
-                    </div>
+                    {item1?.map((item2, idx2) => {
+                      return (
+                        <div className="items" key={idx2}>
+                          {/* 顶部内容 */}
+                          <div className="topbody">
+                            {idx2 + 1}.
+                            <span className="span">（{item2?.score}分）</span>
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: item2?.exercises?.content_all,
+                              }}
+                            ></span>
+                          </div>
+                          {/* 底部操作按钮 */}
+                          <div className="bot_btns">
+                            <div className="btn_item check_btn ">
+                              <img
+                                className="items_check"
+                                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_check.png"
+                                alt="items_check"
+                              />
+                              <span className="text">查看答案</span>
+                            </div>
+                            <div className="btn_item set_btn">
+                              <img
+                                className="items_set"
+                                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_set.png"
+                                alt="items_set"
+                              />
+                              <span className="text">设置得分</span>
+                            </div>
+                            <div className="btn_item refsh_btn">
+                              <img
+                                className="items_refsh"
+                                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_refsh.png"
+                                alt="items_refsh"
+                              />
+                              <span className="text">换一题</span>
+                            </div>
+                            <div className="btn_item moveup_btn">
+                              <img
+                                className="items_moveup"
+                                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_moveup.png"
+                                alt="items_moveup"
+                              />
+                              <span className="text">上移</span>
+                            </div>
+                            <div className="btn_item movedow_btn">
+                              <img
+                                className="items_movedown"
+                                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_movedown.png"
+                                alt="items_movedown"
+                              />
+                              <span className="text">下移</span>
+                            </div>
+                            <div className="btn_item delete_btn">
+                              <img
+                                className="items_delete"
+                                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_delete.png"
+                                alt="items_delete"
+                              />
+                              <span className="text">删除</span>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+
+                    {/* 单项 */}
                   </div>
                 </div>
-              </div>
-            </div>
+              )
+            })}
           </div>
         </div>
         <div className="right_warp">
@@ -338,9 +309,9 @@ function Mypaper(props) {
                 <Col span={12}>
                   <Checkbox value="3">试卷信息</Checkbox>
                 </Col>
-                <Col span={12}>
+                {/* <Col span={12}>
                   <Checkbox value="4">装订线</Checkbox>
-                </Col>
+                </Col> */}
                 <Col span={12}>
                   <Checkbox value="5">考生信息</Checkbox>
                 </Col>
@@ -405,7 +376,7 @@ function Mypaper(props) {
               {/* 操作按钮 */}
               <div className="operatebtns">
                 <Button type="primary" className="downbtn">
-                  下载试卷
+                  完成组卷
                 </Button>
                 <Button className="continuebtn">继续选题</Button>
                 <Button className="emptybtn">清空试题</Button>

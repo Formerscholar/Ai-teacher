@@ -1,16 +1,17 @@
 import {
   GetListAction,
   GetClassAction,
-  Addtopicslist,
-  Subtopicslist
+  AddtopicCount,
+  SubtopicCount,
+  SettopicCount,
 } from '@/store/actionCreators'
 
 const mapStateToProps = (state) => {
-  const { homeInfo, classInfo, volumeTopicslist } = state
+  const { homeInfo, classInfo, volumeTopicCount } = state
   return {
     homeInfo,
     classInfo,
-    volumeTopicslist,
+    volumeTopicCount,
   }
 }
 
@@ -24,12 +25,16 @@ const mapDispatchToProps = (dispatch) => {
       const action = GetClassAction(value)
       dispatch(action)
     },
-    addtopicsData(value) {
-      const action = Addtopicslist(value)
+    addtopicCount(value) {
+      const action = AddtopicCount(value)
       dispatch(action)
     },
-    subtopicsData(value) {
-      const action = Subtopicslist(value)
+    subtopicCount(value) {
+      const action = SubtopicCount(value)
+      dispatch(action)
+    },
+    settopicCount(value) {
+      const action = SettopicCount(value)
       dispatch(action)
     },
   }
