@@ -56,13 +56,11 @@ export function clearExamBasket() {
   })
 }
 
-
-
 export function getPapersExercises(params) {
   return request({
     url: '/getPapersExercises',
     method: 'GET',
-    params
+    params,
   })
 }
 
@@ -70,6 +68,31 @@ export function getPapersList(params) {
   return request({
     url: '/getPapersList',
     method: 'GET',
-    params
+    params,
+  })
+}
+
+export function paperToBased(params) {
+  return request({
+    url: '/paperToBased',
+    method: 'GET',
+    params,
+  })
+}
+
+
+export function addPapers(data) {
+  return request({
+    url: '/addPapers',
+    method: 'POST',
+    data: Qs.stringify(data),
+  })
+}
+
+export function getDetailPapers(params) {
+  return request({
+    url: '/getDetailPapers',
+    method: 'GET',
+    params,
   })
 }

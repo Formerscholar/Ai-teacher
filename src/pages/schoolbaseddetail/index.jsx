@@ -4,18 +4,37 @@ import { Breadcrumb, Button, message } from 'antd'
 import { getSchoolBasedDetail } from '@/services/Schoolbased'
 import { splitSearch } from '@/utils'
 import { connect } from 'react-redux'
-import { GET_CLASS_INFO } from '@/store/actionType'
+import {
+  GET_CLASS_INFO,
+  ADD_TOPIC,
+  SUB_TOPIC,
+  SET_TOPIC,
+} from '@/store/actionType'
 import { setTimerType } from '@/utils'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
+import { addExamBasket, delExamBasket } from '@/services/knowledge'
+import T_modelbox from '@/common/T_modelbox'
 
 function Schoolbaseddetail(props) {
+  const {
+    history,
+    location,
+    homeInfo,
+    addtopicData,
+    subtopicData,
+    volumeTopicCount,
+  } = props
   const [basedData, setBasedData] = useState({})
-  const { history, location, homeInfo } = props
+  const [Open, setOpen] = useState(false)
+  const [tipText, setTipText] = useState('')
 
   useEffect(() => {
     getSchoolBased()
     return () => {}
-  }, [])
+  }, [volumeTopicCount])
+  const closeClick = () => {
+    setOpen(false)
+  }
 
   /**
    *  面包屑返回
@@ -53,6 +72,39 @@ function Schoolbaseddetail(props) {
   const answerClick = (id) => {
     history.push(`/main/questiondetails?id=${id}`)
   }
+
+  /**
+   *  组卷添加事件
+   *
+   * @param {*} id
+   * @param {*} type
+   */
+  const compositionClick = async (id, type) => {
+    const { code, msg } = await addExamBasket({
+      exercises_id: [id],
+    })
+    if (code == 200) {
+      message.success(msg)
+      addtopicData(1)
+    } else {
+      setTipText(msg)
+      setOpen(true)
+    }
+  }
+
+  const removeClick = async (id) => {
+    const { code, msg } = await delExamBasket({
+      exercises_id: id,
+    })
+    if (code == 200) {
+      message.success(msg)
+      subtopicData(1)
+    } else {
+      setTipText(msg)
+      setOpen(true)
+    }
+  }
+
   return (
     <div id="Schoolbaseddetail">
       <Breadcrumb
@@ -140,14 +192,30 @@ function Schoolbaseddetail(props) {
                     />
                     <span>试题详情</span>
                   </div>
-                  <Button className="add" variant="contained">
-                    <span>+</span>
-                    组卷
-                  </Button>
-                  {/* <Button className="sub" variant="contained">
-                <em>-</em>
-                移除
-              </Button> */}
+                  {item?.is_basket ? (
+                    <Button
+                      className="sub"
+                      variant="contained"
+                      onClick={() => removeClick(item?.exercises_id)}
+                    >
+                      <em>-</em>
+                      移除
+                    </Button>
+                  ) : (
+                    <Button
+                      className="add"
+                      variant="contained"
+                      onClick={() =>
+                        compositionClick(
+                          item?.exercises_id,
+                          item?.get_exercises?.type
+                        )
+                      }
+                    >
+                      <em>+</em>
+                      组卷
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -156,6 +224,29 @@ function Schoolbaseddetail(props) {
       </div>
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Open}
+        title=" "
+        closeClick={closeClick}
+        width="41.71rem"
+        height="22.14rem"
+      >
+        <div id="tmodelbox">
+          <div className="title">
+            <img
+              className="notice"
+              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notice.png"
+              alt="notice"
+            />
+            <span>操作失败</span>
+          </div>
+          <div className="body_text">{tipText}</div>
+          <Button type="primary" className="btn" onClick={closeClick}>
+            我知道了
+          </Button>
+        </div>
+      </T_modelbox>
     </div>
   )
 }
@@ -169,6 +260,7 @@ function Schoolbaseddetail(props) {
 const mapStateToProps = (state) => {
   return {
     homeInfo: state.homeInfo,
+    volumeTopicCount: state.volumeTopicCount,
   }
 }
 
@@ -183,6 +275,27 @@ const mapDispatchToProps = (dispatch) => {
     setClass(value) {
       let action = {
         type: GET_CLASS_INFO,
+        value: value,
+      }
+      dispatch(action)
+    },
+    addtopicData(value) {
+      let action = {
+        type: ADD_TOPIC,
+        value: value,
+      }
+      dispatch(action)
+    },
+    subtopicData(value) {
+      let action = {
+        type: SUB_TOPIC,
+        value: value,
+      }
+      dispatch(action)
+    },
+    settopicData(value) {
+      let action = {
+        type: SET_TOPIC,
         value: value,
       }
       dispatch(action)

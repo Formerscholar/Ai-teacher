@@ -6,6 +6,7 @@ import {
   delExamBasket,
   addPapers,
   clearExamBasket,
+  getDetailPapers,
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -14,17 +15,20 @@ import {
   SUB_TOPIC,
   SET_TOPIC,
 } from '@/store/actionType'
+import { splitSearch } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
 const { TextArea } = Input
 
-function Mypaper(props) {
+function Mypaperdetail(props) {
   const {
     history,
+    location,
     addtopicData,
     subtopicData,
     volumeTopicCount,
     settopicData,
   } = props
+  const Iid = splitSearch(location?.search).id
   const [checkitems, setcheckitems] = useState([])
   const [ExercisesData, setExercisesData] = useState({})
   const [tipText, setTipText] = useState('')
@@ -43,9 +47,35 @@ function Mypaper(props) {
   }, [volumeTopicCount])
 
   const getPapers = async () => {
-    const { code, data, msg } = await getPapersExercises()
+    const { code, data, msg } = await getDetailPapers({
+      id: Iid,
+    })
     if (code === 200) {
+      let arr = [...checkitems]
       setExercisesData(data)
+      setPapertitle(data.teacherExam.title)
+      if (data.teacherExam.name) {
+        arr.push('1')
+        setsubhead(data.teacherExam.name)
+      }
+      if (data.teacherExam.exam_about) {
+        arr.push('3')
+        setprompt(data.teacherExam.exam_about)
+      }
+      if (data.teacherExam.be_careful) {
+        arr.push('6')
+        setmarked(data.teacherExam.be_careful)
+      }
+      if (data.teacherExam.is_fill_in) {
+        arr.push('5')
+      }
+      if (data.teacherExam.is_total_score) {
+        arr.push('2')
+      }
+      if (data.teacherExam.is_question_score) {
+        arr.push('8')
+      }
+      setcheckitems(arr)
     } else {
       setExercisesData(data)
       message.error(msg)
@@ -223,7 +253,7 @@ function Mypaper(props) {
   }
 
   return (
-    <div id="Mypaper">
+    <div id="Mypaperdetail">
       <Breadcrumb
         className="bread"
         separator={
@@ -279,7 +309,6 @@ function Mypaper(props) {
             <Input
               className="Papertitle"
               bordered={false}
-              placeholder="2020年11月13日初中数学试卷"
               value={Papertitle}
               onChange={PapertitleChange}
             />
@@ -289,7 +318,6 @@ function Mypaper(props) {
                 item == '1' && (
                   <Input
                     className="subhead"
-                    placeholder="试卷副标题"
                     bordered={false}
                     value={subhead}
                     onChange={subheadChange}
@@ -303,7 +331,6 @@ function Mypaper(props) {
                 item == '3' && (
                   <Input
                     className="prompt"
-                    placeholder="考试范围：xxx；考试时间：100分钟；命题人：xxx"
                     bordered={false}
                     value={prompt}
                     onChange={promptChange}
@@ -360,7 +387,6 @@ function Mypaper(props) {
                     <TextArea
                       className="context"
                       autoSize
-                      placeholder="1．答题前填写好自己的姓名、班级、考号等信息\n2．请将答案正确填写在答题卡上"
                       bordered={false}
                       value={marked}
                       onChange={markedChange}
@@ -513,6 +539,7 @@ function Mypaper(props) {
               className="CheckboxGroup"
               style={{ width: '100%' }}
               onChange={onChange}
+              value={checkitems}
             >
               <Row>
                 <Col span={12}>
@@ -528,7 +555,7 @@ function Mypaper(props) {
                   <Checkbox value="3">试卷信息</Checkbox>
                 </Col>
                 {/* <Col span={12}>
-                  <Checkbox value="4">装订线</Checkbox>
+                  <Checkbox value="4" >装订线</Checkbox>
                 </Col> */}
                 <Col span={12}>
                   <Checkbox value="5">考生信息</Checkbox>
@@ -691,4 +718,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(Mypaper))
+export default connect(mapStateToProps, mapDispatchToProps)(memo(Mypaperdetail))

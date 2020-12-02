@@ -1,8 +1,9 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { Breadcrumb, Select, Button, message } from 'antd'
-import { getPapersList } from '@/services/knowledge'
+import { Breadcrumb, Select, Button, message, DatePicker, Space } from 'antd'
+import { getPapersList, paperToBased } from '@/services/knowledge'
 import { setTimerType } from '@/utils'
+import T_modelbox from '@/common/T_modelbox'
 
 const { Option } = Select
 
@@ -10,6 +11,9 @@ function Mypaperlist(props) {
   const { history } = props
   const [PapersList, setPapersList] = useState({})
   const [selectTime, setSelectTime] = useState('0')
+  const [Open, setOpen] = useState(false)
+  const [SyncId, setSyncId] = useState(0)
+  const [SyncTime, setSyncTime] = useState('')
 
   useEffect(() => {
     getPapersListData()
@@ -50,8 +54,38 @@ function Mypaperlist(props) {
     getPapersListData(selectTime)
   }
 
-  const editpaper = () => {
-    history.push('/main/mypaper')
+  const editpaper = (id) => {
+    history.push(`/main/mypaperdetail?id=${id}`)
+  }
+
+  /**
+   *  同步试卷
+   *
+   * @param {*} id
+   */
+  const SyncClick = (id) => {
+    setOpen(true)
+    setSyncId(id)
+  }
+
+  const closeClick = () => {
+    setOpen(false)
+  }
+  const confirmClick = async () => {
+    const { code, msg } = await paperToBased({
+      id: SyncId,
+      show_time: SyncTime,
+    })
+    if (code === 200) {
+      message.success(msg)
+    } else {
+      message.error(msg)
+    }
+    setOpen(false)
+  }
+
+  function onOk(value) {
+    setSyncTime(setTimerType(value, true))
   }
 
   return (
@@ -145,8 +179,16 @@ function Mypaperlist(props) {
                     />
                     下载
                   </Button>
-                  <Button className="reedit">同步校本试卷</Button>
-                  <Button className="reedit" onClick={editpaper}>
+                  <Button
+                    className="reedit"
+                    onClick={() => SyncClick(item?.id)}
+                  >
+                    同步校本试卷
+                  </Button>
+                  <Button
+                    className="reedit"
+                    onClick={() => editpaper(item?.id)}
+                  >
                     重新编辑
                   </Button>
                 </div>
@@ -155,6 +197,24 @@ function Mypaperlist(props) {
           })}
         </div>
       </div>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Open}
+        title="【同步】"
+        closeClick={closeClick}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox">
+          <Space className="title" direction="vertical" size={35}>
+            <DatePicker showTime onOk={onOk} />
+          </Space>
+
+          <Button type="primary" className="btn" onClick={confirmClick}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
     </div>
   )
 }

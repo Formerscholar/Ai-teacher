@@ -11,14 +11,27 @@ import {
   Pagination,
 } from 'antd'
 import { teamAcademicReport } from '@/services/Schoolbased'
+import { addExamBasket, delExamBasket } from '@/services/knowledge'
 import { connect } from 'react-redux'
-import { GET_HOME_INFO } from '@/store/actionType'
+import {
+  GET_HOME_INFO,
+  ADD_TOPIC,
+  SUB_TOPIC,
+  SET_TOPIC,
+} from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
+import T_modelbox from '@/common/T_modelbox'
 
 const { RangePicker } = DatePicker
 
 function ClassReport(props) {
-  const { history, homeInfo } = props
+  const {
+    history,
+    homeInfo,
+    addtopicData,
+    subtopicData,
+    volumeTopicCount,
+  } = props
   const [Id, setid] = useState(0)
   const [AcademicData, setAcademicData] = useState({})
   const [PickerData, setPickerData] = useState([])
@@ -59,17 +72,23 @@ function ClassReport(props) {
       },
     ],
   })
+  const [Open, setOpen] = useState(false)
+  const [tipText, setTipText] = useState('')
   const Echars = useRef(null)
 
   useEffect(() => {
-    getteamAcademicReport()
+    getteamAcademicReport(Id, Listpage, startTime, endTime)
     return () => {}
-  }, [])
+  }, [volumeTopicCount])
 
   useEffect(() => {
     const myChart = window.echarts.init(Echars.current)
     myChart.setOption(options)
   })
+
+  const closeClick = () => {
+    setOpen(false)
+  }
 
   /**
    *  获取 初始化信息
@@ -201,6 +220,38 @@ function ClassReport(props) {
     getteamAcademicReport(id, Listpage, PickerData[0], PickerData[1])
   }
 
+  /**
+   *  组卷添加事件
+   *
+   * @param {*} id
+   * @param {*} type
+   */
+  const compositionClick = async (id, type) => {
+    const { code, msg } = await addExamBasket({
+      exercises_id: [id],
+    })
+    if (code == 200) {
+      message.success(msg)
+      addtopicData(1)
+    } else {
+      setTipText(msg)
+      setOpen(true)
+    }
+  }
+
+  const removeClick = async (id) => {
+    const { code, msg } = await delExamBasket({
+      exercises_id: id,
+    })
+    if (code == 200) {
+      message.success(msg)
+      subtopicData(1)
+    } else {
+      setTipText(msg)
+      setOpen(true)
+    }
+  }
+
   return (
     <div id="ClassReport">
       <Breadcrumb
@@ -232,7 +283,7 @@ function ClassReport(props) {
       </Breadcrumb>
       <div className="top_warp">
         <div className="left_name">
-          {homeInfo?.team?.map((item, idx) => {
+          {AcademicData?.teams?.map((item, idx) => {
             return (
               <span
                 key={item?.id}
@@ -320,14 +371,30 @@ function ClassReport(props) {
                     />
                     <span>试题详情</span>
                   </div>
-                  <Button className="add" variant="contained">
-                    <em>+</em>
-                    组卷
-                  </Button>
-                  {/* <Button className="sub" variant="contained">
-                <em>-</em>
-                移除
-              </Button> */}
+                  {item?.is_basket ? (
+                    <Button
+                      className="sub"
+                      variant="contained"
+                      onClick={() => removeClick(item?.exercises_id)}
+                    >
+                      <em>-</em>
+                      移除
+                    </Button>
+                  ) : (
+                    <Button
+                      className="add"
+                      variant="contained"
+                      onClick={() =>
+                        compositionClick(
+                          item?.exercises_id,
+                          item?.get_exercises?.type
+                        )
+                      }
+                    >
+                      <em>+</em>
+                      组卷
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -348,6 +415,29 @@ function ClassReport(props) {
       </div>
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Open}
+        title=" "
+        closeClick={closeClick}
+        width="41.71rem"
+        height="22.14rem"
+      >
+        <div id="tmodelbox">
+          <div className="title">
+            <img
+              className="notice"
+              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notice.png"
+              alt="notice"
+            />
+            <span>操作失败</span>
+          </div>
+          <div className="body_text">{tipText}</div>
+          <Button type="primary" className="btn" onClick={closeClick}>
+            我知道了
+          </Button>
+        </div>
+      </T_modelbox>
     </div>
   )
 }
@@ -355,6 +445,7 @@ function ClassReport(props) {
 const mapStateToProps = (state) => {
   return {
     homeInfo: state.homeInfo,
+    volumeTopicCount: state.volumeTopicCount,
   }
 }
 
@@ -363,6 +454,34 @@ const mapDispatchToProps = (dispatch) => {
     setData(value) {
       let action = {
         type: GET_HOME_INFO,
+        value: value,
+      }
+      dispatch(action)
+    },
+    /**
+     * @param {*} value 
+        {
+          id: 120,
+          type: 14,
+        }
+     */
+    addtopicData(value) {
+      let action = {
+        type: ADD_TOPIC,
+        value: value,
+      }
+      dispatch(action)
+    },
+    subtopicData(value) {
+      let action = {
+        type: SUB_TOPIC,
+        value: value,
+      }
+      dispatch(action)
+    },
+    settopicData(value) {
+      let action = {
+        type: SET_TOPIC,
         value: value,
       }
       dispatch(action)
