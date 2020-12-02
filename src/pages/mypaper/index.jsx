@@ -360,7 +360,8 @@ function Mypaper(props) {
                     <TextArea
                       className="context"
                       autoSize
-                      placeholder="1．答题前填写好自己的姓名、班级、考号等信息\n2．请将答案正确填写在答题卡上"
+                      placeholder="1．答题前填写好自己的姓名、班级、考号等信息
+                      2．请将答案正确填写在答题卡上"
                       bordered={false}
                       value={marked}
                       onChange={markedChange}
