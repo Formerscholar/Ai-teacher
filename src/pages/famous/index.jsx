@@ -118,6 +118,11 @@ function Famous(props) {
     history.push('/main/index')
   }
 
+  const topaperdetail = (id) => {
+    localStorage.setItem('menuIndex', 4)
+    history.push(`/main/schoolbaseddetail?id=${id}`)
+  }
+
   return (
     <div id="Famous">
       <Breadcrumb
@@ -174,7 +179,7 @@ function Famous(props) {
                       alt="paper_icon"
                     />
                     <div className="info_box">
-                      <div className="title">{item?.title}</div>
+                      <div className="title" onClick={() => topaperdetail(item?.id)}>{item?.title}</div>
                       <div className="bot_info">
                         <img
                           className="time_icon"

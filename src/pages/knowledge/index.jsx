@@ -357,7 +357,7 @@ function Knowledge(props) {
               </div>
             </div>
             <div className="tip_box">
-              <div className="left_boxs">
+              {/* <div className="left_boxs">
                 <div className="timer">
                   <span>时间</span>
                   <img
@@ -373,8 +373,8 @@ function Knowledge(props) {
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/down.png"
                     alt="down"
                   />
-                </div>
-              </div>
+                </div> 
+              </div> */}
               <div className="right_boxs">
                 <div className="total">
                   共计：{Knowledge?.exercisesLists?.total}题

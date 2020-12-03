@@ -128,12 +128,12 @@ function Schoolbaseddetail(props) {
           />
           首页
         </Breadcrumb.Item>
-        <Breadcrumb.Item
+        {/* <Breadcrumb.Item
           style={{ cursor: 'pointer', color: '#222' }}
           onClick={handleClick}
         >
           校本试卷
-        </Breadcrumb.Item>
+        </Breadcrumb.Item> */}
         <Breadcrumb.Item style={{ cursor: 'pointer', color: '#222' }}>
           试卷详情
         </Breadcrumb.Item>

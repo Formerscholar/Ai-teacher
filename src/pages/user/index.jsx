@@ -632,7 +632,7 @@ function User(props) {
         ) : (
           <div className="right_box">
             <div className="upload_title">
-              <div className="upload_left_text">上传的试卷</div>
+              <div className="upload_left_text">上传试卷列表</div>
               {isUploadPaper ? (
                 ''
               ) : (
@@ -641,12 +641,7 @@ function User(props) {
                   className="upload_btn"
                   onClick={uploadPaper}
                 >
-                  <img
-                    className="btn_plus"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/btn_plus.png"
-                    alt="btn_plus"
-                  />
-                  上传的试卷
+                  上传试卷
                 </Button>
               )}
             </div>

@@ -62,7 +62,7 @@ const info_menu = [
   {
     img:
       'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/Group_icon_small.png',
-    text: '上传试卷',
+    text: '上传的试卷',
   },
 ]
 

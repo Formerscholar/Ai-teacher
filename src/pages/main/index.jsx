@@ -22,31 +22,55 @@ function Main(props) {
     history.push(`/main/schoolbaseddetail?id=${id}`)
   }
 
+  const toPage = (idx) => {
+    switch (idx) {
+      case 0:
+        // history.push('/main/schoolbased')
+        break
+      case 1:
+        localStorage.setItem('menuIndex', 1)
+        history.push('/main/class')
+        break
+      case 2:
+        // history.push('/main/schoolbased')
+        break
+      case 3:
+        // history.push('/main/schoolbased')
+        break
+      case 4:
+        // history.push('/main/schoolbased')
+        break
+
+      default:
+        break
+    }
+  }
+
   return (
     <div id="Main">
       <div className="topbox">
         {/* 学科 */}
-        <div className="subject">
+        <div className="subject" onClick={() => toPage(0)}>
           <div className="title">{homeInfo?.teacher?.get_subject?.title}</div>
           <div className="text">学科</div>
         </div>
         {/* 班级 */}
-        <div className="grade">
+        <div className="grade" onClick={() => toPage(1)}>
           <div className="title">{homeInfo?.teacher?.teamCount}</div>
           <div className="text">班级</div>
         </div>
         {/* 学生 */}
-        <div className="student">
+        <div className="student" onClick={() => toPage(2)}>
           <div className="title">{homeInfo?.teacher?.studentCount}</div>
           <div className="text">学生</div>
         </div>
         {/* 积分 */}
-        <div className="integral">
+        <div className="integral" onClick={() => toPage(3)}>
           <div className="title">{homeInfo?.teacher?.points}</div>
           <div className="text">积分</div>
         </div>
         {/* 我的试卷 */}
-        <div className="paper">
+        <div className="paper" onClick={() => toPage(4)}>
           <div className="title">{homeInfo?.teacher?.myExam}</div>
           <div className="text">我的试卷</div>
         </div>
@@ -65,14 +89,18 @@ function Main(props) {
         <div className="botbox">
           {homeInfo?.schoolResources?.map((item) => {
             return (
-              <div className="items" key={item?.id}>
+              <div
+                className="items"
+                key={item?.id}
+                onClick={() => topaperdetail(item?.id)}
+              >
                 <div className="left_text">
                   <img
                     className="paper_icon"
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
                     alt="paper_icon"
                   />
-                  <span>{item?.name}</span>
+                  <span>{item?.title}</span>
                 </div>
                 <div className="right_time">
                   {setTimerType(item?.add_time * 1000)}

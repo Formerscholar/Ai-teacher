@@ -199,7 +199,12 @@ function AI_header({ homeInfo, props, setData }) {
         </div>
       </div>
 
-      <Carousel effect="fade" autoplay autoplaySpeed={2888} dots={false}>
+      <Carousel
+        effect="fade"
+        autoplay
+        autoplaySpeed={2888}
+        dots={false}
+      >
         {banner_img?.map((item, idx) => {
           return <img className="banner" key={idx} src={item} alt="banner" />
         })}
