@@ -16,6 +16,7 @@ import {
 } from '@/services/knowledge'
 import { setTimerType } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
+import { downDOCURL } from '@/conf'
 
 const { Option } = Select
 
@@ -28,6 +29,9 @@ function Mypaperlist(props) {
   const [SyncId, setSyncId] = useState(0)
   const [SyncTime, setSyncTime] = useState('')
   const [examId, setexamId] = useState(0)
+  const [examtitle, setexamexamtitle] = useState('')
+  const [formt, setformt] = useState('doc')
+  const [size, setsize] = useState('A4')
 
   useEffect(() => {
     getPapersListData()
@@ -55,6 +59,13 @@ function Mypaperlist(props) {
     history.push('/main/index')
   }
 
+  const onChange = (e) => {
+    setformt(e.target.value)
+  }
+
+  const onChanges = (e) => {
+    setsize(e.target.value)
+  }
   /**
    *
    *  选择change事件
@@ -79,9 +90,9 @@ function Mypaperlist(props) {
     }
   }
 
-  const downClick = (id) => {
+  const downClick = (id, title) => {
     setexamId(id)
-    console.log('打开弹窗')
+    setexamexamtitle(title)
     setOpens(true)
   }
 
@@ -98,6 +109,22 @@ function Mypaperlist(props) {
   const closeClick = () => {
     setOpen(false)
   }
+
+  const closeClicks = () => {
+    setOpens(false)
+  }
+
+  /**
+   *
+   *  下载确认点击
+   */
+  const closeClickss = async () => {
+    window.open(
+      `${downDOCURL}/teacher/organizingPapers?paper_type=${size}&exam_id=${examId}&extension=${formt}`
+    )
+    setOpens(false)
+  }
+
   const confirmClick = async () => {
     const { code, msg } = await paperToBased({
       id: SyncId,
@@ -201,7 +228,7 @@ function Mypaperlist(props) {
                   <Button
                     className="download"
                     type="primary"
-                    onClick={() => downClick(item?.id)}
+                    onClick={() => downClick(item?.id, item?.title)}
                   >
                     <img
                       className="down_btn"
@@ -250,14 +277,58 @@ function Mypaperlist(props) {
       <T_modelbox
         isOpen={Opens}
         title="【下载确认】"
-        closeClick={closeClick}
+        closeClick={closeClicks}
         width="62.64rem"
         height="31.57rem"
       >
         <div id="tmodelbox" className="downbox">
-          <div className="title">title</div>
-          <div className="body_text">body_text</div>
-          <Button type="primary" className="btn" onClick={closeClick}>
+          <div className="title">{examtitle}</div>
+          <div className="body_text">
+            {/* 文件格式 */}
+            <div className="fileformt">
+              <span className="title_txt">文件格式:</span>
+              <Radio.Group onChange={onChange} value={formt}>
+                <Radio
+                  className="itemradio itemradios"
+                  style={{ display: 'block' }}
+                  value="doc"
+                >
+                  <span className="context">
+                    <span className="span">DOC</span>
+                    <span className="tip">
+                      doc格式文档，公式为图片，不可编辑公式
+                    </span>
+                  </span>
+                </Radio>
+                <Radio
+                  className="itemradio itemradios"
+                  style={{ display: 'block' }}
+                  value="docx"
+                >
+                  <span className="context">
+                    <span className="span">DOCX</span>
+                    <span className="tip">docx格式文档，可编辑公式</span>
+                  </span>
+                </Radio>
+              </Radio.Group>
+            </div>
+            {/* 纸张大小 */}
+            <div className="fileformt">
+              <span className="title_txt">纸张大小:</span>
+              <Radio.Group onChange={onChanges} value={size}>
+                <Radio className="itemradio" value="A4">
+                  A4
+                </Radio>
+                <Radio className="itemradio" value="A3">
+                  A3（双栏）
+                </Radio>
+                <Radio className="itemradio" value="B4">
+                  B4（双栏）
+                </Radio>
+              </Radio.Group>
+            </div>
+          </div>
+          <Button type="primary" className="btn" onClick={closeClickss}>
             确定
           </Button>
         </div>

@@ -140,7 +140,7 @@ function Questiondetails(props) {
               className="refsh_icon"
               src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/refsh_icon.png"
               alt="refsh_icon"
-            />{' '}
+            />
             换一批
           </div>
         </div>

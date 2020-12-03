@@ -739,15 +739,15 @@ function Mypaper(props) {
       {/* 模态框 */}
       <T_modelbox
         isOpen={Opens}
-        title="【设置得分】"
+        title="【温馨提示】"
         closeClick={closeClicks}
         width="41.71rem"
         height="22.14rem"
       >
         <div id="tmodelbox">
           <div className="title"></div>
-          <div className="body_text">
-            <span>分数:</span>
+          <div className="body_text crosbox">
+            <span className="span">分数:</span>
             <Input
               type="number"
               value={Scoredata}

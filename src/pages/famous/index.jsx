@@ -15,9 +15,8 @@ function Famous(props) {
   const [Open, setOpen] = useState(false)
   const [RadioId, setRadioId] = useState('')
   const [downfile, setdownfile] = useState([])
-  const [formData, setformData] = useState('')
   const [msgErr, setmsgErr] = useState(false)
-  const formRefs = useRef(null)
+  const [dwonURL, setdwonURL] = useState('')
 
   useEffect(() => {
     getResourcesList()
@@ -96,7 +95,7 @@ function Famous(props) {
     const { value } = e.target
     setRadioId(value)
     if (downfile[value]) {
-      setformData(downURL + downfile[value])
+      setdwonURL(downURL + downfile[value])
       setmsgErr(false)
     } else {
       setmsgErr(true)
@@ -107,7 +106,7 @@ function Famous(props) {
     if (msgErr) {
       message.error('暂无此试卷!')
     } else {
-      formRefs.current.submit()
+      window.open(dwonURL)
     }
     setRadioId('')
     setOpen(false)
@@ -249,7 +248,6 @@ function Famous(props) {
           </Button>
         </div>
       </T_modelbox>
-      <form action={formData} ref={formRefs} method="get" hidden></form>
     </div>
   )
 }

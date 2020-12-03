@@ -1,12 +1,13 @@
 import React, { memo, useState, useEffect } from 'react'
 import './AI_header.less'
-import { Avatar, message, Menu, Dropdown } from 'antd'
+import { Avatar, message, Menu, Dropdown, Carousel } from 'antd'
 import { getLogout } from '@/services/login'
 import { headMenu } from '@/conf'
 import { getCookie, delCookie } from '@/utils'
 import { gethome } from '@/services/home'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
+import { banner_img } from '@/conf'
 
 const araList = ['data', 'integral', 'download', 'volume', 'logout']
 const araLists = ['Chapter', 'Knowledge']
@@ -197,11 +198,12 @@ function AI_header({ homeInfo, props, setData }) {
           </Dropdown>
         </div>
       </div>
-      <img
-        className="banner"
-        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner.png"
-        alt="banner"
-      />
+
+      <Carousel effect="fade" autoplay autoplaySpeed={2888} dots={false}>
+        {banner_img?.map((item, idx) => {
+          return <img className="banner" key={idx} src={item} alt="banner" />
+        })}
+      </Carousel>
     </div>
   )
 }

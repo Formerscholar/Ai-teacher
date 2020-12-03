@@ -41,6 +41,7 @@ const headMenu = [
 ]
 
 const downURL = 'http://aictb.com'
+const downDOCURL = 'http://test.aictb.com'
 
 const info_menu = [
   {
@@ -65,6 +66,11 @@ const info_menu = [
   },
 ]
 
+const banner_img = [
+  'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner.png',
+  'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner1.png',
+]
+
 export {
   baseURL,
   phoneRegular,
@@ -73,4 +79,6 @@ export {
   headMenu,
   downURL,
   info_menu,
+  banner_img,
+  downDOCURL
 }
