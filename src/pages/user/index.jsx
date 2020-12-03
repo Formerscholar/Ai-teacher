@@ -253,7 +253,6 @@ function User(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', 0)
     history.push('/main/index')
   }
 

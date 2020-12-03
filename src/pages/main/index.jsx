@@ -8,17 +8,14 @@ function Main(props) {
   const { history, homeInfo } = props
 
   const toresources = () => {
-    localStorage.setItem('menuIndex', 3)
     history.push('/main/famous')
   }
 
   const topaper = () => {
-    localStorage.setItem('menuIndex', 4)
     history.push('/main/schoolbased')
   }
 
   const topaperdetail = (id) => {
-    localStorage.setItem('menuIndex', 4)
     history.push(`/main/schoolbaseddetail?id=${id}`)
   }
 
@@ -28,7 +25,6 @@ function Main(props) {
         // history.push('/main/schoolbased')
         break
       case 1:
-        localStorage.setItem('menuIndex', 1)
         history.push('/main/class')
         break
       case 2:

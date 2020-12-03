@@ -129,7 +129,6 @@ function Mypaper(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', 0)
     history.push('/main/index')
   }
 
@@ -142,7 +141,6 @@ function Mypaper(props) {
   }
 
   const toknowledge = () => {
-    localStorage.setItem('menuIndex', 5)
     history.push('/main/knowledge')
   }
 

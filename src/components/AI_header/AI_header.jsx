@@ -44,7 +44,6 @@ function AI_header({ homeInfo, props, setData }) {
   }
 
   const handleClose = (info) => {
-    localStorage.setItem('menuIndex', -1)
     const datafunc = () => {
       history.push('/main/user?type=0')
     }

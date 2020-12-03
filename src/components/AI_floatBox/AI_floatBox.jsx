@@ -43,7 +43,6 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
   }
 
   const tocomposition = () => {
-    localStorage.setItem('menuIndex', 6)
     history.push('/main/mypaper')
   }
 

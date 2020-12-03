@@ -114,12 +114,10 @@ function Famous(props) {
 
   const handleClick = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', '0')
     history.push('/main/index')
   }
 
   const topaperdetail = (id) => {
-    localStorage.setItem('menuIndex', 4)
     history.push(`/main/schoolbaseddetail?id=${id}`)
   }
 

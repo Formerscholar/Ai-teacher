@@ -75,8 +75,55 @@ const Mypaperlist = Loadable({
   loading: G_spin,
 })
 
-
 const BasicRoute = (props) => {
+  window.scrollTo(0,0);
+  const { location } = props
+  switch (location.pathname) {
+    case '/main/index':
+      localStorage.setItem('menuIndex', 0)
+      break
+    case '/main/user':
+      localStorage.setItem('menuIndex', 0)
+      break
+    case '/main/class':
+      localStorage.setItem('menuIndex', 1)
+      break
+    case '/main/famous':
+      localStorage.setItem('menuIndex', 3)
+      break
+    case '/main/schoolbased':
+      localStorage.setItem('menuIndex', 4)
+      break
+    case '/main/knowledge':
+      localStorage.setItem('menuIndex', 5)
+      break
+    case '/main/mypaper':
+      localStorage.setItem('menuIndex', 6)
+      break
+    case '/main/classdetail':
+      localStorage.setItem('menuIndex', 1)
+      break
+    case '/main/chapter':
+      localStorage.setItem('menuIndex', 5)
+      break
+    case '/main/questiondetails':
+      localStorage.setItem('menuIndex', 5)
+      break
+    case '/main/schoolbaseddetail':
+      localStorage.setItem('menuIndex', 4)
+      break
+    case '/main/studyreport':
+      localStorage.setItem('menuIndex', 1)
+      break
+    case '/main/classreport':
+      localStorage.setItem('menuIndex', 2)
+      break
+    case '/main/mypaperlist':
+      localStorage.setItem('menuIndex', 6)
+      break
+    default:
+      break
+  }
   return (
     <>
       <AI_header props={props} />

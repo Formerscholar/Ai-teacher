@@ -134,19 +134,16 @@ function StudyReport(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', 0)
     history.push('/main/index')
   }
 
   const handleClicks = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', 1)
     history.push('/main/class')
   }
 
   const handleClickss = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', 1)
     history.push(`/main/classdetail?id=${iid}`)
   }
 
@@ -189,7 +186,6 @@ function StudyReport(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    localStorage.setItem('menuIndex', 4)
     history.push(`/main/questiondetails?id=${id}`)
   }
 

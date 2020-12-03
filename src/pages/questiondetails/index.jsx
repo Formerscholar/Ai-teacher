@@ -120,11 +120,11 @@ function Questiondetails(props) {
             </div>
             <div className="right_box">
               <Button className="add" variant="contained">
-                <span>+</span>
+                <em>+</em>
                 组卷
               </Button>
               {/* <Button className="sub" variant="contained">
-                  <span>-</span>
+                  <em>-</em>
                   移除
                 </Button> */}
             </div>
@@ -196,11 +196,11 @@ function Questiondetails(props) {
                       <span>试题详情</span>
                     </div>
                     <Button className="add" variant="contained">
-                      <span>+</span>
+                      <em>+</em>
                       组卷
                     </Button>
                     {/* <Button className="sub" variant="contained">
-                  <span>-</span>
+                  <em>-</em>
                   移除
                 </Button> */}
                   </div>

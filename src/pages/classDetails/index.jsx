@@ -69,7 +69,6 @@ function ClassDetails(props) {
   }
 
   const StudyReportClick = (id, name) => {
-    localStorage.setItem('menuIndex', 2)
     history.push(
       `/main/studyreport?id=${id}&iid=${iid}&name=${encodeURI(name)}`
     )

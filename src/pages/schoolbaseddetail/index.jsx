@@ -46,7 +46,6 @@ function Schoolbaseddetail(props) {
   }
   const handleClicks = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', 0)
     history.push('/main/index')
   }
 

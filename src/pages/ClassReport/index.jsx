@@ -135,7 +135,6 @@ function ClassReport(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    localStorage.setItem('menuIndex', 0)
     history.push('/main/index')
   }
 
@@ -178,7 +177,6 @@ function ClassReport(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    localStorage.setItem('menuIndex', 4)
     history.push(`/main/questiondetails?id=${id}`)
   }
 
