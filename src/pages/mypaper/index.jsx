@@ -142,6 +142,7 @@ function Mypaper(props) {
   }
 
   const toknowledge = () => {
+    localStorage.setItem('menuIndex', 5)
     history.push('/main/knowledge')
   }
 
@@ -548,14 +549,14 @@ function Mypaper(props) {
                               />
                               <span className="text">设置得分</span>
                             </div>
-                            <div className="btn_item refsh_btn">
+                            {/* <div className="btn_item refsh_btn">
                               <img
                                 className="items_refsh"
                                 src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_refsh.png"
                                 alt="items_refsh"
                               />
                               <span className="text">换一题</span>
-                            </div>
+                            </div> */}
                             <div
                               className="btn_item moveup_btn"
                               onClick={() => editsort(1, item2?.id)}
