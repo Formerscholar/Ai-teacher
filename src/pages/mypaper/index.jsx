@@ -6,6 +6,9 @@ import {
   delExamBasket,
   addPapers,
   clearExamBasket,
+  editPapers,
+  editBasketSort,
+  editBasketScore,
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -15,16 +18,19 @@ import {
   SET_TOPIC,
 } from '@/store/actionType'
 import T_modelbox from '@/common/T_modelbox'
+import { splitSearch } from '@/utils'
 const { TextArea } = Input
 
 function Mypaper(props) {
   const {
     history,
+    location,
     addtopicData,
     subtopicData,
     volumeTopicCount,
     settopicData,
   } = props
+  const search = splitSearch(location.search)
   const [checkitems, setcheckitems] = useState([])
   const [ExercisesData, setExercisesData] = useState({})
   const [tipText, setTipText] = useState('')
@@ -32,10 +38,12 @@ function Mypaper(props) {
   const [subhead, setsubhead] = useState('')
   const [prompt, setprompt] = useState('')
   const [marked, setmarked] = useState('')
+  const [ScoreId, setScoreId] = useState(0)
+  const [Scoredata, setScoredata] = useState(0)
   const [titlewarp, settitlewarp] = useState('第Ⅰ卷（选择题）')
   const [annotation, setannotation] = useState('第I卷的注释')
-
   const [Open, setOpen] = useState(false)
+  const [Opens, setOpens] = useState(false)
 
   useEffect(() => {
     getPapers()
@@ -43,9 +51,38 @@ function Mypaper(props) {
   }, [volumeTopicCount])
 
   const getPapers = async () => {
-    const { code, data, msg } = await getPapersExercises()
+    const { code, data, msg } = await getPapersExercises({
+      id: search.id,
+    })
     if (code === 200) {
       setExercisesData(data)
+      if (search.id) {
+        let Arr = []
+        console.log('初始化试卷信息', data?.exam)
+        setPapertitle(data?.exam?.title)
+        if (data?.exam?.be_careful) {
+          Arr.push('6')
+          setmarked(data?.exam?.be_careful)
+        }
+        if (data?.exam?.exam_about) {
+          Arr.push('3')
+          setprompt(data?.exam?.exam_about)
+        }
+        if (data?.exam?.is_fill_in) {
+          Arr.push('5')
+        }
+        if (data?.exam?.is_question_score) {
+          Arr.push('8')
+        }
+        if (data?.exam?.is_total_score) {
+          Arr.push('2')
+        }
+        if (data?.exam?.name) {
+          Arr.push('1')
+          setsubhead(data?.exam?.name)
+        }
+        setcheckitems(Arr)
+      }
     } else {
       setExercisesData(data)
       message.error(msg)
@@ -129,7 +166,22 @@ function Mypaper(props) {
   const closeClick = () => {
     setOpen(false)
   }
-
+  const closeClicks = () => {
+    setOpens(false)
+  }
+  const closeClickss = async () => {
+    const { code, msg } = await editBasketScore({
+      id: ScoreId,
+      score: Scoredata,
+    })
+    if (code === 200) {
+      message.success(msg)
+      getPapers()
+    } else {
+      message.error(msg)
+    }
+    setOpens(false)
+  }
   // 计算总分数
   const CalcScore = () => {
     let num = 0
@@ -157,6 +209,25 @@ function Mypaper(props) {
     }
   }
 
+  // 题目排序
+  const editsort = async (sort, id) => {
+    const { code, msg } = await editBasketSort({
+      id,
+      sort,
+    })
+    if (code === 200) {
+      message.success(msg)
+      getPapers()
+    } else {
+      message.error(msg)
+    }
+  }
+
+  const setScoreClick = (id) => {
+    setScoreId(id)
+    setOpens(true)
+  }
+
   const Completevolume = async () => {
     let is_fill_in = 0,
       is_total_score = 0,
@@ -176,7 +247,6 @@ function Mypaper(props) {
           break
       }
     })
-    // ExercisesData
     let exercises = [
       {
         parent_id: 0,
@@ -204,21 +274,41 @@ function Mypaper(props) {
       })
     })
     console.log(exercises)
-    const { code, msg } = await addPapers({
-      title: Papertitle,
-      name: subhead,
-      exam_about: prompt,
-      be_careful: marked,
-      is_fill_in,
-      is_total_score,
-      is_question_score,
-      exercises,
-    })
-    if (code === 200) {
-      message.success(msg)
-      history.push('/main/mypaperlist')
+    if (search.id) {
+      const { code, msg } = await editPapers({
+        title: Papertitle,
+        name: subhead,
+        exam_about: prompt,
+        be_careful: marked,
+        is_fill_in,
+        is_total_score,
+        is_question_score,
+        exercises,
+        id: search.id,
+      })
+      if (code === 200) {
+        message.success(msg)
+        history.push('/main/mypaperlist')
+      } else {
+        message.error(msg)
+      }
     } else {
-      message.error(msg)
+      const { code, msg } = await addPapers({
+        title: Papertitle,
+        name: subhead,
+        exam_about: prompt,
+        be_careful: marked,
+        is_fill_in,
+        is_total_score,
+        is_question_score,
+        exercises,
+      })
+      if (code === 200) {
+        message.success(msg)
+        history.push('/main/mypaperlist')
+      } else {
+        message.error(msg)
+      }
     }
   }
 
@@ -447,7 +537,10 @@ function Mypaper(props) {
                               />
                               <span className="text">查看答案</span>
                             </div>
-                            <div className="btn_item set_btn">
+                            <div
+                              className="btn_item set_btn"
+                              onClick={() => setScoreClick(item2?.id)}
+                            >
                               <img
                                 className="items_set"
                                 src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_set.png"
@@ -463,7 +556,10 @@ function Mypaper(props) {
                               />
                               <span className="text">换一题</span>
                             </div>
-                            <div className="btn_item moveup_btn">
+                            <div
+                              className="btn_item moveup_btn"
+                              onClick={() => editsort(1, item2?.id)}
+                            >
                               <img
                                 className="items_moveup"
                                 src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_moveup.png"
@@ -471,7 +567,10 @@ function Mypaper(props) {
                               />
                               <span className="text">上移</span>
                             </div>
-                            <div className="btn_item movedow_btn">
+                            <div
+                              className="btn_item movedow_btn"
+                              onClick={() => editsort(2, item2?.id)}
+                            >
                               <img
                                 className="items_movedown"
                                 src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_movedown.png"
@@ -514,6 +613,7 @@ function Mypaper(props) {
               className="CheckboxGroup"
               style={{ width: '100%' }}
               onChange={onChange}
+              value={checkitems}
             >
               <Row>
                 <Col span={12}>
@@ -633,6 +733,31 @@ function Mypaper(props) {
           <div className="body_text">{tipText}</div>
           <Button type="primary" className="btn" onClick={closeClick}>
             我知道了
+          </Button>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Opens}
+        title="【设置得分】"
+        closeClick={closeClicks}
+        width="41.71rem"
+        height="22.14rem"
+      >
+        <div id="tmodelbox">
+          <div className="title"></div>
+          <div className="body_text">
+            <span>分数:</span>
+            <Input
+              type="number"
+              value={Scoredata}
+              onChange={(e) => {
+                setScoredata(e.target.value)
+              }}
+            />
+          </div>
+          <Button type="primary" className="btn" onClick={closeClickss}>
+            确定
           </Button>
         </div>
       </T_modelbox>

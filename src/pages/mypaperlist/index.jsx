@@ -1,7 +1,19 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { Breadcrumb, Select, Button, message, DatePicker, Space } from 'antd'
-import { getPapersList, paperToBased } from '@/services/knowledge'
+import {
+  Breadcrumb,
+  Select,
+  Button,
+  message,
+  DatePicker,
+  Space,
+  Radio,
+} from 'antd'
+import {
+  getPapersList,
+  paperToBased,
+  paperToBasket,
+} from '@/services/knowledge'
 import { setTimerType } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
 
@@ -12,8 +24,10 @@ function Mypaperlist(props) {
   const [PapersList, setPapersList] = useState({})
   const [selectTime, setSelectTime] = useState('0')
   const [Open, setOpen] = useState(false)
+  const [Opens, setOpens] = useState(false)
   const [SyncId, setSyncId] = useState(0)
   const [SyncTime, setSyncTime] = useState('')
+  const [examId, setexamId] = useState(0)
 
   useEffect(() => {
     getPapersListData()
@@ -54,8 +68,21 @@ function Mypaperlist(props) {
     getPapersListData(selectTime)
   }
 
-  const editpaper = (id) => {
-    history.push(`/main/mypaperdetail?id=${id}`)
+  const editpaper = async (id) => {
+    const { code, msg } = await paperToBasket({
+      id,
+    })
+    if (code === 200) {
+      history.push(`/main/mypaper?id=${id}`)
+    } else {
+      message.error(msg)
+    }
+  }
+
+  const downClick = (id) => {
+    setexamId(id)
+    console.log('打开弹窗')
+    setOpens(true)
   }
 
   /**
@@ -171,7 +198,11 @@ function Mypaperlist(props) {
                   </div>
                 </div>
                 <div className="right_btns">
-                  <Button className="download" type="primary">
+                  <Button
+                    className="download"
+                    type="primary"
+                    onClick={() => downClick(item?.id)}
+                  >
                     <img
                       className="down_btn"
                       src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/down_btn.png"
@@ -211,6 +242,22 @@ function Mypaperlist(props) {
           </Space>
 
           <Button type="primary" className="btn" onClick={confirmClick}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Opens}
+        title="【下载确认】"
+        closeClick={closeClick}
+        width="62.64rem"
+        height="31.57rem"
+      >
+        <div id="tmodelbox" className="downbox">
+          <div className="title">title</div>
+          <div className="body_text">body_text</div>
+          <Button type="primary" className="btn" onClick={closeClick}>
             确定
           </Button>
         </div>

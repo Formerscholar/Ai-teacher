@@ -75,10 +75,7 @@ const Mypaperlist = Loadable({
   loading: G_spin,
 })
 
-const Mypaperdetail = Loadable({
-  loader: () => import('@/pages/mypaperdetail'),
-  loading: G_spin,
-})
+
 const BasicRoute = (props) => {
   return (
     <>
@@ -97,7 +94,6 @@ const BasicRoute = (props) => {
       <Route path="/main/studyreport" component={StudyReport} />
       <Route path="/main/classreport" component={ClassReport} />
       <Route path="/main/mypaperlist" component={Mypaperlist} />
-      <Route path="/main/mypaperdetail" component={Mypaperdetail} />
       <AI_footer />
     </>
   )

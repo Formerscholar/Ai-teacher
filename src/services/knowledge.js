@@ -80,7 +80,6 @@ export function paperToBased(params) {
   })
 }
 
-
 export function addPapers(data) {
   return request({
     url: '/addPapers',
@@ -89,9 +88,41 @@ export function addPapers(data) {
   })
 }
 
+export function editPapers(data) {
+  return request({
+    url: '/editPapers',
+    method: 'POST',
+    data: Qs.stringify(data),
+  })
+}
+
 export function getDetailPapers(params) {
   return request({
     url: '/getDetailPapers',
+    method: 'GET',
+    params,
+  })
+}
+
+export function paperToBasket(params) {
+  return request({
+    url: '/paperToBasket',
+    method: 'GET',
+    params,
+  })
+}
+
+export function editBasketSort(params) {
+  return request({
+    url: '/editBasketSort',
+    method: 'GET',
+    params,
+  })
+}
+
+export function editBasketScore(params) {
+  return request({
+    url: '/editBasketScore',
     method: 'GET',
     params,
   })

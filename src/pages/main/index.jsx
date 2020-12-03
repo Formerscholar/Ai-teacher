@@ -1,30 +1,142 @@
 import React, { memo } from 'react'
 import './index.less'
-import M_InformationSummary from './components/M_InformationSummary/M_InformationSummary'
+import { connect } from 'react-redux'
+import { GET_HOME_INFO } from '@/store/actionType'
+import { setTimerType } from '@/utils'
 
 function Main(props) {
+  const { history, homeInfo } = props
+
+  const toresources = () => {
+    localStorage.setItem('menuIndex', 3)
+    history.push('/main/famous')
+  }
+
+  const topaper = () => {
+    localStorage.setItem('menuIndex', 4)
+    history.push('/main/schoolbased')
+  }
+
+  const topaperdetail = (id) => {
+    localStorage.setItem('menuIndex', 4)
+    history.push(`/main/schoolbaseddetail?id=${id}`)
+  }
+
   return (
     <div id="Main">
-      <M_InformationSummary />
-      <div id="M_FamousSchoolResources">
+      <div className="topbox">
+        {/* 学科 */}
+        <div className="subject">
+          <div className="title">{homeInfo?.teacher?.get_subject?.title}</div>
+          <div className="text">学科</div>
+        </div>
+        {/* 班级 */}
+        <div className="grade">
+          <div className="title">{homeInfo?.teacher?.teamCount}</div>
+          <div className="text">班级</div>
+        </div>
+        {/* 学生 */}
+        <div className="student">
+          <div className="title">{homeInfo?.teacher?.studentCount}</div>
+          <div className="text">学生</div>
+        </div>
+        {/* 积分 */}
+        <div className="integral">
+          <div className="title">{homeInfo?.teacher?.points}</div>
+          <div className="text">积分</div>
+        </div>
+        {/* 我的试卷 */}
+        <div className="paper">
+          <div className="title">{homeInfo?.teacher?.myExam}</div>
+          <div className="text">我的试卷</div>
+        </div>
+      </div>
+      {/* 名校资源 */}
+      <div className="resources">
         <div className="top_box">
-          <div className="left_text">
-            <div className="title">名校资源</div>
-            <div className="tip">14份</div>
+          <div className="leftbox">
+            <div className="name">名校资源</div>
+            <div className="crunt">{homeInfo?.schoolResourcesCount}份</div>
           </div>
-          <div className="right_box">
-            <img
-              className="refsh_icon"
-              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/refsh_icon.png"
-              alt="refsh_icon"
-            />
-            <span className="text">刷新</span>
+          <div className="rightbox" onClick={toresources}>
+            更多<span>&gt;</span>
           </div>
         </div>
-        <div className="btn_box"></div>
-        <div className="more_btn"></div>
+        <div className="botbox">
+          {homeInfo?.schoolResources?.map((item) => {
+            return (
+              <div className="items" key={item?.id}>
+                <div className="left_text">
+                  <img
+                    className="paper_icon"
+                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
+                    alt="paper_icon"
+                  />
+                  <span>{item?.name}</span>
+                </div>
+                <div className="right_time">
+                  {setTimerType(item?.add_time * 1000)}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+      {/* 校本试卷 */}
+      <div className="resources" style={{ marginBottom: '3.64rem' }}>
+        <div className="top_box">
+          <div className="leftbox">
+            <div className="name">校本试卷</div>
+            <div className="crunt">{homeInfo?.examsSchoolCount}份</div>
+          </div>
+          <div className="rightbox" onClick={topaper}>
+            更多<span>&gt;</span>
+          </div>
+        </div>
+        <div className="botbox">
+          {homeInfo?.examsSchool?.map((item) => {
+            return (
+              <div
+                className="items"
+                key={item?.id}
+                onClick={() => topaperdetail(item?.id)}
+              >
+                <div className="left_text">
+                  <img
+                    className="paper_icon"
+                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
+                    alt="paper_icon"
+                  />
+                  <span>{item?.get_base?.name}</span>
+                </div>
+                <div className="right_time">
+                  {setTimerType(item?.add_time * 1000)}
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
 }
-export default memo(Main)
+
+const mapStateToProps = (state) => {
+  return {
+    homeInfo: state.homeInfo,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setData(value) {
+      let action = {
+        type: GET_HOME_INFO,
+        value: value,
+      }
+      dispatch(action)
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(Main))
