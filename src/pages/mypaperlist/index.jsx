@@ -2,7 +2,6 @@ import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import {
   Breadcrumb,
-  Select,
   Button,
   message,
   DatePicker,
@@ -18,30 +17,31 @@ import {
 import { setTimerType } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
 import { downDOCURL } from '@/conf'
-
-const { Option } = Select
+import moment from 'moment'
 
 function Mypaperlist(props) {
   const { history } = props
   const [PapersList, setPapersList] = useState({})
-  const [selectTime, setSelectTime] = useState('0')
   const [Open, setOpen] = useState(false)
   const [Opens, setOpens] = useState(false)
+  const [Openss, setOpenss] = useState(false)
   const [SyncId, setSyncId] = useState(0)
   const [SyncTime, setSyncTime] = useState('')
   const [examId, setexamId] = useState(0)
   const [examtitle, setexamexamtitle] = useState('')
   const [formt, setformt] = useState('doc')
   const [size, setsize] = useState('A4')
+  const [searchData, setsearchData] = useState('')
+  const [reedId, setreedId] = useState(0)
 
   useEffect(() => {
     getPapersListData()
     return () => {}
   }, [])
 
-  const getPapersListData = async (dataline = 0) => {
+  const getPapersListData = async (title = '') => {
     const { code, data, msg } = await getPapersList({
-      data: dataline,
+      title,
     })
     if (code === 200) {
       setPapersList(data)
@@ -66,28 +66,31 @@ function Mypaperlist(props) {
   const onChanges = (e) => {
     setsize(e.target.value)
   }
-  /**
-   *
-   *  选择change事件
-   * @param {*} value
-   */
-  function handleChange(value) {
-    setSelectTime(value)
+
+  function handleChange(e) {
+    const { value } = e.target
+    setsearchData(value)
   }
 
   const searchClick = () => {
-    getPapersListData(selectTime)
+    getPapersListData(searchData)
   }
 
   const editpaper = async (id) => {
+    setreedId(id)
+    setOpenss(true)
+  }
+
+  const confirmClickss = async () => {
     const { code, msg } = await paperToBasket({
-      id,
+      id: reedId,
     })
     if (code === 200) {
-      history.push(`/main/mypaper?id=${id}`)
+      history.push(`/main/mypaper?id=${reedId}`)
     } else {
       message.error(msg)
     }
+    setOpenss(false)
   }
 
   const downClick = (id, title) => {
@@ -113,7 +116,9 @@ function Mypaperlist(props) {
   const closeClicks = () => {
     setOpens(false)
   }
-
+  const closeClicksss = () => {
+    setOpenss(false)
+  }
   /**
    *
    *  下载确认点击
@@ -185,7 +190,12 @@ function Mypaperlist(props) {
               <Option value="180">半年以内</Option>
               <Option value="365">一年以内</Option>
             </Select> */}
-            <Input className="timeSelect" placeholder="试卷" />
+            <Input
+              className="timeSelect"
+              value={searchData}
+              onChange={handleChange}
+              placeholder="试卷"
+            />
             <Button type="primary" className="search" onClick={searchClick}>
               搜索
             </Button>
@@ -265,8 +275,13 @@ function Mypaperlist(props) {
         height="19.93rem"
       >
         <div id="tmodelbox">
-          <Space className="title" direction="vertical" size={35}>
-            <DatePicker showTime onOk={onOk} />
+          <div className="title">选择上线时间</div>
+          <Space className="Space" direction="vertical" size={35}>
+            <DatePicker
+              showTime
+              onOk={onOk}
+              defaultValue={moment(new Date())}
+            />
           </Space>
 
           <Button type="primary" className="btn" onClick={confirmClick}>
@@ -330,6 +345,21 @@ function Mypaperlist(props) {
             </div>
           </div>
           <Button type="primary" className="btn" onClick={closeClickss}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Openss}
+        title="【温馨提示】"
+        closeClick={closeClicksss}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox" className="reedit">
+          <div className="title">重新编辑将清空试题篮</div>
+          <Button type="primary" className="btn" onClick={confirmClickss}>
             确定
           </Button>
         </div>
