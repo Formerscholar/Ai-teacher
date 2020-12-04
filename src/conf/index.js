@@ -66,10 +66,6 @@ const info_menu = [
   },
 ]
 
-const banner_img = [
-  'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner.png',
-  'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner1.png',
-]
 
 export {
   baseURL,
@@ -79,6 +75,5 @@ export {
   headMenu,
   downURL,
   info_menu,
-  banner_img,
   downDOCURL
 }

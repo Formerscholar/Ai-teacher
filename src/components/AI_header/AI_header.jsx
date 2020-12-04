@@ -1,20 +1,19 @@
 import React, { memo, useState, useEffect } from 'react'
 import './AI_header.less'
-import { Avatar, message, Menu, Dropdown, Carousel } from 'antd'
+import { Avatar, message, Menu, Dropdown } from 'antd'
 import { getLogout } from '@/services/login'
 import { headMenu } from '@/conf'
 import { getCookie, delCookie } from '@/utils'
 import { gethome } from '@/services/home'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
-import { banner_img } from '@/conf'
 
 const araList = ['data', 'integral', 'download', 'volume', 'logout']
 const araLists = ['Chapter', 'Knowledge']
 const araListss = ['Uploadpaper', 'paperList']
 
-function AI_header({ homeInfo, props, setData }) {
-  const { history } = props
+function AI_header({ props, setData }) {
+  const { history, location } = props
   const [current, setcurrent] = useState(0)
   const [indexData, setIndexData] = useState({})
 
@@ -138,16 +137,9 @@ function AI_header({ homeInfo, props, setData }) {
     </Menu>
   )
 
-  const menuss = (
-    <Menu>
-      <Menu.Item onClick={() => handleClosess(araListss[0])}>
-        试卷组卷
-      </Menu.Item>
-      <Menu.Item onClick={() => handleClosess(araListss[1])}>
-        组卷记录
-      </Menu.Item>
-    </Menu>
-  )
+  const toUpload = () => {
+    history.push('/main/user?type=3')
+  }
 
   return (
     <div id="AI_header">
@@ -197,17 +189,21 @@ function AI_header({ homeInfo, props, setData }) {
           </Dropdown>
         </div>
       </div>
-
-      <Carousel
-        effect="fade"
-        autoplay
-        autoplaySpeed={2888}
-        dots={false}
-      >
-        {banner_img?.map((item, idx) => {
-          return <img className="banner" key={idx} src={item} alt="banner" />
-        })}
-      </Carousel>
+      {location.pathname === '/main/index' ? (
+        <img
+          className="banner"
+          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner.png"
+          alt="banner"
+          onClick={toUpload}
+          style={{ cursor: 'pointer' }}
+        />
+      ) : (
+        <img
+          className="banner"
+          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner1.png"
+          alt="banner"
+        />
+      )}
     </div>
   )
 }

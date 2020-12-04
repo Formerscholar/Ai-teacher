@@ -23,6 +23,7 @@ import {
   editInformation,
   getCode,
   editMobile,
+  getTeacherUpload,
 } from '@/services/user'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { info_menu } from '@/conf'
@@ -54,7 +55,7 @@ function User(props) {
   const [SchoolData, setSchoolData] = useState(0)
   const [pointLogData, setpointLogData] = useState({})
   const [UploadListData, setUploadListData] = useState([])
-  const [isUploadPaper, setIsUploadPaper] = useState(false)
+  const [isUploadPaper, setIsUploadPaper] = useState(0)
   const [PaperName, setPaperName] = useState('')
   const [fileList, setFileList] = useState([])
   const [Remark, setRemark] = useState('')
@@ -66,6 +67,7 @@ function User(props) {
   const [newPhone, setnewPhone] = useState('')
   const [verification, setverification] = useState('')
   const [phoneInputDisab, setphoneInputDisab] = useState(false)
+  const [UploadDetail, setUploadDetail] = useState(false)
 
   const inputEl = useRef(null)
 
@@ -150,7 +152,7 @@ function User(props) {
     })
     if (code === 200) {
       message.success(msg)
-      setIsUploadPaper(false)
+      setIsUploadPaper(0)
       setFileList([])
       setPaperName('')
       setRemark('')
@@ -367,7 +369,7 @@ function User(props) {
   }
 
   const uploadPaper = () => {
-    setIsUploadPaper(true)
+    setIsUploadPaper(1)
   }
 
   /**
@@ -447,6 +449,18 @@ function User(props) {
       }
     } else {
       message.error('手机号格式不正确!请重新填写!')
+    }
+  }
+
+  const paperDetailClick = async (id) => {
+    const { code, data, msg } = await getTeacherUpload({
+      id,
+    })
+    if (code === 200) {
+      setUploadDetail(data?.upload)
+      setIsUploadPaper(2)
+    } else {
+      message.error(msg)
     }
   }
 
@@ -719,20 +733,29 @@ function User(props) {
         ) : (
           <div className="right_box">
             <div className="upload_title">
-              <div className="upload_left_text">上传试卷列表</div>
-              {isUploadPaper ? (
-                ''
+              {isUploadPaper === 0 ? (
+                <>
+                  <div className="upload_left_text">上传试卷列表</div>
+                  <Button
+                    type="primary"
+                    className="upload_btn"
+                    onClick={uploadPaper}
+                  >
+                    上传试卷
+                  </Button>
+                </>
+              ) : isUploadPaper === 1 ? (
+                <div className="upload_left_text">上传试卷</div>
               ) : (
-                <Button
-                  type="primary"
-                  className="upload_btn"
-                  onClick={uploadPaper}
-                >
-                  上传试卷
-                </Button>
+                <div className="detail">
+                  <div className="left_detail">{UploadDetail?.paper_name}</div>
+                  <div className="right_detail">
+                    {setTimerType(UploadDetail?.add_time * 1000)}
+                  </div>
+                </div>
               )}
             </div>
-            {isUploadPaper ? (
+            {isUploadPaper === 1 ? (
               <div className="content_box">
                 <div className="paperName">
                   <span>试卷名称</span>
@@ -796,7 +819,7 @@ function User(props) {
                   保存
                 </Button>
               </div>
-            ) : (
+            ) : isUploadPaper === 0 ? (
               <div className="upload_body">
                 <div className="upload_body_title">
                   <div className="name">名称</div>
@@ -807,7 +830,12 @@ function User(props) {
                   UploadListData?.data?.map((item) => {
                     return (
                       <div className="down_body_table" key={item?.upload_id}>
-                        <div className="name">{item?.paper_name}</div>
+                        <div
+                          className="name"
+                          onClick={() => paperDetailClick(item?.upload_id)}
+                        >
+                          {item?.paper_name}
+                        </div>
                         <div className="time">
                           {setTimerType(item?.add_time * 1000)}
                         </div>
@@ -840,6 +868,53 @@ function User(props) {
                     <div className="nodata_down_title">暂无上传的试卷</div>
                   </div>
                 )}
+              </div>
+            ) : (
+              <div className="uploadDeatilBox">
+                {/*  UploadDetail?.status 1 待审核 pass_icon 2 已通过 passed_icon 3 未通过 notpass_icon  */}
+                <div
+                  className="status_check"
+                  style={{
+                    border:
+                      UploadDetail?.status === 1
+                        ? '1px solid #999999'
+                        : UploadDetail?.status === 2
+                        ? '1px solid #20CFB9'
+                        : '1px solid #E50304',
+                    backgroundColor:
+                      UploadDetail?.status === 1
+                        ? ' #F5F5F5'
+                        : UploadDetail?.status === 2
+                        ? ' #E8FAF8'
+                        : ' #FCE5E5',
+                  }}
+                >
+                  <img
+                    className="passed_icon"
+                    src={
+                      UploadDetail?.status === 1
+                        ? 'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/pass_icon.png'
+                        : UploadDetail?.status === 2
+                        ? 'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/passed_icon.png'
+                        : 'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notpass_icon.png'
+                    }
+                    alt="passed_icon"
+                  />
+                  <span className="tip_text">
+                    {UploadDetail?.status === 1
+                      ? '系统将会及时处理你上传的图片，如有问题请联系客服。'
+                      : UploadDetail?.status === 2
+                      ? '恭喜！你所提交的试卷已经审核通过，如有问题请联系客服。'
+                      : '未通过！你所提交的题目不清晰，请重新上传。'}
+                  </span>
+                </div>
+                <div className="detail_images">
+                  {UploadDetail?.get_detail?.map((item) => {
+                    return (
+                      <Image className="Imageitems" key={item?.id} height="180px" width="133px" src={item?.picurl} />
+                    )
+                  })}
+                </div>
               </div>
             )}
           </div>

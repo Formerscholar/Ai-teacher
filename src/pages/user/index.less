@@ -3,6 +3,7 @@
   min-height: 23.642857rem;
   margin: 0 auto;
   margin-top: -3.571429rem;
+  min-width: 1190px;
 
   width: 85.14rem;
 
@@ -428,6 +429,7 @@
 
           .name {
             flex: 7;
+            cursor: pointer;
           }
 
           .time {
@@ -445,6 +447,27 @@
         align-items: center;
         padding: 2.14rem;
         border-bottom: 1px solid #E5E5E5;
+
+        .detail {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+
+          .left_detail {
+            font-size: 20px;
+            font-weight: 400;
+            color: #222222;
+
+          }
+
+          .right_detail {
+            font-size: 16px;
+            font-weight: 400;
+            color: #999999;
+
+          }
+        }
 
         .upload_left_text {
           font-size: 1.43rem;
@@ -688,6 +711,54 @@
           }
         }
       }
+
+      .uploadDeatilBox {
+        padding: 1.142857rem 1.714286rem;
+
+        .status_check {
+          height: 3.714286rem;
+          border-radius: 0.428571rem;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 1.142857rem;
+
+          .passed_icon {
+            width: 1.428571rem;
+            height: 1.428571rem;
+            margin-right: 1.142857rem;
+          }
+
+          .tip_text {
+            font-size: 1.142857rem;
+            font-weight: 400;
+            color: #444444;
+
+          }
+        }
+
+        .detail_images {
+          margin-top: 1.142857rem;
+          padding: 1.142857rem;
+          border: 1px solid #FDF5F0;
+          border-radius: 0.428571rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-flow: wrap;
+
+          .Imageitems {
+            margin-right: 1.142857rem;
+            margin-bottom: 1.142857rem;
+
+            &:nth-child(4n) {
+              margin-right: 0;
+            }
+          }
+
+        }
+
+      }
     }
   }
 
@@ -771,7 +842,7 @@
         font-size: 1rem;
         font-weight: 400;
         color: #FFFFFF;
-        
+
       }
     }
   }

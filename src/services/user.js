@@ -85,3 +85,12 @@ export function editMobile(params) {
     params,
   })
 }
+
+
+export function getTeacherUpload(params) {
+  return request({
+    url: '/getTeacherUpload',
+    method: 'GET',
+    params,
+  })
+}
