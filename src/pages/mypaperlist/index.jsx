@@ -133,7 +133,7 @@ function Mypaperlist(props) {
   const confirmClick = async () => {
     const { code, msg } = await paperToBased({
       id: SyncId,
-      show_time: SyncTime,
+      show_time: encodeURIComponent(SyncTime),
     })
     if (code === 200) {
       message.success(msg)

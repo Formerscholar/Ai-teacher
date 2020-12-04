@@ -143,53 +143,57 @@ function AI_header({ props, setData }) {
 
   return (
     <div id="AI_header">
-      <div className="title_box">
-        <div className="left_icon">
-          <img
-            className="logo"
-            src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/logo.png"
-            alt="logo"
-          />
-        </div>
-        <div className="center_box">
-          {headMenu.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className={current == index ? 'cenItem index' : 'cenItem'}
-                onClick={(e) => headMenuClick(e, index)}
-              >
-                {item.text}
-                {/* {index == 5 ? (
+      <div className="title_warp">
+        <div className="title_box">
+          <div className="left_icon">
+            <img
+              className="logo"
+              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/logo.png"
+              alt="logo"
+            />
+          </div>
+          <div className="center_box">
+            {headMenu.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className={current == index ? 'cenItem index' : 'cenItem'}
+                  onClick={(e) => headMenuClick(e, index)}
+                >
+                  {item.text}
+                  {/* {index == 5 ? (
                   <Dropdown overlay={menu} placement="bottomCenter">
                     <button>{item.text}</button>
                   </Dropdown>
                 ) : (
                   item.text
                 )} */}
-                {/* : index == 6 ? (
+                  {/* : index == 6 ? (
                   <Dropdown overlay={menuss} placement="bottomCenter">
                     <button>{item.text}</button>
                   </Dropdown>
                 ) */}
-              </div>
-            )
-          })}
-        </div>
-        <div overlay={menu} placement="bottomCenter" className="right_box">
-          <Avatar
-            className="Avatar"
-            alt="Remy Sharp"
-            src={indexData.teacher?.avatar_file}
-          />
-          <Dropdown overlay={menus} placement="bottomCenter">
-            <button>
-              {indexData.teacher?.true_name} <div className="right_icon"></div>
-            </button>
-          </Dropdown>
+                </div>
+              )
+            })}
+          </div>
+          <div overlay={menu} placement="bottomCenter" className="right_box">
+            <Avatar
+              className="Avatar"
+              alt="Remy Sharp"
+              src={indexData.teacher?.avatar_file}
+            />
+            <Dropdown overlay={menus} placement="bottomCenter">
+              <button>
+                {indexData.teacher?.true_name}{' '}
+                <div className="right_icon"></div>
+              </button>
+            </Dropdown>
+          </div>
         </div>
       </div>
-      {location.pathname === '/main/index' ? (
+      <div className="banner"></div>
+      {/* {location.pathname === '/main/index' ? (
         <img
           className="banner"
           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner.png"
@@ -203,7 +207,7 @@ function AI_header({ props, setData }) {
           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner1.png"
           alt="banner"
         />
-      )}
+      )} */}
     </div>
   )
 }

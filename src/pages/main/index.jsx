@@ -125,7 +125,7 @@ function Main(props) {
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
                     alt="paper_icon"
                   />
-                  <span>{item?.get_base?.name}</span>
+                  <span>{item?.get_base?.title}</span>
                 </div>
                 <div className="right_time">
                   {setTimerType(item?.add_time * 1000)}

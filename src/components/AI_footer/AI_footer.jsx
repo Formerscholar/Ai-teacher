@@ -4,11 +4,8 @@ import './AI_footer.less'
 function AI_footer() {
   return (
     <div id="AI_footer">
-      <img
-        className="footimg"
-        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/footimg.png"
-        alt="footimg"
-      />
+      <div className="footimg"></div>
+      <div className="foot_warp">
       <footer>
         <div className="left_info">
           <div className="infoitems ">联系我们</div>
@@ -32,6 +29,7 @@ function AI_footer() {
           alt="foottip"
         />
       </footer>
+      </div>
     </div>
   )
 }
