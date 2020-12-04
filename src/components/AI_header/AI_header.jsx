@@ -192,22 +192,11 @@ function AI_header({ props, setData }) {
           </div>
         </div>
       </div>
-      <div className="banner"></div>
-      {/* {location.pathname === '/main/index' ? (
-        <img
-          className="banner"
-          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner.png"
-          alt="banner"
-          onClick={toUpload}
-          style={{ cursor: 'pointer' }}
-        />
+      {location.pathname === '/main/index' ? (
+        <div className="banner" onClick={toUpload}></div>
       ) : (
-        <img
-          className="banner"
-          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/banner1.png"
-          alt="banner"
-        />
-      )} */}
+        <div className="banner1"></div>
+      )}
     </div>
   )
 }
