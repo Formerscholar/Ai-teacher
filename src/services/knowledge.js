@@ -72,11 +72,11 @@ export function getPapersList(params) {
   })
 }
 
-export function paperToBased(params) {
+export function paperToBased(data) {
   return request({
     url: '/paperToBased',
-    method: 'GET',
-    params,
+    method: 'POST',
+    data: Qs.stringify(data),
   })
 }
 

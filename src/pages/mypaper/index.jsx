@@ -25,7 +25,7 @@ function Mypaper(props) {
   const {
     history,
     location,
-    addtopicData,
+    homeInfo,
     subtopicData,
     volumeTopicCount,
     settopicData,
@@ -660,7 +660,8 @@ function Mypaper(props) {
                 </div>
                 {/* 难度：中等 */}
                 <div className="difficulty">
-                  难度：<span>中等</span>
+                  难度：
+                  <span>{homeInfo?.teacher?.level[ExercisesData?.level]}</span>
                 </div>
               </div>
               {/* 分割线 */}

@@ -26,7 +26,7 @@ function Mypaperlist(props) {
   const [Opens, setOpens] = useState(false)
   const [Openss, setOpenss] = useState(false)
   const [SyncId, setSyncId] = useState(0)
-  const [SyncTime, setSyncTime] = useState('')
+  const [SyncTime, setSyncTime] = useState(setTimerType(new Date(), true))
   const [examId, setexamId] = useState(0)
   const [examtitle, setexamexamtitle] = useState('')
   const [formt, setformt] = useState('doc')

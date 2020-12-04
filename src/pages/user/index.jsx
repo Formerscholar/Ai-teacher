@@ -938,7 +938,7 @@ function User(props) {
         width="41.71rem"
         height="19.93rem"
       >
-        <div id="tmodelbox">
+        <div id="tmodelbox" className="emailChange">
           <div className="title">
             当前绑定的邮箱地址：
             <div className="loadEmail">{userData?.email}</div>
