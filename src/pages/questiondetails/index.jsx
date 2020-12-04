@@ -30,11 +30,18 @@ function Questiondetails(props) {
   const [pages, setpages] = useState(1)
   const [Open, setOpen] = useState(false)
   const [tipText, setTipText] = useState('')
+  const [isAswer, setisAswer] = useState([false, false])
 
   useEffect(() => {
     getDetails(pages)
     return () => {}
   }, [volumeTopicCount])
+
+  const onSetAnswer = (idx) => {
+    let data = { ...ExercisesData }
+    data.exerciseList.data[idx].isanswer = !data.exerciseList.data[idx].isanswer
+    setExercisesData(data)
+  }
 
   /**
    *
@@ -46,6 +53,12 @@ function Questiondetails(props) {
       page,
     })
     if (code === 200) {
+      let arr = []
+      data?.exerciseList?.data?.map((item) => {
+        item['isanswer'] = false
+      })
+      console.log(arr)
+      setisAswer(arr)
       setExercisesData(data)
     } else {
       message.error(msg)
@@ -152,23 +165,30 @@ function Questiondetails(props) {
           ></div>
           <div className="Tests">
             <span className="title">【考点】</span>
-            不等式组的解集
+            <div
+              className="body_txt"
+              dangerouslySetInnerHTML={{
+                __html: ExercisesData?.exercise?.knowledge,
+              }}
+            ></div>
           </div>
           <div className="answer">
             <span className="title">【答案】</span>
-            <span
+            <div
+              className="body_txt"
               dangerouslySetInnerHTML={{
                 __html: ExercisesData?.exercise?.answer,
               }}
-            ></span>
+            ></div>
           </div>
           <div className="Parse">
             <span className="title">【解析】</span>
-            <span
+            <div
+              className="body_txt"
               dangerouslySetInnerHTML={{
                 __html: ExercisesData?.exercise?.analysis,
               }}
-            ></span>
+            ></div>
           </div>
           <div className="bot_warp">
             <div className="left_box">
@@ -229,7 +249,7 @@ function Questiondetails(props) {
           </div>
         </div>
         <div className="body_box">
-          {ExercisesData?.exerciseList?.data?.map((item) => {
+          {ExercisesData?.exerciseList?.data?.map((item, idx) => {
             return (
               <div className="items" key={item?.id}>
                 <div className="top_title">
@@ -252,6 +272,39 @@ function Questiondetails(props) {
                   className="cet_body"
                   dangerouslySetInnerHTML={{ __html: item?.content_all }}
                 ></div>
+
+                <div
+                  className="answerbox"
+                  style={{ display: item?.isanswer ? 'block' : 'none' }}
+                >
+                  <div className="Tests">
+                    <span className="title">【考点】</span>
+                    <div
+                      className="body_txt"
+                      dangerouslySetInnerHTML={{
+                        __html: item?.knowledge,
+                      }}
+                    ></div>
+                  </div>
+                  <div className="answer">
+                    <span className="title">【答案】</span>
+                    <div
+                      className="body_txt"
+                      dangerouslySetInnerHTML={{
+                        __html: item?.answer,
+                      }}
+                    ></div>
+                  </div>
+                  <div className="Parse">
+                    <span className="title">【解析】</span>
+                    <div
+                      className="body_txt"
+                      dangerouslySetInnerHTML={{
+                        __html: item?.analysis,
+                      }}
+                    ></div>
+                  </div>
+                </div>
                 <div className="bot_btns">
                   <div className="left_box_warp">
                     <div className="update_time">
@@ -260,7 +313,7 @@ function Questiondetails(props) {
                     {/* <div className="counts">组卷次数：0</div> */}
                   </div>
                   <div className="right_box_warp">
-                    <div className="answers">
+                    <div className="answers" onClick={() => onSetAnswer(idx)}>
                       <img
                         className="View"
                         src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"

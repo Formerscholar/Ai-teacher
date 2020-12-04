@@ -31,7 +31,6 @@
     padding: 1.71rem;
 
     .bor_warp {
-      width: 81.71rem;
       border-radius: 1rem;
       border: 1px solid #F1F1F1;
 
@@ -51,13 +50,20 @@
         color: #222222;
         margin-bottom: 1.71rem;
         margin-left: 1.21rem;
-
-        &:last-child {}
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
 
         .title {
           font-weight: bold;
           margin-right: 1.71rem;
+          width: 60px;
         }
+
+        .body_txt {
+          flex: 1;
+        }
+
       }
 
       .bot_warp {
@@ -217,6 +223,36 @@
 
         .cet_body {
           padding: 1.07rem 1.21rem;
+        }
+
+        .answerbox {
+          margin: 0 1.142857rem;
+          border-top: 1px solid #F1F1F1;
+          padding-top: 1.142857rem;
+
+          .Tests,
+          .answer,
+          .Parse {
+            font-size: 1.14rem;
+            font-weight: 400;
+            color: #222222;
+            margin-bottom: 1.71rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+
+
+            .title {
+              font-weight: bold;
+              margin-right: 1.71rem;
+              width: 60px;
+            }
+
+            .body_txt {
+              flex: 1;
+            }
+
+          }
         }
 
         .bot_btns {

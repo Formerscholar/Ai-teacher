@@ -4,8 +4,9 @@
   margin: 0 auto;
   min-width: 1190px;
   margin-top: -3.571429rem;
-  
+
   width: 85.14rem;
+
   .bread {
     .breaditem {
       cursor: pointer;
@@ -195,7 +196,15 @@
               justify-content: center;
               align-items: center;
               margin-bottom: 1.14rem;
-              border: 1px solid #E5E5E5;
+              border: 1px solid #fff;
+
+              &:hover {
+                border: 1px solid #E5E5E5;
+              }
+
+              &:hover .bot_btns {
+                opacity: 1;
+              }
 
               &:last-child {
                 margin-bottom: 0;
@@ -220,6 +229,7 @@
                 padding: 0 1.79rem;
                 background: #F1F1F1;
                 border-top: 1px solid #E5E5E5;
+                opacity: 0;
 
                 .btn_item {
                   margin-right: 1.43rem;

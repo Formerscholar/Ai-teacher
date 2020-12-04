@@ -43,6 +43,7 @@ function getBase64(img, callback) {
 
 function User(props) {
   const { history, location, homeInfo } = props
+  const selectBool = homeInfo?.teacher?.team_ids === '' ? false : true
   const [userData, setUserData] = useState({})
   const [loading, setloading] = useState(false)
   const [imageUrl, setimageUrl] = useState('')
@@ -607,6 +608,7 @@ function User(props) {
                   onChange={onChange}
                   placeholder="请选择省/市/区"
                   value={AreaData}
+                  disabled={selectBool}
                 />
               </div>
               <div className="sex">
@@ -616,6 +618,7 @@ function User(props) {
                   style={{ width: '38.07rem' }}
                   value={SchoolData}
                   onChange={SchoolChange}
+                  disabled={selectBool}
                 >
                   {SchoolList?.map((item) => {
                     return (
@@ -911,7 +914,13 @@ function User(props) {
                 <div className="detail_images">
                   {UploadDetail?.get_detail?.map((item) => {
                     return (
-                      <Image className="Imageitems" key={item?.id} height="180px" width="23.5%" src={item?.picurl} />
+                      <Image
+                        className="Imageitems"
+                        key={item?.id}
+                        height="180px"
+                        width="23.5%"
+                        src={item?.picurl}
+                      />
                     )
                   })}
                 </div>
