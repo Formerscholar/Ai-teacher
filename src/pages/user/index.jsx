@@ -21,12 +21,15 @@ import {
   addTeacherUpload,
   getOrganizingPapersLog,
   editInformation,
+  getCode,
+  editMobile,
 } from '@/services/user'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { info_menu } from '@/conf'
 import { splitSearch, setTimerType } from '@/utils'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
+import T_modelbox from '@/common/T_modelbox'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -57,6 +60,13 @@ function User(props) {
   const [Remark, setRemark] = useState('')
   const [PapersLogList, setPapersLogList] = useState({})
   const [down_Select, setdown_Select] = useState('0')
+  const [Open, setOpen] = useState(false)
+  const [Opens, setOpens] = useState(false)
+  const [emailData, setemailData] = useState('')
+  const [newPhone, setnewPhone] = useState('')
+  const [verification, setverification] = useState('')
+  const [phoneInputDisab, setphoneInputDisab] = useState(false)
+
   const inputEl = useRef(null)
 
   useEffect(() => {
@@ -86,6 +96,9 @@ function User(props) {
     if (code === 200) {
       setPapersLogList(data?.log)
     }
+  }
+  const closeClick = () => {
+    setOpen(false)
   }
 
   /**
@@ -301,6 +314,35 @@ function User(props) {
   }
 
   /**
+   *  修改邮箱
+   *
+   */
+  const changeEmail = () => {
+    setOpen(true)
+  }
+
+  const confirmClick = async () => {
+    let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    if (reg.test(emailData)) {
+      const { code, msg } = await editInformation({
+        name: userData?.true_name,
+        sex: gender,
+        img: imageUrl,
+        school_id: SchoolData,
+        email: emailData,
+      })
+      if (code === 200) {
+        message.success(msg)
+      } else {
+        message.error(msg)
+      }
+      setOpen(false)
+    } else {
+      message.error('邮箱格式不正确!重新输入!')
+    }
+  }
+
+  /**
    *
    *  省市区 选择触发
    * @param {*} value
@@ -357,12 +399,54 @@ function User(props) {
       img: imageUrl,
       school_id: SchoolData,
       email: userData?.email,
-      mobile: userData?.mobile,
     })
     if (code === 200) {
       message.success(msg)
     } else {
       message.error(msg)
+    }
+  }
+
+  // 修改手机号码
+  const changePhone = () => {
+    setOpens(true)
+  }
+
+  const closeClicks = () => {
+    setOpens(false)
+  }
+
+  const confirmClicks = async () => {
+    const { code, msg } = await editMobile({
+      mobile: newPhone,
+      code: verification,
+    })
+    if (code === 200) {
+      getinformation()
+      message.success(msg)
+    } else {
+      message.error(msg)
+    }
+    setphoneInputDisab(false)
+    setOpens(false)
+    setnewPhone('')
+    setverification('')
+  }
+
+  const verificationCode = async () => {
+    let reg = /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1|8|9]))\d{8}$/
+    if (reg.test(newPhone)) {
+      const { code, msg } = await getCode({
+        mobile: newPhone,
+      })
+      if (code === 200) {
+        setphoneInputDisab(true)
+        message.success(msg)
+      } else {
+        message.error(msg)
+      }
+    } else {
+      message.error('手机号格式不正确!请重新填写!')
     }
   }
 
@@ -531,7 +615,9 @@ function User(props) {
               <div className="name email">
                 <div className="lable">邮箱：</div>
                 <Input className="iteminput" value={userData?.email} disabled />
-                <span className="changeTip">更改</span>
+                <span className="changeTip" onClick={changeEmail}>
+                  更改
+                </span>
               </div>
               <div className="name phone">
                 <div className="lable">手机号：</div>
@@ -540,7 +626,9 @@ function User(props) {
                   value={userData?.mobile}
                   disabled
                 />
-                <span className="changeTip">更改</span>
+                <span className="changeTip" onClick={changePhone}>
+                  更改
+                </span>
               </div>
               <div className="btns">
                 <Button type="primary" className="btn" onClick={saveInfoClick}>
@@ -758,6 +846,71 @@ function User(props) {
         )}
       </div>
       <input ref={inputEl} id="upload" type="file" name="file" hidden />
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Open}
+        title="【修改邮箱】"
+        closeClick={closeClick}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox">
+          <div className="title">
+            当前绑定的邮箱地址：
+            <div className="loadEmail">{userData?.email}</div>
+          </div>
+          <div className="body">
+            <Input
+              className="emailData"
+              value={emailData}
+              onChange={(e) => setemailData(e.target.value)}
+            />
+          </div>
+          <Button type="primary" className="btn" onClick={confirmClick}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Opens}
+        title="【修改绑定手机号】"
+        closeClick={closeClicks}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox" className="phoneChange">
+          <div className="bodys">
+            <div className="phonenum">
+              <div className="text">手机号</div>
+              <Input
+                className="newPhone"
+                value={newPhone}
+                disabled={phoneInputDisab}
+                onChange={(e) => setnewPhone(e.target.value)}
+              />
+            </div>
+            <div className="phonenum">
+              <div className="text">验证码</div>
+              <Input
+                className="verification"
+                value={verification}
+                onChange={(e) => setverification(e.target.value)}
+              />
+              <Button
+                type="primary"
+                className="Codebtn"
+                onClick={verificationCode}
+              >
+                发送验证码
+              </Button>
+            </div>
+          </div>
+          <Button type="primary" className="btn" onClick={confirmClicks}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
     </div>
   )
 }

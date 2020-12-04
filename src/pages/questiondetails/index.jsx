@@ -1,30 +1,54 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { getExercisesDetail } from '@/services/knowledge'
-import { Button, Breadcrumb } from 'antd'
-import { setTimerType ,splitSearch} from '@/utils'
+import {
+  getExercisesDetail,
+  addExamBasket,
+  delExamBasket,
+} from '@/services/knowledge'
+import { Button, Breadcrumb, message } from 'antd'
+import { setTimerType, splitSearch } from '@/utils'
 import { connect } from 'react-redux'
-import { GET_HOME_INFO } from '@/store/actionType'
+import {
+  GET_HOME_INFO,
+  ADD_TOPIC,
+  SUB_TOPIC,
+  SET_TOPIC,
+} from '@/store/actionType'
+import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
+import T_modelbox from '@/common/T_modelbox'
 
 function Questiondetails(props) {
-  const { history, location, homeInfo } = props
+  const {
+    subtopicData,
+    history,
+    location,
+    volumeTopicCount,
+    addtopicData,
+    homeInfo,
+  } = props
   const [ExercisesData, setExercisesData] = useState({})
+  const [pages, setpages] = useState(1)
+  const [Open, setOpen] = useState(false)
+  const [tipText, setTipText] = useState('')
 
   useEffect(() => {
-    getDetails(splitSearch(location.search).id)
+    getDetails(pages)
     return () => {}
-  }, [])
+  }, [volumeTopicCount])
 
   /**
    *
    *  初始化详情数据
    */
-  const getDetails = async (id) => {
+  const getDetails = async (page = 1) => {
     const { code, data, msg } = await getExercisesDetail({
-      id,
+      id: splitSearch(location.search).id,
+      page,
     })
     if (code === 200) {
       setExercisesData(data)
+    } else {
+      message.error(msg)
     }
   }
 
@@ -45,6 +69,50 @@ function Questiondetails(props) {
    */
   const answerClick = (id) => {
     getDetails(id)
+  }
+
+  const batchClick = () => {
+    console.log('batchClick')
+    let pagedata = pages
+    pagedata++
+    setpages(pagedata)
+    getDetails(pagedata)
+  }
+
+  const removeClick = async (id) => {
+    const { code, msg } = await delExamBasket({
+      exercises_id: id,
+    })
+    if (code == 200) {
+      message.success(msg)
+      subtopicData(1)
+    } else {
+      setTipText(msg)
+      setOpen(true)
+    }
+  }
+
+  /**
+   *  组卷添加事件
+   *
+   * @param {*} id
+   * @param {*} type
+   */
+  const compositionClick = async (id, type) => {
+    const { code, msg } = await addExamBasket({
+      exercises_id: [id],
+    })
+    if (code == 200) {
+      message.success(msg)
+      addtopicData(1)
+    } else {
+      setTipText(msg)
+      setOpen(true)
+    }
+  }
+
+  const closeClick = () => {
+    setOpen(false)
   }
 
   return (
@@ -119,14 +187,30 @@ function Questiondetails(props) {
               </div>
             </div>
             <div className="right_box">
-              <Button className="add" variant="contained">
-                <em>+</em>
-                组卷
-              </Button>
-              {/* <Button className="sub" variant="contained">
+              {ExercisesData?.exercise?.is_basket ? (
+                <Button
+                  className="sub"
+                  variant="contained"
+                  onClick={() => removeClick(ExercisesData?.exercise?.id)}
+                >
                   <em>-</em>
                   移除
-                </Button> */}
+                </Button>
+              ) : (
+                <Button
+                  className="add"
+                  variant="contained"
+                  onClick={() =>
+                    compositionClick(
+                      ExercisesData?.exercise?.id,
+                      ExercisesData?.exercise?.type
+                    )
+                  }
+                >
+                  <em>+</em>
+                  组卷
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -135,7 +219,7 @@ function Questiondetails(props) {
       <div className="samelist">
         <div className="top_box">
           <div className="left_warp">同类型题目</div>
-          <div className="right_warp">
+          <div className="right_warp" onClick={batchClick}>
             <img
               className="refsh_icon"
               src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/refsh_icon.png"
@@ -195,14 +279,25 @@ function Questiondetails(props) {
                       />
                       <span>试题详情</span>
                     </div>
-                    <Button className="add" variant="contained">
-                      <em>+</em>
-                      组卷
-                    </Button>
-                    {/* <Button className="sub" variant="contained">
-                  <em>-</em>
-                  移除
-                </Button> */}
+                    {item?.is_basket ? (
+                      <Button
+                        className="sub"
+                        variant="contained"
+                        onClick={() => removeClick(item?.id)}
+                      >
+                        <em>-</em>
+                        移除
+                      </Button>
+                    ) : (
+                      <Button
+                        className="add"
+                        variant="contained"
+                        onClick={() => compositionClick(item?.id, item?.type)}
+                      >
+                        <em>+</em>
+                        组卷
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -210,6 +305,31 @@ function Questiondetails(props) {
           })}
         </div>
       </div>
+      {/* 悬浮框 */}
+      <AI_floatBox props={props} />
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Open}
+        title=" "
+        closeClick={closeClick}
+        width="41.71rem"
+        height="22.14rem"
+      >
+        <div id="tmodelbox">
+          <div className="title">
+            <img
+              className="notice"
+              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notice.png"
+              alt="notice"
+            />
+            <span>操作失败</span>
+          </div>
+          <div className="body_text">{tipText}</div>
+          <Button type="primary" className="btn" onClick={closeClick}>
+            我知道了
+          </Button>
+        </div>
+      </T_modelbox>
     </div>
   )
 }
@@ -217,6 +337,7 @@ function Questiondetails(props) {
 const mapStateToProps = (state) => {
   return {
     homeInfo: state.homeInfo,
+    volumeTopicCount: state.volumeTopicCount,
   }
 }
 
@@ -225,6 +346,27 @@ const mapDispatchToProps = (dispatch) => {
     setData(value) {
       let action = {
         type: GET_HOME_INFO,
+        value: value,
+      }
+      dispatch(action)
+    },
+    addtopicData(value) {
+      let action = {
+        type: ADD_TOPIC,
+        value: value,
+      }
+      dispatch(action)
+    },
+    subtopicData(value) {
+      let action = {
+        type: SUB_TOPIC,
+        value: value,
+      }
+      dispatch(action)
+    },
+    settopicData(value) {
+      let action = {
+        type: SET_TOPIC,
         value: value,
       }
       dispatch(action)

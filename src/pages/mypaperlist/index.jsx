@@ -8,6 +8,7 @@ import {
   DatePicker,
   Space,
   Radio,
+  Input,
 } from 'antd'
 import {
   getPapersList,
@@ -171,9 +172,9 @@ function Mypaperlist(props) {
       <div className="grouplist">
         {/* 列表头部 */}
         <div className="listhead">
-          <div className="left_text">组卷记录列表</div>
+          <div className="left_text">我的试卷列表</div>
           <div className="right_warp">
-            <Select
+            {/* <Select
               className="timeSelect"
               defaultValue="0"
               style={{ width: '11.43rem' }}
@@ -183,9 +184,10 @@ function Mypaperlist(props) {
               <Option value="90">90天以内</Option>
               <Option value="180">半年以内</Option>
               <Option value="365">一年以内</Option>
-            </Select>
+            </Select> */}
+            <Input className="timeSelect" placeholder="试卷" />
             <Button type="primary" className="search" onClick={searchClick}>
-              查询
+              搜索
             </Button>
           </div>
         </div>
@@ -263,7 +265,6 @@ function Mypaperlist(props) {
         height="19.93rem"
       >
         <div id="tmodelbox">
-          
           <Space className="title" direction="vertical" size={35}>
             <DatePicker showTime onOk={onOk} />
           </Space>

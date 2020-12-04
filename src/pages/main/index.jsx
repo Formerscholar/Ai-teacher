@@ -21,20 +21,14 @@ function Main(props) {
 
   const toPage = (idx) => {
     switch (idx) {
-      case 0:
-        // history.push('/main/schoolbased')
-        break
       case 1:
         history.push('/main/class')
         break
-      case 2:
-        // history.push('/main/schoolbased')
-        break
       case 3:
-        // history.push('/main/schoolbased')
+        history.push('/main/user?type=1')
         break
       case 4:
-        // history.push('/main/schoolbased')
+        history.push('/main/mypaperlist')
         break
 
       default:

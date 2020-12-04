@@ -17,7 +17,6 @@ export function addTeacherUpload(data) {
   })
 }
 
-
 export function information() {
   return request({
     url: '/information',
@@ -63,11 +62,26 @@ export function getOrganizingPapersLog(params) {
   })
 }
 
-
 export function editInformation(data) {
   return request({
     url: '/editInformation',
     method: 'POST',
     data: Qs.stringify(data),
+  })
+}
+
+export function getCode(params) {
+  return request({
+    url: '/getCode',
+    method: 'GET',
+    params,
+  })
+}
+
+export function editMobile(params) {
+  return request({
+    url: '/editMobile',
+    method: 'GET',
+    params,
   })
 }

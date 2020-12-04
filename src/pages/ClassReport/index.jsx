@@ -21,7 +21,7 @@ import {
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 import T_modelbox from '@/common/T_modelbox'
-
+import moment from 'moment'
 const { RangePicker } = DatePicker
 
 function ClassReport(props) {
@@ -188,6 +188,8 @@ function ClassReport(props) {
    */
   const PickerChange = (dates, dateStrings) => {
     setPickerData(dateStrings)
+    setstartTime(dateStrings[0])
+    setendTime(dateStrings[1])
   }
 
   const SearchClick = () => {
@@ -302,7 +304,11 @@ function ClassReport(props) {
             <Radio.Button value="2">近一年</Radio.Button>
           </Radio.Group>
           <Space direction="vertical" size={12}>
-            <RangePicker onChange={PickerChange} />
+            <RangePicker
+              format="YYYY-MM-DD"
+              value={[moment(startTime), moment(endTime)]}
+              onChange={PickerChange}
+            />
           </Space>
           <Button type="primary" className="btnSearch" onClick={SearchClick}>
             查询
