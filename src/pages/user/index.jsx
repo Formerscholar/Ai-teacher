@@ -911,7 +911,7 @@ function User(props) {
                 <div className="detail_images">
                   {UploadDetail?.get_detail?.map((item) => {
                     return (
-                      <Image className="Imageitems" key={item?.id} height="180px" width="133px" src={item?.picurl} />
+                      <Image className="Imageitems" key={item?.id} height="180px" width="23.5%" src={item?.picurl} />
                     )
                   })}
                 </div>
