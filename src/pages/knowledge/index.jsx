@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import './index.less'
-import { Button, Pagination, Tree, message, Breadcrumb } from 'antd'
+import { Button, Pagination, Tree, message, Breadcrumb, Input } from 'antd'
 import {
   getKnowledgeExercises,
   addExamBasket,
@@ -40,11 +40,23 @@ function Knowledge(props) {
   const [autoExpandParent, setAutoExpandParent] = useState(true)
   const [Open, setOpen] = useState(false)
   const [tipText, setTipText] = useState('')
+  const [searchData, setsearchData] = useState('')
 
   useEffect(() => {
     getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, Listpage)
     return () => {}
   }, [volumeTopicCount])
+
+  const searchClick = () => {
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      Listpage,
+      searchData
+    )
+  }
 
   /**
    *  请求知识点数据
@@ -58,7 +70,8 @@ function Knowledge(props) {
     konwledge_id = 0,
     type = 0,
     level = 0,
-    page = 1
+    page = 1,
+    title = ''
   ) => {
     const { code, data, msg } = await getKnowledgeExercises({
       grade_id,
@@ -66,6 +79,7 @@ function Knowledge(props) {
       type,
       level,
       page,
+      title,
     })
     if (code === 200) {
       data?.exercisesLists?.data?.map((item) => {
@@ -78,7 +92,8 @@ function Knowledge(props) {
 
   const onSetAnswer = (idx) => {
     let data = { ...Knowledge }
-    data.exercisesLists.data[idx].isanswer = !data.exercisesLists.data[idx].isanswer
+    data.exercisesLists.data[idx].isanswer = !data.exercisesLists.data[idx]
+      .isanswer
     setKnowledge(data)
   }
 
@@ -365,31 +380,28 @@ function Knowledge(props) {
               </div>
             </div>
             <div className="tip_box">
-              {/* <div className="left_boxs">
-                <div className="timer">
-                  <span>时间</span>
-                  <img
-                    className="down"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/down.png"
-                    alt="down"
-                  />
-                </div>
-                <div className="count">
-                  <span>使用次数</span>
-                  <img
-                    className="down"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/down.png"
-                    alt="down"
-                  />
-                </div> 
-              </div> */}
-              <div className="right_boxs">
+              <div className="left_boxs">
                 <div className="total">
                   共计：{Knowledge?.exercisesLists?.total}题
                 </div>
                 <div className="allin" onClick={selectAllClick}>
                   选择本页全部试题
                 </div>
+              </div>
+              <div className="right_boxs">
+                <Input
+                  className="searchData"
+                  value={searchData}
+                  placeholder="搜索题目"
+                  onChange={(e) => setsearchData(e.target.value)}
+                />
+                <Button
+                  type="primary"
+                  className="searchclick"
+                  onClick={searchClick}
+                >
+                  搜索
+                </Button>
               </div>
             </div>
           </div>

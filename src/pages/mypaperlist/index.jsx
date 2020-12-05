@@ -133,7 +133,7 @@ function Mypaperlist(props) {
   const confirmClick = async () => {
     const { code, msg } = await paperToBased({
       id: SyncId,
-      show_time: encodeURIComponent(SyncTime),
+      show_time: SyncTime,
     })
     if (code === 200) {
       message.success(msg)
@@ -145,6 +145,10 @@ function Mypaperlist(props) {
 
   function onOk(value) {
     setSyncTime(setTimerType(value, true))
+  }
+
+  const toDetailPage = (id) => {
+    history.push(`/main/mypaperdetail?id=${id}`)
   }
 
   return (
@@ -206,7 +210,10 @@ function Mypaperlist(props) {
           {PapersList?.examList?.data?.map((item) => {
             return (
               <div className="items" key={item?.id}>
-                <div className="left_info">
+                <div
+                  className="left_info"
+                  onClick={() => toDetailPage(item?.id)}
+                >
                   <img
                     className="paper_icon"
                     src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
@@ -357,11 +364,16 @@ function Mypaperlist(props) {
         width="41.71rem"
         height="19.93rem"
       >
-        <div id="tmodelbox" className="reedit">
+        <div id="tmodelbox">
           <div className="title">重新编辑将清空试题篮</div>
-          <Button type="primary" className="btn" onClick={confirmClickss}>
-            确定
-          </Button>
+          <div className="btns">
+            <Button type="primary" className="btn" onClick={confirmClickss}>
+              确定
+            </Button>
+            <Button className="cancel" onClick={closeClicksss}>
+              取消
+            </Button>
+          </div>
         </div>
       </T_modelbox>
     </div>
