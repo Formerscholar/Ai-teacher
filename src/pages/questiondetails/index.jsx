@@ -30,7 +30,6 @@ function Questiondetails(props) {
   const [pages, setpages] = useState(1)
   const [Open, setOpen] = useState(false)
   const [tipText, setTipText] = useState('')
-  const [isAswer, setisAswer] = useState([false, false])
 
   useEffect(() => {
     getDetails(pages)
@@ -53,12 +52,9 @@ function Questiondetails(props) {
       page,
     })
     if (code === 200) {
-      let arr = []
       data?.exerciseList?.data?.map((item) => {
         item['isanswer'] = false
       })
-      console.log(arr)
-      setisAswer(arr)
       setExercisesData(data)
     } else {
       message.error(msg)

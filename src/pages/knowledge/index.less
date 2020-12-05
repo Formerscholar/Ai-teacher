@@ -1,12 +1,12 @@
-#Knowledge{
+#Knowledge {
   max-width: 1920px;
   min-height: 23.642857rem;
   margin: 0 auto;
   min-width: 1190px;
   margin-top: -3.571429rem;
-  
+
   width: 85.14rem;
-  
+
 
   .Knowledge_box {
     display: flex;
@@ -14,14 +14,14 @@
     align-items: flex-start;
     margin-bottom: 1.71rem;
     margin-top: 1.21rem;
-  
+
     .left_box {
       width: 23.43rem;
       background: #FFFFFF;
       box-shadow: 0rem 0rem 3rem 0rem rgba(149, 149, 149, 0.13);
       border-radius: 1rem;
       overflow: hidden;
-  
+
       .title {
         height: 5rem;
         line-height: 5rem;
@@ -34,23 +34,24 @@
         font-weight: bold;
         color: #222222;
       }
-  
+
       /deep/.ant-tree-list {
         padding: 1.71rem;
       }
-  
+
     }
-  
+
     .right_box {
       margin-left: 1.14rem;
       flex: 1;
+
       .top_box {
         .select_box {
           background: #FFFFFF;
           box-shadow: 0rem 0rem 3rem 0rem rgba(149, 149, 149, 0.13);
           border-radius: 1rem;
-  
-  
+
+
           .grop_warp {
             font-weight: 400;
             font-size: 1.14rem;
@@ -59,21 +60,21 @@
             align-items: center;
             padding: 1.86rem 2.14rem;
             border-bottom: 1px solid #FDF5F0;
-  
+
             &:last-child {
               border-bottom: none;
             }
-  
-  
+
+
             .title {
               color: #6C6C6C;
               margin-right: 2.14rem;
               min-width: 3.571429rem;
             }
-  
+
             .select_items {
               overflow: auto;
-  
+
               .select_item {
                 float: left;
                 color: #222222;
@@ -84,17 +85,17 @@
                 cursor: pointer;
                 padding: 0 .5rem;
                 min-width: 4.428571rem;
-  
+
               }
-  
+
               .Selected {
                 color: #FFFFFF;
                 background: #E50304;
               }
             }
-  
+
           }
-  
+
           .Questions {
             .select_items {
               .select_item {
@@ -104,18 +105,18 @@
             }
           }
         }
-  
+
         .tip_box {
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding: 1.43rem 1.71rem;
-  
+
           .left_boxs {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-  
+
             .timer,
             .count {
               margin-right: 2.57rem;
@@ -123,36 +124,36 @@
               justify-content: center;
               align-items: center;
               cursor: pointer;
-  
+
               span {
                 font-size: 1.14rem;
                 font-weight: 400;
                 color: #222222;
                 margin-right: .5rem;
               }
-  
+
               .down {
                 width: 0.5rem;
                 height: 1rem;
               }
             }
-  
+
             .count {}
-  
+
           }
-  
+
           .right_boxs {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-  
+
             .total {
               font-size: 1.14rem;
               font-weight: 400;
               color: #222222;
-  
+
             }
-  
+
             .allin {
               width: 11.43rem;
               height: 1.71rem;
@@ -169,22 +170,22 @@
           }
         }
       }
-  
+
       .content {
         background: #FFFFFF;
         border-radius: 1rem;
         padding: 1.71rem;
-  
+
         .items {
           border: 1px solid #E5E5E5;
           border-radius: 1rem;
           margin-bottom: 1.14rem;
           overflow: hidden;
-  
+
           &:last-child {
             margin-bottom: 0;
           }
-  
+
           .top_title {
             margin: 0 1.21rem;
             display: flex;
@@ -192,50 +193,80 @@
             align-items: center;
             border-bottom: 1px solid #E5E5E5;
             padding: 1.07rem 0;
-  
+
             .info_class {
               display: flex;
               justify-content: flex-start;
               align-items: center;
-  
+
               .difficulty {
                 font-size: 1.14rem;
                 font-weight: 400;
                 color: #222222;
                 margin-right: 3.57rem;
-  
+
                 span {
                   color: #E50304;
                 }
               }
-  
+
               .question {
                 font-size: 1.14rem;
                 font-weight: 400;
                 color: #222222;
-  
+
               }
             }
-  
+
             .new_icon {
               width: 1.71rem;
               height: 1.36rem;
             }
-  
+
           }
-  
+
           .cet_body {
             padding: 1.07rem 1.21rem;
           }
-  
+
+          .answerbox {
+            margin: 0 1.142857rem;
+            border-top: 1px solid #F1F1F1;
+            padding-top: 1.142857rem;
+
+            .Tests,
+            .answer,
+            .Parse {
+              font-size: 1.14rem;
+              font-weight: 400;
+              color: #222222;
+              margin-bottom: 1.71rem;
+              display: flex;
+              justify-content: flex-start;
+              align-items: flex-start;
+
+
+              .title {
+                font-weight: bold;
+                margin-right: 1.71rem;
+                width: 4.642857rem;
+              }
+
+              .body_txt {
+                flex: 1;
+              }
+
+            }
+          }
+
           .bot_btns {
-  
+
             background: #F1F1F1;
             padding: .93rem 1.14rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-  
+
             .left_box_warp {
               display: flex;
               justify-content: flex-start;
@@ -243,19 +274,19 @@
               font-size: 1.14rem;
               font-weight: 400;
               color: #222222;
-  
+
               .update_time {
                 margin-right: 1.71rem;
               }
-  
+
               .counts {}
             }
-  
+
             .right_box_warp {
               display: flex;
               justify-content: flex-end;
               align-items: center;
-  
+
               .answers,
               .details {
                 margin-right: 1.71rem;
@@ -263,24 +294,24 @@
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
-  
-  
+
+
                 img {
                   width: 1.14rem;
                   height: 1.29rem;
                   margin-right: .71rem;
                 }
-  
+
                 span {
                   font-size: 1.14rem;
                   font-weight: 400;
                   color: #222222;
-  
+
                 }
               }
-  
+
               .details {}
-  
+
               .add,
               .sub {
                 border-radius: 0.357143rem;
@@ -295,50 +326,50 @@
                 font-size: 1.14rem;
                 font-weight: 400;
                 color: #FFFFFF;
-  
+
                 em {
                   font-style: normal;
                   font-size: 1.428571rem;
                   margin-right: 0.357143rem;
                 }
               }
-  
+
               .sub {
                 background: #999999 !important;
-  
+
                 em {}
               }
             }
           }
         }
       }
-  
+
       .pages {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-top: 1.71rem;
-  
+
         .showtotal {
           margin: 0 .5rem;
         }
-  
+
         .outlined {
           margin-right: .5rem;
           width: 3.07rem;
-  
+
           .MuiOutlinedInput-input {
             padding: 0.535714rem 0;
             text-align: center;
           }
         }
-  
+
         .btns {
           width: 4.64rem;
           height: 2.285714rem;
           background: #FFFFFF;
           border-radius: 0.357143rem;
-  
+
           .MuiButton-label {
             font-size: 1.14rem;
             color: #222222 !important;
@@ -347,7 +378,5 @@
       }
     }
   }
-  
+
 }
-
-

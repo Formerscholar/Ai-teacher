@@ -68,9 +68,18 @@ function Knowledge(props) {
       page,
     })
     if (code === 200) {
+      data?.exercisesLists?.data?.map((item) => {
+        item['isanswer'] = false
+      })
       setKnowledge(data)
       setgradeId(data?.grade_id)
     }
+  }
+
+  const onSetAnswer = (idx) => {
+    let data = { ...Knowledge }
+    data.exercisesLists.data[idx].isanswer = !data.exercisesLists.data[idx].isanswer
+    setKnowledge(data)
   }
 
   /**
@@ -388,7 +397,7 @@ function Knowledge(props) {
           <div className="content">
             {/* items */}
             {/* Knowledge?.exercisesLists?.data */}
-            {Knowledge?.exercisesLists?.data?.map((item) => {
+            {Knowledge?.exercisesLists?.data?.map((item, idx) => {
               return (
                 <div className="items" key={item?.id}>
                   <div className="top_title">
@@ -411,6 +420,38 @@ function Knowledge(props) {
                     className="cet_body"
                     dangerouslySetInnerHTML={{ __html: item?.content_all }}
                   ></div>
+                  <div
+                    className="answerbox"
+                    style={{ display: item?.isanswer ? 'block' : 'none' }}
+                  >
+                    <div className="Tests">
+                      <span className="title">【考点】</span>
+                      <div
+                        className="body_txt"
+                        dangerouslySetInnerHTML={{
+                          __html: item?.knowledge,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="answer">
+                      <span className="title">【答案】</span>
+                      <div
+                        className="body_txt"
+                        dangerouslySetInnerHTML={{
+                          __html: item?.answer,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="Parse">
+                      <span className="title">【解析】</span>
+                      <div
+                        className="body_txt"
+                        dangerouslySetInnerHTML={{
+                          __html: item?.analysis,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
                   <div className="bot_btns">
                     <div className="left_box_warp">
                       <div className="update_time">
@@ -419,7 +460,7 @@ function Knowledge(props) {
                       {/* <div className="counts">组卷次数：0</div> */}
                     </div>
                     <div className="right_box_warp">
-                      <div className="answers">
+                      <div className="answers" onClick={() => onSetAnswer(idx)}>
                         <img
                           className="View"
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"

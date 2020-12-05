@@ -58,9 +58,18 @@ function Schoolbaseddetail(props) {
         message.error('本试卷无数据!')
         history.go(-1)
       } else {
+        data?.examsExercises?.map((item) => {
+          item['isanswer'] = false
+        })
         setBasedData(data)
       }
     }
+  }
+
+  const onSetAnswer = (idx) => {
+    let data = { ...basedData }
+    data.examsExercises[idx].isanswer = !data.examsExercises[idx].isanswer
+    setBasedData(data)
   }
 
   /**
@@ -141,7 +150,7 @@ function Schoolbaseddetail(props) {
         </Breadcrumb.Item>
       </Breadcrumb>
       <div className="paperList">
-        {basedData?.examsExercises?.map((item) => {
+        {basedData?.examsExercises?.map((item, idx) => {
           return (
             <div className="items" key={item?.id}>
               <div className="top_title">
@@ -163,6 +172,38 @@ function Schoolbaseddetail(props) {
                   __html: item?.get_exercises?.content_all,
                 }}
               ></div>
+              <div
+                className="answerbox"
+                style={{ display: item?.isanswer ? 'block' : 'none' }}
+              >
+                <div className="Tests">
+                  <span className="title">【考点】</span>
+                  <div
+                    className="body_txt"
+                    dangerouslySetInnerHTML={{
+                      __html: item?.knowledge,
+                    }}
+                  ></div>
+                </div>
+                <div className="answer">
+                  <span className="title">【答案】</span>
+                  <div
+                    className="body_txt"
+                    dangerouslySetInnerHTML={{
+                      __html: item?.answer,
+                    }}
+                  ></div>
+                </div>
+                <div className="Parse">
+                  <span className="title">【解析】</span>
+                  <div
+                    className="body_txt"
+                    dangerouslySetInnerHTML={{
+                      __html: item?.analysis,
+                    }}
+                  ></div>
+                </div>
+              </div>
               <div className="bot_btns">
                 <div className="left_box_warp">
                   <div className="update_time">
@@ -172,7 +213,7 @@ function Schoolbaseddetail(props) {
                   {/* <div className="counts">组卷次数：0</div> */}
                 </div>
                 <div className="right_box_warp">
-                  <div className="answers">
+                  <div className="answers" onClick={() => onSetAnswer(idx)}>
                     <img
                       className="View"
                       src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
