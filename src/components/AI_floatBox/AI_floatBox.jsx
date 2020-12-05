@@ -12,7 +12,6 @@ import { message } from 'antd'
 function AI_floatBox({ volumeTopicCount, props, settopicData }) {
   const { history } = props
   const [basketData, setbasketData] = useState({})
-  const [isShow, setisShow] = useState(false)
 
   useEffect(() => {
     getbasketDetail()
@@ -29,9 +28,6 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
     }
   }
 
-  const setIsShowClick = () => {
-    setisShow(!isShow)
-  }
 
   const getbasketDetail = async () => {
     const { code, data } = await basketDetail()
@@ -62,9 +58,6 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
   return (
     <div
       id="AI_floatBox"
-      style={{
-        backgroundColor: isShow && '#BBBBBB',
-      }}
     >
       <div className="top_float_warp" onClick={tocomposition}>
         <img
@@ -79,50 +72,41 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
       </div>
       <img
         className="arrow_icon"
-        src={
-          isShow
-            ? 'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/arrow_icon.png'
-            : 'https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/arrow_icon_left.png'
-        }
+        src='https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/arrow_icon_left.png'
         alt="arrow_icon"
-        onClick={setIsShowClick}
       />
       {/* 展开框 */}
-      {isShow ? (
-        <div className="unfold">
-          {/* 总量 */}
-          <div className="gross">
-            试题总量（<span>{basketData?.basketCount}</span>）
-          </div>
-          {/* 类型list */}
-          <div className="typeList">
-            {basketData?.basketDetail?.map((item) => {
-              return (
-                <div className="items" key={item?.id}>
-                  <div className="type">{item?.type}</div>
-                  <div className="numdel">
-                    <span>
-                      <em>{item?.count}</em>题
-                    </span>
-                    <img
-                      className="tip_del_icon"
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/tip_del_icon.png"
-                      alt="tip_del_icon"
-                      onClick={() => delType(item.id)}
-                    />
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-          {/* 清空 */}
-          <div className="empty" onClick={clearListClick}>
-            清空试题
-          </div>
+      <div className="unfold">
+        {/* 总量 */}
+        <div className="gross">
+          试题总量（<span>{basketData?.basketCount}</span>）
         </div>
-      ) : (
-        ''
-      )}
+        {/* 类型list */}
+        <div className="typeList">
+          {basketData?.basketDetail?.map((item) => {
+            return (
+              <div className="items" key={item?.id}>
+                <div className="type">{item?.type}</div>
+                <div className="numdel">
+                  <span>
+                    <em>{item?.count}</em>题
+                  </span>
+                  <img
+                    className="tip_del_icon"
+                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/tip_del_icon.png"
+                    alt="tip_del_icon"
+                    onClick={() => delType(item.id)}
+                  />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        {/* 清空 */}
+        <div className="empty" onClick={clearListClick}>
+          清空试题
+        </div>
+      </div>
     </div>
   )
 }

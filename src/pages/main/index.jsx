@@ -117,7 +117,7 @@ function Main(props) {
               <div
                 className="items"
                 key={item?.id}
-                onClick={() => topaperdetail(item?.id)}
+                onClick={() => topaperdetail(item?.based_id)}
               >
                 <div className="left_text">
                   <img

@@ -31,6 +31,7 @@ import { splitSearch, setTimerType } from '@/utils'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
 import T_modelbox from '@/common/T_modelbox'
+import { phoneRegular, emailRegular } from '@/conf'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -69,13 +70,18 @@ function User(props) {
   const [verification, setverification] = useState('')
   const [phoneInputDisab, setphoneInputDisab] = useState(false)
   const [UploadDetail, setUploadDetail] = useState(false)
+  const [timeCodeText, settimeCodeText] = useState('发送验证码')
+  const [btndis, setbtndis] = useState(false)
 
   const inputEl = useRef(null)
+  let OutTimeinval = null
 
   useEffect(() => {
     getAllAreaList()
     initData(splitSearch(location?.search)?.type * 1)
-    return () => {}
+    return () => {
+      clearInterval(OutTimeinval)
+    }
   }, [])
 
   useEffect(() => {
@@ -325,8 +331,7 @@ function User(props) {
   }
 
   const confirmClick = async () => {
-    let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    if (reg.test(emailData)) {
+    if (emailRegular.test(emailData)) {
       const { code, msg } = await editInformation({
         name: userData?.true_name,
         sex: gender,
@@ -437,8 +442,19 @@ function User(props) {
   }
 
   const verificationCode = async () => {
-    let reg = /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1|8|9]))\d{8}$/
-    if (reg.test(newPhone)) {
+    if (phoneRegular.test(newPhone)) {
+      setbtndis(true)
+      let num = 60
+      OutTimeinval = setInterval(() => {
+        if (num == 0) {
+          settimeCodeText('发送验证码')
+          setbtndis(false)
+          clearInterval(OutTimeinval)
+        } else {
+          num--
+          settimeCodeText(`(${num})`)
+        }
+      }, 1000)
       const { code, msg } = await getCode({
         mobile: newPhone,
       })
@@ -985,8 +1001,9 @@ function User(props) {
                 type="primary"
                 className="Codebtn"
                 onClick={verificationCode}
+                disabled={btndis}
               >
-                发送验证码
+                {timeCodeText}
               </Button>
             </div>
           </div>

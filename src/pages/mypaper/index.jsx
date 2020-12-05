@@ -44,6 +44,7 @@ function Mypaper(props) {
   const [annotation, setannotation] = useState('第I卷的注释')
   const [Open, setOpen] = useState(false)
   const [Opens, setOpens] = useState(false)
+  const [oldScore, setOldScore] = useState('')
 
   useEffect(() => {
     getPapers()
@@ -56,7 +57,7 @@ function Mypaper(props) {
     })
     if (code === 200) {
       data?.exercisesData?.map((item1) => {
-        item1?.map(item2 => {
+        item1?.map((item2) => {
           item2['isanswer'] = false
         })
       })
@@ -96,7 +97,8 @@ function Mypaper(props) {
 
   const onSetAnswer = (idx1, idx2) => {
     let data = { ...ExercisesData }
-    data.exercisesData[idx1][idx2].isanswer = !data.exercisesData[idx1][idx2].isanswer
+    data.exercisesData[idx1][idx2].isanswer = !data.exercisesData[idx1][idx2]
+      .isanswer
     setExercisesData(data)
   }
   /**
@@ -233,9 +235,10 @@ function Mypaper(props) {
     }
   }
 
-  const setScoreClick = (id) => {
+  const setScoreClick = (id, score) => {
     setScoreId(id)
     setOpens(true)
+    setOldScore(score)
   }
 
   const Completevolume = async () => {
@@ -586,7 +589,9 @@ function Mypaper(props) {
                             </div>
                             <div
                               className="btn_item set_btn"
-                              onClick={() => setScoreClick(item2?.id)}
+                              onClick={() =>
+                                setScoreClick(item2?.id, item2?.score)
+                              }
                             >
                               <img
                                 className="items_set"
@@ -793,7 +798,7 @@ function Mypaper(props) {
         height="22.14rem"
       >
         <div id="tmodelbox">
-          <div className="title"></div>
+          <div className="title crostitle">当前分数:{oldScore}</div>
           <div className="body_text crosbox">
             <span className="span">分数:</span>
             <Input

@@ -1,15 +1,20 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { getTeamDetail, delTeamTeacher, delTeamStudent } from '@/services/class'
-import { Avatar, Breadcrumb, message } from 'antd'
+import { Avatar, Breadcrumb, message, Button } from 'antd'
 import { setTimerType, splitSearch } from '@/utils'
 import { connect } from 'react-redux'
 import { GET_HOME_INFO } from '@/store/actionType'
+import T_modelbox from '@/common/T_modelbox'
 
 function ClassDetails(props) {
   const { location, history, homeInfo } = props
   const iid = splitSearch(location.search).id
   const [detailData, setDetailData] = useState({})
+  const [detailstudInfo, setdetailstudInfo] = useState({})
+  const [Open, setOpen] = useState(false)
+  const [delText, setdelText] = useState('')
+
   useEffect(() => {
     getTeamDetails()
 
@@ -54,17 +59,28 @@ function ClassDetails(props) {
    *
    * @param {Number} team_id
    * @param {Number} student_id
+   * @param {String} true_name
    */
-  const delstudentrClick = async (team_id, student_id) => {
-    const { code, msg } = await delTeamStudent({
+  const delstudentrClick = (team_id, student_id, true_name) => {
+    setdetailstudInfo({
       team_id,
       student_id,
+      true_name,
+    })
+    setOpen(true)
+  }
+
+  const confirmClick = async () => {
+    const { code, msg } = await delTeamStudent({
+      team_id: detailstudInfo.team_id,
+      student_id: detailstudInfo.student_id,
     })
     if (code === 200) {
       message.success(msg)
     } else {
       message.error(msg)
     }
+    setOpen(false)
     getTeamDetails()
   }
 
@@ -198,7 +214,11 @@ function ClassDetails(props) {
                   detailData?.team?.is_active === 0 ? (
                     <span
                       onClick={() =>
-                        delstudentrClick(detailData?.team?.id, item?.user_id)
+                        delstudentrClick(
+                          detailData?.team?.id,
+                          item?.id,
+                          item?.true_name
+                        )
                       }
                     >
                       移除
@@ -212,6 +232,23 @@ function ClassDetails(props) {
           })}
         </div>
       </div>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Open}
+        title="【温馨提示】"
+        closeClick={() => setOpen(false)}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox" className="delitem">
+          <div className="title">
+            确定是否移除《{detailstudInfo?.true_name}》学生？
+          </div>
+          <Button type="primary" className="btn" onClick={confirmClick}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
     </div>
   )
 }
