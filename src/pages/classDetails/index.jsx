@@ -34,7 +34,11 @@ function ClassDetails(props) {
     event.preventDefault()
     history.push('/main/class')
   }
-
+  
+  const handleClicks = (event) => {
+    event.preventDefault()
+    history.push('/main/index')
+  }
   /**
    * 班级删除老师
    *
@@ -101,7 +105,7 @@ function ClassDetails(props) {
         }
       >
         <Breadcrumb.Item
-          onClick={handleClick}
+          onClick={handleClicks}
           style={{ cursor: 'pointer', color: '#222' }}
         >
           <img
@@ -110,6 +114,13 @@ function ClassDetails(props) {
             alt="position"
             style={{ width: '0.86rem', height: '1.14rem', marginRight: '1rem' }}
           />
+          首页
+        </Breadcrumb.Item>
+        <Breadcrumb.Item
+          className="breaditem"
+          style={{ cursor: 'pointer', color: '#222' }}
+          onClick={handleClick}
+        >
           班级信息
         </Breadcrumb.Item>
         <Breadcrumb.Item

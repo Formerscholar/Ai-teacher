@@ -34,7 +34,7 @@ function ClassReport(props) {
   } = props
   const [Id, setid] = useState(0)
   const [AcademicData, setAcademicData] = useState({})
-  const [PickerData, setPickerData] = useState([])
+  const [PickerData, setPickerData] = useState(getCurrentWeek(new Date()))
   const [Listpage, setListpage] = useState(1)
   const [startTime, setstartTime] = useState(getCurrentWeek(new Date())[0])
   const [endTime, setendTime] = useState(getCurrentWeek(new Date())[1])

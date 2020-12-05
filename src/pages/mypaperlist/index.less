@@ -69,6 +69,21 @@
         align-items: center;
         padding: 0 1.71rem;
         margin-bottom: 1.14rem;
+        position: relative;
+
+        &:hover .tip_del_icon {
+          opacity: 1;
+        }
+
+
+
+        .tip_del_icon {
+          position: absolute;
+          top: 0.357143rem;
+          right: 0.714286rem;
+          opacity: 0;
+          cursor: pointer;
+        }
 
         &:last-child {
           margin-bottom: 0;
@@ -183,9 +198,10 @@
   }
 
   .btns {
-    .btn{
+    .btn {
       margin-right: 1.428571rem;
     }
+
     .cancel {
       background-color: #fff !important;
       background-image: none !important;

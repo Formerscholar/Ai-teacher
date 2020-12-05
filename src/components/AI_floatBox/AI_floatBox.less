@@ -53,20 +53,21 @@
   }
 
   &:hover .unfold {
-    opacity: 1;
+    display: block;
   }
 
   .unfold {
-    opacity: 0;
+    display: none;
+    width: 17.57rem;
+    padding: 1.14rem;
+    overflow: hidden;
     position: absolute;
     top: 0;
     left: -17.57rem;
-    width: 17.57rem;
     min-height: 29.43rem;
     background: #FFFFFF;
     border: 0.07px solid #E5E5E5;
     border-radius: 1rem;
-    padding: 1.14rem;
 
     .gross {
       font-size: 1.14rem;
@@ -135,7 +136,8 @@
       color: #999999;
 
     }
-    .preview{
+
+    .preview {
       position: absolute;
       bottom: 0.357143rem;
       right: 0;

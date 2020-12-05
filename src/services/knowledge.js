@@ -127,3 +127,13 @@ export function editBasketScore(params) {
     params,
   })
 }
+
+
+
+export function delTeacherExam(params) {
+  return request({
+    url: '/delTeacherExam',
+    method: 'GET',
+    params,
+  })
+}

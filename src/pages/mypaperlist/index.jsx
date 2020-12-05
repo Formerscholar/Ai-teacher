@@ -13,6 +13,7 @@ import {
   getPapersList,
   paperToBased,
   paperToBasket,
+  delTeacherExam,
 } from '@/services/knowledge'
 import { setTimerType } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
@@ -45,6 +46,18 @@ function Mypaperlist(props) {
     })
     if (code === 200) {
       setPapersList(data)
+    } else {
+      message.error(msg)
+    }
+  }
+
+  const delItem = async (id) => {
+    const { code, msg } = await delTeacherExam({
+      id,
+    })
+    if (code === 200) {
+      getPapersListData()
+      message.success(msg)
     } else {
       message.error(msg)
     }
@@ -210,6 +223,12 @@ function Mypaperlist(props) {
           {PapersList?.examList?.data?.map((item) => {
             return (
               <div className="items" key={item?.id}>
+                <img
+                  className="tip_del_icon"
+                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/tip_del_icon.png"
+                  alt="tip_del_icon"
+                  onClick={() => delItem(item?.id)}
+                />
                 <div
                   className="left_info"
                   onClick={() => toDetailPage(item?.id)}
