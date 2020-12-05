@@ -366,7 +366,7 @@ function StudyReport(props) {
                   <div
                     className="body_txt"
                     dangerouslySetInnerHTML={{
-                      __html: item?.get_exercises?.knowledge,
+                      __html: item?.get_exercises?.knowName,
                     }}
                   ></div>
                 </div>

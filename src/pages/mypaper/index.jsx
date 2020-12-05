@@ -551,7 +551,7 @@ function Mypaper(props) {
                                 <div
                                   className="body_txt"
                                   dangerouslySetInnerHTML={{
-                                    __html: item2?.exercises?.knowledge,
+                                    __html: item2?.exercises?.knowName,
                                   }}
                                 ></div>
                               </div>

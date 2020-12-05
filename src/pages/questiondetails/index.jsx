@@ -164,7 +164,7 @@ function Questiondetails(props) {
             <div
               className="body_txt"
               dangerouslySetInnerHTML={{
-                __html: ExercisesData?.exercise?.knowledge,
+                __html: ExercisesData?.exercise?.knowName,
               }}
             ></div>
           </div>
@@ -277,7 +277,7 @@ function Questiondetails(props) {
                     <div
                       className="body_txt"
                       dangerouslySetInnerHTML={{
-                        __html: item?.knowledge,
+                        __html: item?.knowName,
                       }}
                     ></div>
                   </div>

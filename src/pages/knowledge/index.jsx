@@ -441,7 +441,7 @@ function Knowledge(props) {
                       <div
                         className="body_txt"
                         dangerouslySetInnerHTML={{
-                          __html: item?.knowledge,
+                          __html: item?.knowName,
                         }}
                       ></div>
                     </div>
