@@ -239,6 +239,7 @@ function Mypaper(props) {
     setScoreId(id)
     setOpens(true)
     setOldScore(score)
+    setScoredata(score)
   }
 
   const Completevolume = async () => {
@@ -798,7 +799,7 @@ function Mypaper(props) {
         height="22.14rem"
       >
         <div id="tmodelbox">
-          <div className="title crostitle">当前分数:{oldScore}</div>
+          {/* <div className="title crostitle">当前分数:{oldScore}</div> */}
           <div className="body_text crosbox">
             <span className="span">分数:</span>
             <Input

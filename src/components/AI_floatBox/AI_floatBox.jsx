@@ -7,7 +7,7 @@ import {
   delTypeExamBasket,
   clearExamBasket,
 } from '@/services/knowledge'
-import { message } from 'antd'
+import { Button, message } from 'antd'
 
 function AI_floatBox({ volumeTopicCount, props, settopicData }) {
   const { history } = props
@@ -27,7 +27,6 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
       message.error(msg)
     }
   }
-
 
   const getbasketDetail = async () => {
     const { code, data } = await basketDetail()
@@ -56,9 +55,7 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
   }
 
   return (
-    <div
-      id="AI_floatBox"
-    >
+    <div id="AI_floatBox">
       <div className="top_float_warp" onClick={tocomposition}>
         <img
           className="basket_icon"
@@ -72,7 +69,7 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
       </div>
       <img
         className="arrow_icon"
-        src='https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/arrow_icon_left.png'
+        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/arrow_icon_left.png"
         alt="arrow_icon"
       />
       {/* 展开框 */}
@@ -106,6 +103,9 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
         <div className="empty" onClick={clearListClick}>
           清空试题
         </div>
+        <Button type="primary" className="preview" block>
+          试卷预览
+        </Button>
       </div>
     </div>
   )
