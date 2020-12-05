@@ -55,6 +55,11 @@ function Mypaper(props) {
       id: search.id,
     })
     if (code === 200) {
+      data?.exercisesData?.map((item1) => {
+        item1?.map(item2 => {
+          item2['isanswer'] = false
+        })
+      })
       setExercisesData(data)
       if (search.id) {
         let Arr = []
@@ -87,6 +92,12 @@ function Mypaper(props) {
       setExercisesData(data)
       message.error(msg)
     }
+  }
+
+  const onSetAnswer = (idx1, idx2) => {
+    let data = { ...ExercisesData }
+    data.exercisesData[idx1][idx2].isanswer = !data.exercisesData[idx1][idx2].isanswer
+    setExercisesData(data)
   }
   /**
    *
@@ -525,10 +536,47 @@ function Mypaper(props) {
                                 __html: item2?.exercises?.content_all,
                               }}
                             ></span>
+                            <div
+                              className="answerbox"
+                              style={{
+                                display: item2?.isanswer ? 'block' : 'none',
+                              }}
+                            >
+                              <div className="Tests">
+                                <span className="title">【考点】</span>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.knowledge,
+                                  }}
+                                ></div>
+                              </div>
+                              <div className="answer">
+                                <span className="title">【答案】</span>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.answer,
+                                  }}
+                                ></div>
+                              </div>
+                              <div className="Parse">
+                                <span className="title">【解析】</span>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.analysis,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
                           </div>
                           {/* 底部操作按钮 */}
                           <div className="bot_btns">
-                            <div className="btn_item check_btn ">
+                            <div
+                              className="btn_item check_btn"
+                              onClick={() => onSetAnswer(idx1, idx2)}
+                            >
                               <img
                                 className="items_check"
                                 src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/items_check.png"

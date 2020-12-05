@@ -366,7 +366,7 @@ function ClassReport(props) {
                   <div
                     className="body_txt"
                     dangerouslySetInnerHTML={{
-                      __html: item?.knowledge,
+                      __html: item?.get_exercises?.knowledge,
                     }}
                   ></div>
                 </div>
@@ -375,7 +375,7 @@ function ClassReport(props) {
                   <div
                     className="body_txt"
                     dangerouslySetInnerHTML={{
-                      __html: item?.answer,
+                      __html: item?.get_exercises?.answer,
                     }}
                   ></div>
                 </div>
@@ -384,7 +384,7 @@ function ClassReport(props) {
                   <div
                     className="body_txt"
                     dangerouslySetInnerHTML={{
-                      __html: item?.analysis,
+                      __html: item?.get_exercises?.analysis,
                     }}
                   ></div>
                 </div>

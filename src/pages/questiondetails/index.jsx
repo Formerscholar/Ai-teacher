@@ -268,7 +268,6 @@ function Questiondetails(props) {
                   className="cet_body"
                   dangerouslySetInnerHTML={{ __html: item?.content_all }}
                 ></div>
-
                 <div
                   className="answerbox"
                   style={{ display: item?.isanswer ? 'block' : 'none' }}
