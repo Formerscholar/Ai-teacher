@@ -354,7 +354,6 @@ function Chapter(props) {
 
   const semesterView = (obj) => {
     return Object.values(obj).map((item, index) => {
-      console.log(item)
       return (
         <div
           className={currentsemest == index ? 'items selected' : 'items'}
@@ -364,6 +363,14 @@ function Chapter(props) {
           <span>{item}</span>
         </div>
       )
+    })
+  }
+
+  const semesterTitle = (obj) => {
+    return Object.values(obj).map((item, index) => {
+      if (index + 1 == Knowledge?.semesterId) {
+        return item
+      }
     })
   }
 
@@ -396,12 +403,16 @@ function Chapter(props) {
       <div className="Knowledge_box">
         <div className="left_box">
           <div className="title">
-            {Knowledge?.grades?.map((item) => {
+            {Knowledge?.version?.map((item) => {
+              if (item?.id == Knowledge?.versionId) {
+                return item?.title
+              }
+            })}
+            {' '}·{' '}{Knowledge?.grades?.map((item) => {
               if (item?.id == Knowledge?.gradeId) {
                 return item?.name
               }
-            })}
-            {homeInfo?.teacher?.get_subject?.title} · 章节
+            })}{Knowledge?.semester && semesterTitle(Knowledge?.semester)}
           </div>
           <Tree
             checkable

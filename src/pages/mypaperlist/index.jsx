@@ -26,6 +26,7 @@ function Mypaperlist(props) {
   const [Open, setOpen] = useState(false)
   const [Opens, setOpens] = useState(false)
   const [Openss, setOpenss] = useState(false)
+  const [Opensss, setOpensss] = useState(false)
   const [SyncId, setSyncId] = useState(0)
   const [SyncTime, setSyncTime] = useState(setTimerType(new Date(), true))
   const [examId, setexamId] = useState(0)
@@ -34,6 +35,7 @@ function Mypaperlist(props) {
   const [size, setsize] = useState('A4')
   const [searchData, setsearchData] = useState('')
   const [reedId, setreedId] = useState(0)
+  const [delId, setdelId] = useState(0)
 
   useEffect(() => {
     getPapersListData()
@@ -51,17 +53,11 @@ function Mypaperlist(props) {
     }
   }
 
-  const delItem = async (id) => {
-    const { code, msg } = await delTeacherExam({
-      id,
-    })
-    if (code === 200) {
-      getPapersListData()
-      message.success(msg)
-    } else {
-      message.error(msg)
-    }
+  const delItem = (id) => {
+    setdelId(id)
+    setOpensss(true)
   }
+
   /**
    *
    *  返回路由
@@ -106,6 +102,19 @@ function Mypaperlist(props) {
     setOpenss(false)
   }
 
+  const confirmClicksss = async () => {
+    const { code, msg } = await delTeacherExam({
+      id: delId,
+    })
+    if (code === 200) {
+      getPapersListData()
+      message.success(msg)
+    } else {
+      message.error(msg)
+    }
+    setOpensss(false)
+  }
+
   const downClick = (id, title) => {
     setexamId(id)
     setexamexamtitle(title)
@@ -122,16 +131,6 @@ function Mypaperlist(props) {
     setSyncId(id)
   }
 
-  const closeClick = () => {
-    setOpen(false)
-  }
-
-  const closeClicks = () => {
-    setOpens(false)
-  }
-  const closeClicksss = () => {
-    setOpenss(false)
-  }
   /**
    *
    *  下载确认点击
@@ -296,7 +295,9 @@ function Mypaperlist(props) {
       <T_modelbox
         isOpen={Open}
         title="【同步】"
-        closeClick={closeClick}
+        closeClick={() => {
+          setOpen(false)
+        }}
         width="41.71rem"
         height="19.93rem"
       >
@@ -319,7 +320,9 @@ function Mypaperlist(props) {
       <T_modelbox
         isOpen={Opens}
         title="【下载确认】"
-        closeClick={closeClicks}
+        closeClick={() => {
+          setOpens(false)
+        }}
         width="62.64rem"
         height="31.57rem"
       >
@@ -379,7 +382,9 @@ function Mypaperlist(props) {
       <T_modelbox
         isOpen={Openss}
         title="【温馨提示】"
-        closeClick={closeClicksss}
+        closeClick={() => {
+          setOpenss(false)
+        }}
         width="41.71rem"
         height="19.93rem"
       >
@@ -389,7 +394,39 @@ function Mypaperlist(props) {
             <Button type="primary" className="btn" onClick={confirmClickss}>
               确定
             </Button>
-            <Button className="cancel" onClick={closeClicksss}>
+            <Button
+              className="cancel"
+              onClick={() => {
+                setOpenss(false)
+              }}
+            >
+              取消
+            </Button>
+          </div>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Opensss}
+        title="【温馨提示】"
+        closeClick={() => {
+          setOpensss(false)
+        }}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox">
+          <div className="title">是否删除此试卷?</div>
+          <div className="btns">
+            <Button type="primary" className="btn" onClick={confirmClicksss}>
+              确定
+            </Button>
+            <Button
+              className="cancel"
+              onClick={() => {
+                setOpensss(false)
+              }}
+            >
               取消
             </Button>
           </div>

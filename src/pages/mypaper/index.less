@@ -193,23 +193,25 @@
               display: flex;
               flex-direction: column;
               justify-content: center;
-              align-items: center;
+              align-items: flex-end;
               margin-top: -3.57rem;
-              border: 1px solid transparent;
 
               &:hover {
-                border: 1px solid #E5E5E5;
-
                 .bot_btns {
                   opacity: 1;
+                }
+                .topbody{
+                border: 1px solid #E5E5E5;
                 }
               }
 
               .topbody {
                 width: 100%;
                 flex: 1;
-                padding: 0 1.21rem;
-                padding-top: 1.21rem;
+                padding: 1.21rem;
+                border: 1px solid transparent;
+                border-radius: 1rem;
+                border-top-right-radius: 0;
 
                 .span {
                   color: #E50304;
@@ -249,15 +251,18 @@
               }
 
               .bot_btns {
-                width: 100%;
                 height: 3.57rem;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
                 padding: 0 1.79rem;
                 background: #F1F1F1;
+                border-radius: 1rem;
                 opacity: 0;
-
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+                border: 1px solid #E5E5E5;
+                border-bottom: none;
                 .btn_item {
                   margin-right: 1.43rem;
                   cursor: pointer;
@@ -439,7 +444,7 @@
           .serialList {
             display: flex;
             justify-content: flex-start;
-            flex-wrap:wrap;
+            flex-wrap: wrap;
             align-items: center;
             padding: 0 1.71rem;
             margin-top: 1.64rem;
