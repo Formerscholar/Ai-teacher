@@ -20,7 +20,6 @@ import {
   SET_TOPIC,
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
-import T_modelbox from '@/common/T_modelbox'
 import moment from 'moment'
 
 const { RangePicker } = DatePicker
@@ -36,6 +35,7 @@ function StudyReport(props) {
   } = props
   const id = splitSearch(location.search).id
   const iid = splitSearch(location.search).iid
+  const classNames = splitSearch(location.search).classname
   const name = decodeURI(splitSearch(location.search).name)
   const [AcademicData, setAcademicData] = useState({})
   const [PickerData, setPickerData] = useState([])
@@ -75,8 +75,6 @@ function StudyReport(props) {
       },
     ],
   })
-  const [Open, setOpen] = useState(false)
-  const [tipText, setTipText] = useState('')
   const Echars = useRef(null)
 
   useEffect(() => {
@@ -88,9 +86,7 @@ function StudyReport(props) {
     const myChart = window.echarts.init(Echars.current)
     myChart.setOption(options)
   })
-  const closeClick = () => {
-    setOpen(false)
-  }
+  
   /**
    *  获取 初始化信息
    * @param {dateString} [start_time=getCurrentWeek(new Date())[0]]
@@ -236,8 +232,7 @@ function StudyReport(props) {
       message.success(msg)
       addtopicData(1)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
 
@@ -249,8 +244,7 @@ function StudyReport(props) {
       message.success(msg)
       subtopicData(1)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
 
@@ -295,7 +289,7 @@ function StudyReport(props) {
           className="breaditem"
           style={{ cursor: 'pointer', color: '#222' }}
         >
-          七年级一班
+          {classNames}
         </Breadcrumb.Item>
         <Breadcrumb.Item
           className="breaditem"
@@ -461,29 +455,6 @@ function StudyReport(props) {
       </div>
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
-      {/* 模态框 */}
-      <T_modelbox
-        isOpen={Open}
-        title=" "
-        closeClick={closeClick}
-        width="41.71rem"
-        height="22.14rem"
-      >
-        <div id="tmodelbox">
-          <div className="title">
-            <img
-              className="notice"
-              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notice.png"
-              alt="notice"
-            />
-            <span>操作失败</span>
-          </div>
-          <div className="body_text">{tipText}</div>
-          <Button type="primary" className="btn" onClick={closeClick}>
-            我知道了
-          </Button>
-        </div>
-      </T_modelbox>
     </div>
   )
 }

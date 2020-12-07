@@ -15,7 +15,6 @@ import {
 } from '@/store/actionType'
 import { setTimerType } from '@/utils'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
-import T_modelbox from '@/common/T_modelbox'
 
 function Knowledge(props) {
   const {
@@ -37,8 +36,6 @@ function Knowledge(props) {
   const [expandedKeys, setExpandedKeys] = useState([])
   const [checkedKeys, setCheckedKeys] = useState([])
   const [autoExpandParent, setAutoExpandParent] = useState(true)
-  const [Open, setOpen] = useState(false)
-  const [tipText, setTipText] = useState('')
   const [searchData, setsearchData] = useState('')
 
   useEffect(() => {
@@ -141,9 +138,7 @@ function Knowledge(props) {
     getKnowledge(gradeId, checkedKeys, id, level, Listpage)
   }
 
-  const closeClick = () => {
-    setOpen(false)
-  }
+  
   /**
    *
    *  页面变化请求数据
@@ -239,8 +234,7 @@ function Knowledge(props) {
       message.success(msg)
       addtopicData(1)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
 
@@ -252,8 +246,7 @@ function Knowledge(props) {
       message.success(msg)
       subtopicData(1)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
 
@@ -266,8 +259,7 @@ function Knowledge(props) {
       message.success(msg)
       addtopicData(Knowledge?.exercisesLists?.data?.length)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
   /**
@@ -506,20 +498,20 @@ function Knowledge(props) {
                       {item?.is_basket ? (
                         <Button
                           className="sub"
+                          size="small"
                           variant="contained"
                           onClick={() => removeClick(item?.id)}
                         >
-                          <em>-</em>
-                          移除
+                          - 移除
                         </Button>
                       ) : (
                         <Button
                           className="add"
+                          size="small"
                           variant="contained"
                           onClick={() => compositionClick(item?.id, item?.type)}
                         >
-                          <em>+</em>
-                          组卷
+                          + 组卷
                         </Button>
                       )}
                     </div>
@@ -559,29 +551,6 @@ function Knowledge(props) {
         </div>
         {/* 悬浮框 */}
         <AI_floatBox props={props} />
-        {/* 模态框 */}
-        <T_modelbox
-          isOpen={Open}
-          title=" "
-          closeClick={closeClick}
-          width="41.71rem"
-          height="22.14rem"
-        >
-          <div id="tmodelbox">
-            <div className="title">
-              <img
-                className="notice"
-                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notice.png"
-                alt="notice"
-              />
-              <span>操作失败</span>
-            </div>
-            <div className="body_text">{tipText}</div>
-            <Button type="primary" className="btn" onClick={closeClick}>
-              我知道了
-            </Button>
-          </div>
-        </T_modelbox>
       </div>
     </div>
   )

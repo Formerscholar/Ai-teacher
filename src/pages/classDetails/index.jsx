@@ -34,7 +34,7 @@ function ClassDetails(props) {
     event.preventDefault()
     history.push('/main/class')
   }
-  
+
   const handleClicks = (event) => {
     event.preventDefault()
     history.push('/main/index')
@@ -88,9 +88,11 @@ function ClassDetails(props) {
     getTeamDetails()
   }
 
-  const StudyReportClick = (id, name) => {
+  const StudyReportClick = (id, name, classname) => {
     history.push(
-      `/main/studyreport?id=${id}&iid=${iid}&name=${encodeURI(name)}`
+      `/main/studyreport?id=${id}&iid=${iid}&name=${encodeURI(
+        name
+      )}&classname=${classname}`
     )
   }
 
@@ -217,7 +219,14 @@ function ClassDetails(props) {
                 </div>
                 <div className="operate_box flex_box">
                   <span
-                    onClick={() => StudyReportClick(item?.id, item?.true_name)}
+                    onClick={() =>
+                      StudyReportClick(
+                        item?.id,
+                        item?.true_name,
+                        detailData?.team?.get_grade?.name +
+                          detailData?.team?.name
+                      )
+                    }
                   >
                     学情报告
                   </span>
@@ -255,9 +264,22 @@ function ClassDetails(props) {
           <div className="title">
             确定是否移除《{detailstudInfo?.true_name}》学生？
           </div>
-          <Button type="primary" className="btn" onClick={confirmClick}>
-            确定
-          </Button>
+          <div className="btns">
+            <Button
+              type="primary"
+              className="btn"
+              onClick={confirmClick}
+            >
+              确定
+            </Button>
+            <Button
+              type="primary"
+              className="btncanle"
+              onClick={() => setOpen(false)}
+            >
+              取消
+            </Button>
+          </div>
         </div>
       </T_modelbox>
     </div>

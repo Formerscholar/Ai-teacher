@@ -44,7 +44,6 @@ function Mypaper(props) {
   const search = splitSearch(location.search)
   const [checkitems, setcheckitems] = useState([])
   const [ExercisesData, setExercisesData] = useState({})
-  const [tipText, setTipText] = useState('')
   const [Papertitle, setPapertitle] = useState('')
   const [subhead, setsubhead] = useState('')
   const [prompt, setprompt] = useState('')
@@ -53,7 +52,6 @@ function Mypaper(props) {
   const [Scoredata, setScoredata] = useState(0)
   const [titlewarp, settitlewarp] = useState('第Ⅰ卷（选择题）')
   const [annotation, setannotation] = useState('第I卷的注释')
-  const [Open, setOpen] = useState(false)
   const [Opens, setOpens] = useState(false)
   const [Opensss, setOpensss] = useState(false)
   const [oldScore, setOldScore] = useState('')
@@ -224,20 +222,10 @@ function Mypaper(props) {
       message.success(msg)
       subtopicData(1)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
 
-  const closeClick = () => {
-    setOpen(false)
-  }
-  const closeClicks = () => {
-    setOpens(false)
-  }
-  const closeClicksss = () => {
-    setOpensss(false)
-  }
   const closeClickss = async () => {
     const { code, msg } = await editBasketScore({
       id: ScoreId,
@@ -841,32 +829,11 @@ function Mypaper(props) {
       </div>
       {/* 模态框 */}
       <T_modelbox
-        isOpen={Open}
-        title=" "
-        closeClick={closeClick}
-        width="41.71rem"
-        height="22.14rem"
-      >
-        <div id="tmodelbox">
-          <div className="title">
-            <img
-              className="notice"
-              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notice.png"
-              alt="notice"
-            />
-            <span>操作失败</span>
-          </div>
-          <div className="body_text">{tipText}</div>
-          <Button type="primary" className="btn" onClick={closeClick}>
-            我知道了
-          </Button>
-        </div>
-      </T_modelbox>
-      {/* 模态框 */}
-      <T_modelbox
         isOpen={Opens}
         title="【温馨提示】"
-        closeClick={closeClicks}
+        closeClick={() => {
+          setOpens(false)
+        }}
         width="41.71rem"
         height="22.14rem"
       >
@@ -891,7 +858,9 @@ function Mypaper(props) {
       <T_modelbox
         isOpen={Opensss}
         title="【试题排序】"
-        closeClick={closeClicksss}
+        closeClick={() => {
+          setOpensss(false)
+        }}
         width="41.71rem"
         height="22.14rem"
       >
@@ -943,7 +912,9 @@ function Mypaper(props) {
             <Button
               type="primary"
               className="btn_cancel"
-              onClick={closeClicksss}
+              onClick={() => {
+                setOpensss(false)
+              }}
             >
               取消
             </Button>

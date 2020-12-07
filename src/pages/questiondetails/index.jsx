@@ -15,7 +15,6 @@ import {
   SET_TOPIC,
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
-import T_modelbox from '@/common/T_modelbox'
 
 function Questiondetails(props) {
   const {
@@ -28,8 +27,6 @@ function Questiondetails(props) {
   } = props
   const [ExercisesData, setExercisesData] = useState({})
   const [pages, setpages] = useState(1)
-  const [Open, setOpen] = useState(false)
-  const [tipText, setTipText] = useState('')
 
   useEffect(() => {
     getDetails(pages)
@@ -96,8 +93,7 @@ function Questiondetails(props) {
       message.success(msg)
       subtopicData(1)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
 
@@ -115,14 +111,10 @@ function Questiondetails(props) {
       message.success(msg)
       addtopicData(1)
     } else {
-      setTipText(msg)
-      setOpen(true)
+      message.error(msg)
     }
   }
 
-  const closeClick = () => {
-    setOpen(false)
-  }
 
   return (
     <div id="Questiondetails">
@@ -355,29 +347,6 @@ function Questiondetails(props) {
       </div>
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
-      {/* 模态框 */}
-      <T_modelbox
-        isOpen={Open}
-        title=" "
-        closeClick={closeClick}
-        width="41.71rem"
-        height="22.14rem"
-      >
-        <div id="tmodelbox">
-          <div className="title">
-            <img
-              className="notice"
-              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/notice.png"
-              alt="notice"
-            />
-            <span>操作失败</span>
-          </div>
-          <div className="body_text">{tipText}</div>
-          <Button type="primary" className="btn" onClick={closeClick}>
-            我知道了
-          </Button>
-        </div>
-      </T_modelbox>
     </div>
   )
 }
