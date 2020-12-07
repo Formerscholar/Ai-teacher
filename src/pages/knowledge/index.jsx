@@ -138,7 +138,6 @@ function Knowledge(props) {
     getKnowledge(gradeId, checkedKeys, id, level, Listpage)
   }
 
-  
   /**
    *
    *  页面变化请求数据
@@ -202,7 +201,7 @@ function Knowledge(props) {
   }
 
   const onSelect = (selectedKeys, info) => {
-    let arr = [...selectedKeys]
+    let arr = [...selectedKeys, ...checkedKeys]
     if (info?.node?.children) {
       arr = [...arr, ...selectedrecursion(info?.node?.children)]
     }

@@ -115,7 +115,6 @@ function Questiondetails(props) {
     }
   }
 
-
   return (
     <div id="Questiondetails">
       <Breadcrumb
@@ -198,6 +197,7 @@ function Questiondetails(props) {
               {ExercisesData?.exercise?.is_basket ? (
                 <Button
                   className="sub"
+                  size="small"
                   variant="contained"
                   onClick={() => removeClick(ExercisesData?.exercise?.id)}
                 >
@@ -207,6 +207,7 @@ function Questiondetails(props) {
               ) : (
                 <Button
                   className="add"
+                  size="small"
                   variant="contained"
                   onClick={() =>
                     compositionClick(
@@ -322,6 +323,7 @@ function Questiondetails(props) {
                     {item?.is_basket ? (
                       <Button
                         className="sub"
+                        size="small"
                         variant="contained"
                         onClick={() => removeClick(item?.id)}
                       >
@@ -331,6 +333,7 @@ function Questiondetails(props) {
                     ) : (
                       <Button
                         className="add"
+                        size="small"
                         variant="contained"
                         onClick={() => compositionClick(item?.id, item?.type)}
                       >

@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
 import './index.less'
-import { setTimerType, getCurrentWeek, getNearDate } from '@/utils'
+import { setTimerType, getNearDate } from '@/utils'
 import {
   Breadcrumb,
   message,
@@ -33,10 +33,10 @@ function ClassReport(props) {
   } = props
   const [Id, setid] = useState(0)
   const [AcademicData, setAcademicData] = useState({})
-  const [PickerData, setPickerData] = useState(getCurrentWeek(new Date()))
+  const [PickerData, setPickerData] = useState(getNearDate(new Date(), 7))
   const [Listpage, setListpage] = useState(1)
-  const [startTime, setstartTime] = useState(getCurrentWeek(new Date())[0])
-  const [endTime, setendTime] = useState(getCurrentWeek(new Date())[1])
+  const [startTime, setstartTime] = useState(getNearDate(new Date(), 7)[0])
+  const [endTime, setendTime] = useState(getNearDate(new Date(), 7)[1])
   const [classCrrunt, setClassCrrunt] = useState(0)
   const [options, setoptions] = useState({
     title: {
@@ -82,7 +82,6 @@ function ClassReport(props) {
     const myChart = window.echarts.init(Echars.current)
     myChart.setOption(options)
   })
-
 
   /**
    *  获取 初始化信息
@@ -151,18 +150,21 @@ function ClassReport(props) {
     const { value } = e.target
     const weekfunc = () => {
       const arr = getNearDate(new Date(), 7)
+      setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
       getteamAcademicReport(Id, Listpage, arr[0], arr[1])
     }
     const monthfunc = () => {
       const arr = getNearDate(new Date(), 30)
+      setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
       getteamAcademicReport(Id, Listpage, arr[0], arr[1])
     }
     const yearfunc = () => {
       const arr = getNearDate(new Date(), 365)
+      setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
       getteamAcademicReport(Id, Listpage, arr[0], arr[1])

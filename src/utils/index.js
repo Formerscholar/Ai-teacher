@@ -72,24 +72,6 @@ function splitSearch(search) {
   return ret
 }
 
-/**
- *
- *  获取当前周
- * @param {*} newDate
- * @return {*}
- */
-const getCurrentWeek = function (newDate) {
-  var startStop = []
-  var currentDate = newDate
-  var week = currentDate.getDay()
-  var millisecond = 1000 * 60 * 60 * 24
-  var minusDay = week != 0 ? week - 1 : 6
-  var monday = new Date(currentDate.getTime() - minusDay * millisecond)
-  var sunday = new Date(monday.getTime() + 6 * millisecond)
-  startStop.push(setTimerType(monday))
-  startStop.push(setTimerType(sunday))
-  return startStop
-}
 
 /**
  *
@@ -110,6 +92,5 @@ export {
   delCookie,
   Trim,
   splitSearch,
-  getCurrentWeek,
   getNearDate,
 }

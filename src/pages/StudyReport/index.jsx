@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
 import './index.less'
-import { splitSearch, setTimerType, getCurrentWeek, getNearDate } from '@/utils'
+import { splitSearch, setTimerType, getNearDate } from '@/utils'
 import {
   Breadcrumb,
   message,
@@ -35,13 +35,11 @@ function StudyReport(props) {
   } = props
   const id = splitSearch(location.search).id
   const iid = splitSearch(location.search).iid
-  const classNames = splitSearch(location.search).classname
-  const name = decodeURI(splitSearch(location.search).name)
   const [AcademicData, setAcademicData] = useState({})
   const [PickerData, setPickerData] = useState([])
   const [Listpage, setListpage] = useState(1)
-  const [startTime, setstartTime] = useState(getCurrentWeek(new Date())[0])
-  const [endTime, setendTime] = useState(getCurrentWeek(new Date())[1])
+  const [startTime, setstartTime] = useState(getNearDate(new Date(), 7)[0])
+  const [endTime, setendTime] = useState(getNearDate(new Date(), 7)[1])
   const [options, setoptions] = useState({
     title: {
       text: '错题知识点分布图',
@@ -86,12 +84,9 @@ function StudyReport(props) {
     const myChart = window.echarts.init(Echars.current)
     myChart.setOption(options)
   })
-  
+
   /**
    *  获取 初始化信息
-   * @param {dateString} [start_time=getCurrentWeek(new Date())[0]]
-   * @param {dateString} [end_time=getCurrentWeek(new Date())[1]]
-   * @param {number} [page=1]
    */
   const getstudentAcademicReport = async (
     page = Listpage,
@@ -156,18 +151,21 @@ function StudyReport(props) {
     const { value } = e.target
     const weekfunc = () => {
       const arr = getNearDate(new Date(), 7)
+      setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
       getstudentAcademicReport(Listpage, arr[0], arr[1])
     }
     const monthfunc = () => {
       const arr = getNearDate(new Date(), 30)
+      setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
       getstudentAcademicReport(Listpage, arr[0], arr[1])
     }
     const yearfunc = () => {
       const arr = getNearDate(new Date(), 365)
+      setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
       getstudentAcademicReport(Listpage, arr[0], arr[1])
@@ -289,17 +287,18 @@ function StudyReport(props) {
           className="breaditem"
           style={{ cursor: 'pointer', color: '#222' }}
         >
-          {classNames}
+          {AcademicData?.student?.get_grade?.name}
+          {AcademicData?.student?.get_team?.name}
         </Breadcrumb.Item>
         <Breadcrumb.Item
           className="breaditem"
           style={{ cursor: 'pointer', color: '#222' }}
         >
-          {name}的学情报告
+          {AcademicData?.student?.true_name}的学情报告
         </Breadcrumb.Item>
       </Breadcrumb>
       <div className="top_warp">
-        <div className="left_name">{name}</div>
+        <div className="left_name">{AcademicData?.student?.true_name}</div>
         <div className="right_timer">
           <div className="title">时间选择:</div>
           <Radio.Group onChange={onChange} defaultValue="0">
@@ -414,6 +413,7 @@ function StudyReport(props) {
                   {item?.is_basket ? (
                     <Button
                       className="sub"
+                      size="small"
                       variant="contained"
                       onClick={() => removeClick(item?.exercises_id)}
                     >
@@ -423,6 +423,7 @@ function StudyReport(props) {
                   ) : (
                     <Button
                       className="add"
+                      size="small"
                       variant="contained"
                       onClick={() =>
                         compositionClick(

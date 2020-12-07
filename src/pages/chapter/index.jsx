@@ -208,7 +208,6 @@ function Chapter(props) {
     )
   }
 
-  
   /**
    *
    *  页面变化请求数据
@@ -287,8 +286,7 @@ function Chapter(props) {
   }
 
   const onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info)
-    let arr = [...selectedKeys]
+    let arr = [...selectedKeys, ...checkedKeys]
     if (info?.node?.children) {
       arr = [...arr, ...selectedrecursion(info?.node?.children)]
     }

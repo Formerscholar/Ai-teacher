@@ -88,12 +88,8 @@ function ClassDetails(props) {
     getTeamDetails()
   }
 
-  const StudyReportClick = (id, name, classname) => {
-    history.push(
-      `/main/studyreport?id=${id}&iid=${iid}&name=${encodeURI(
-        name
-      )}&classname=${classname}`
-    )
+  const StudyReportClick = (id) => {
+    history.push(`/main/studyreport?id=${id}&iid=${iid}`)
   }
 
   return (
@@ -218,16 +214,7 @@ function ClassDetails(props) {
                   </span>
                 </div>
                 <div className="operate_box flex_box">
-                  <span
-                    onClick={() =>
-                      StudyReportClick(
-                        item?.id,
-                        item?.true_name,
-                        detailData?.team?.get_grade?.name +
-                          detailData?.team?.name
-                      )
-                    }
-                  >
+                  <span onClick={() => StudyReportClick(item?.id)}>
                     学情报告
                   </span>
                   {detailData?.team?.teacher_id !== item?.id &&
@@ -265,11 +252,7 @@ function ClassDetails(props) {
             确定是否移除《{detailstudInfo?.true_name}》学生？
           </div>
           <div className="btns">
-            <Button
-              type="primary"
-              className="btn"
-              onClick={confirmClick}
-            >
+            <Button type="primary" className="btn" onClick={confirmClick}>
               确定
             </Button>
             <Button
