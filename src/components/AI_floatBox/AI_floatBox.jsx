@@ -103,7 +103,7 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
         <div className="empty" onClick={clearListClick}>
           清空试题
         </div>
-        <Button type="primary" className="preview" block>
+        <Button type="primary" className="preview" block  onClick={tocomposition}>
           试卷预览
         </Button>
       </div>

@@ -1,6 +1,15 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { Breadcrumb, Checkbox, Row, Col, Button, message, Input } from 'antd'
+import {
+  Breadcrumb,
+  Checkbox,
+  Row,
+  Col,
+  Button,
+  message,
+  Input,
+  Radio,
+} from 'antd'
 import {
   getPapersExercises,
   delExamBasket,
@@ -9,6 +18,8 @@ import {
   editPapers,
   editBasketSort,
   editBasketScore,
+  delTypeExamBasket,
+  editTypeBasketSort,
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -44,7 +55,10 @@ function Mypaper(props) {
   const [annotation, setannotation] = useState('第I卷的注释')
   const [Open, setOpen] = useState(false)
   const [Opens, setOpens] = useState(false)
+  const [Opensss, setOpensss] = useState(false)
   const [oldScore, setOldScore] = useState('')
+  const [sortord, setsortord] = useState(2)
+  const [sorteType, setsorteType] = useState([])
 
   useEffect(() => {
     getPapers()
@@ -62,6 +76,7 @@ function Mypaper(props) {
         })
       })
       setExercisesData(data)
+      setsorteType([data?.exercisesData[0][0]?.type])
       if (search.id) {
         let Arr = []
         console.log('初始化试卷信息', data?.exam)
@@ -91,6 +106,44 @@ function Mypaper(props) {
       }
     } else {
       setExercisesData(data)
+      message.error(msg)
+    }
+  }
+
+  function sorteChange(checkedValues) {
+    setsorteType(checkedValues)
+  }
+
+  const sortordChange = (e) => {
+    console.log('radio checked', e.target.value)
+    setsortord(e.target.value)
+  }
+
+  const delType = async (type, length) => {
+    const { code, msg } = await delTypeExamBasket({
+      type,
+    })
+    if (code === 200) {
+      subtopicData(length)
+      message.success(msg)
+    } else {
+      message.error(msg)
+    }
+  }
+
+  const typeSoreClick = () => {
+    setOpensss(true)
+  }
+
+  const confirmClick = async () => {
+    const { code, msg } = await editTypeBasketSort({
+      type: sorteType,
+      sort: sortord,
+    })
+    if (code === 200) {
+      getPapers()
+      message.success(msg)
+    } else {
       message.error(msg)
     }
   }
@@ -180,6 +233,9 @@ function Mypaper(props) {
   }
   const closeClicks = () => {
     setOpens(false)
+  }
+  const closeClicksss = () => {
+    setOpensss(false)
   }
   const closeClickss = async () => {
     const { code, msg } = await editBasketScore({
@@ -720,34 +776,48 @@ function Mypaper(props) {
                 </div>
               </div>
               {/* 分割线 */}
-              <div className="cutoffrule">
-                {/* 线 */}
+              {/* <div className="cutoffrule">
                 <div className="wire"></div>
                 <div className="text_title">第Ⅰ卷（选择题）</div>
                 <div className="wire"></div>
-              </div>
-              <div className="title_box">
-                <div className="left_title_text">一、单选题</div>
-                <div className="right_title_btns">
-                  {/* 排序 */}
-                  <div className="sort_btn">排序</div>
-                  {/* 删除 */}
-                  <div className="remove_btn">删除</div>
-                </div>
-              </div>
-              {/* 编号列表 */}
-              <div className="serialList">
-                <div className="serialitem">1</div>
-                <div className="serialitem">2</div>
-                <div className="serialitem">3</div>
-                <div className="serialitem">4</div>
-              </div>
-              <div className="cutoffrule two">
-                {/* 线 */}
+              </div> */}
+              {ExercisesData?.exercisesData?.map((item, index) => {
+                return (
+                  <>
+                    <div className="title_box" key={index}>
+                      <div className="left_title_text">
+                        {index + 1}、{item[0].typeName}
+                      </div>
+                      <div className="right_title_btns">
+                        <div className="sort_btn" onClick={typeSoreClick}>
+                          排序
+                        </div>
+                        <div
+                          className="remove_btn"
+                          onClick={() => delType(item[0]?.type, item?.length)}
+                        >
+                          删除
+                        </div>
+                      </div>
+                    </div>
+                    <div className="serialList">
+                      {item?.map((item1, index1) => {
+                        return (
+                          <div key={index1} className="serialitem">
+                            {index1 + 1}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </>
+                )
+              })}
+
+              {/* <div className="cutoffrule two">
                 <div className="wire"></div>
                 <div className="text_title">第Ⅱ卷（非选择题）</div>
                 <div className="wire"></div>
-              </div>
+              </div> */}
               {/* 操作按钮 */}
               <div className="operatebtns">
                 <Button
@@ -814,6 +884,69 @@ function Mypaper(props) {
           <Button type="primary" className="btn" onClick={closeClickss}>
             确定
           </Button>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Opensss}
+        title="【试题排序】"
+        closeClick={closeClicksss}
+        width="41.71rem"
+        height="22.14rem"
+      >
+        <div id="tmodelbox" className="scroe">
+          {/* <div className="title crostitle">当前分数:{oldScore}</div> */}
+          {/* <div className="body_text crosbox">
+            <span className="span">分数:</span>
+            <Input
+              type="number"
+              value={Scoredata}
+              onChange={(e) => {
+                setScoredata(e.target.value)
+              }}
+            /> */}
+          {/* </div> */}
+          <div className="body">
+            {/* 大题排序需要 */}
+            <div className="problemsorte">
+              <div className="text">需要排序的大题</div>
+              <Checkbox.Group
+                style={{ width: '100%' }}
+                value={sorteType}
+                onChange={sorteChange}
+              >
+                <Row>
+                  {ExercisesData?.exercisesData?.map((item, index) => {
+                    return (
+                      <Checkbox value={item[0]?.type} key={index}>
+                        {item[0]?.typeName}
+                      </Checkbox>
+                    )
+                  })}
+                </Row>
+              </Checkbox.Group>
+            </div>
+            {/* 排序方式 */}
+            <div className="sortord">
+              <div className="text">排序方式</div>
+              <Radio.Group onChange={sortordChange} value={sortord}>
+                <Radio value={2}>难度从低到高排序</Radio>
+                <Radio value={1}>难度从高到低排序</Radio>
+              </Radio.Group>
+            </div>
+          </div>
+          <div className="btns">
+            <Button type="primary" className="btn" onClick={confirmClick}>
+              确定
+            </Button>
+            <Button
+              type="primary"
+              className="btn_cancel"
+              onClick={closeClicksss}
+            >
+              取消
+            </Button>
+          </div>
         </div>
       </T_modelbox>
     </div>

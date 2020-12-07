@@ -439,6 +439,7 @@
           .serialList {
             display: flex;
             justify-content: flex-start;
+            flex-wrap:wrap;
             align-items: center;
             padding: 0 1.71rem;
             margin-top: 1.64rem;
@@ -455,6 +456,7 @@
               font-weight: 400;
               color: #222222;
               margin-right: 1.14rem;
+              margin-bottom: 1.14rem;
               cursor: pointer;
 
               &:last-child {
@@ -532,5 +534,47 @@
     font-weight: 400;
     color: #222222;
 
+  }
+}
+
+.scroe {
+  .body {
+    width: 100%;
+
+    .problemsorte {
+      margin-bottom: 1.71rem;
+
+      .text {
+        margin-bottom: .71rem;
+      }
+    }
+
+    .sortord {
+      margin-bottom: 1.71rem;
+
+      .text {
+        margin-bottom: .71rem;
+      }
+    }
+  }
+
+  .btns {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn_cancel {
+      margin-left: 1.41rem;
+      width: 9.64rem;
+      height: 2.5rem;
+      border: 1px solid #E50304;
+      background-image: none !important;
+      background-color: #fff;
+      border-radius: 0.357143rem;
+      font-size: 1.14rem;
+      font-weight: 400;
+      color: #E50304 !important;
+    }
   }
 }
