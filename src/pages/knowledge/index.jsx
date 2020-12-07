@@ -36,7 +36,6 @@ function Knowledge(props) {
   const [topageValue, settopageValue] = useState('1')
   const [expandedKeys, setExpandedKeys] = useState([])
   const [checkedKeys, setCheckedKeys] = useState([])
-  const [selectedKeys, setSelectedKeys] = useState([])
   const [autoExpandParent, setAutoExpandParent] = useState(true)
   const [Open, setOpen] = useState(false)
   const [tipText, setTipText] = useState('')
@@ -186,7 +185,7 @@ function Knowledge(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    history.push(`/main/questiondetails?id=${id}`)
+    window.open(`/main/questiondetails?id=${id}`)
   }
 
   const onExpand = (expandedKeys) => {
@@ -208,8 +207,22 @@ function Knowledge(props) {
   }
 
   const onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info)
-    setSelectedKeys(selectedKeys)
+    let arr = [...selectedKeys]
+    if (info?.node?.children) {
+      arr = [...arr, ...selectedrecursion(info?.node?.children)]
+    }
+    setCheckedKeys(arr)
+    getKnowledge(gradeId, arr, questionCategoryscrure, level, topageValue)
+  }
+
+  const selectedrecursion = (children) => {
+    return (
+      children &&
+      children.map((item) => {
+        item?.children && selectedrecursion(item?.children)
+        return item.key
+      })
+    )
   }
 
   /**
@@ -311,7 +324,6 @@ function Knowledge(props) {
             onCheck={onCheck}
             checkedKeys={checkedKeys}
             onSelect={onSelect}
-            selectedKeys={selectedKeys}
             treeData={knowledgeArrNewView(Knowledge?.knowledge)}
           />
         </div>

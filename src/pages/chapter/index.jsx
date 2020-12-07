@@ -268,7 +268,7 @@ function Chapter(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    history.push(`/main/questiondetails?id=${id}`)
+    window.open(`/main/questiondetails?id=${id}`)
   }
 
   const onExpand = (expandedKeys) => {
@@ -294,9 +294,31 @@ function Chapter(props) {
 
   const onSelect = (selectedKeys, info) => {
     console.log('onSelect', info)
-    setSelectedKeys(selectedKeys)
+    let arr = [...selectedKeys]
+    if (info?.node?.children) {
+      arr = [...arr, ...selectedrecursion(info?.node?.children)]
+    }
+    setCheckedKeys(arr)
+    getKnowledge(
+      gradeId,
+      arr,
+      questionCategoryscrure,
+      level,
+      topageValue,
+      searchData,
+      datasemest,
+      dataVer
+    )
   }
-
+  const selectedrecursion = (children) => {
+    return (
+      children &&
+      children.map((item) => {
+        item?.children && selectedrecursion(item?.children)
+        return item.key
+      })
+    )
+  }
   /**
    *  组卷添加事件
    *
@@ -407,12 +429,14 @@ function Chapter(props) {
               if (item?.id == Knowledge?.versionId) {
                 return item?.title
               }
-            })}
-            {' '}·{' '}{Knowledge?.grades?.map((item) => {
+            })}{' '}
+            ·{' '}
+            {Knowledge?.grades?.map((item) => {
               if (item?.id == Knowledge?.gradeId) {
                 return item?.name
               }
-            })}{Knowledge?.semester && semesterTitle(Knowledge?.semester)}
+            })}
+            {Knowledge?.semester && semesterTitle(Knowledge?.semester)}
           </div>
           <Tree
             checkable

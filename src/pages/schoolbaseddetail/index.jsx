@@ -78,7 +78,7 @@ function Schoolbaseddetail(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    history.push(`/main/questiondetails?id=${id}`)
+    window.open(`/main/questiondetails?id=${id}`)
   }
 
   /**
