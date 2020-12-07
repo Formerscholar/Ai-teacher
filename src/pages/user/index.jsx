@@ -729,7 +729,7 @@ function User(props) {
                   return (
                     <div className="down_body_table" key={item?.id}>
                       <div className="name">
-                        {item?.get_teacher_exam?.title}
+                        {item?.exam_name}
                       </div>
                       <div className="time">
                         {setTimerType(item?.update_time * 1000, true)}

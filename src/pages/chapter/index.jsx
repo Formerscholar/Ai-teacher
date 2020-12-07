@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react'
 import './index.less'
 import { Button, Pagination, Tree, message, Breadcrumb, Input } from 'antd'
 import {
-  getKnowledgeExercises,
+  getChapterExercises,
   addExamBasket,
   delExamBasket,
 } from '@/services/knowledge'
@@ -41,9 +41,21 @@ function Chapter(props) {
   const [Open, setOpen] = useState(false)
   const [tipText, setTipText] = useState('')
   const [searchData, setsearchData] = useState('')
-
+  const [currentVer, setcurrentVer] = useState(0)
+  const [currentsemest, setcurrentsemest] = useState(0)
+  const [dataVer, setdataVer] = useState(null)
+  const [datasemest, setdatasemest] = useState(null)
   useEffect(() => {
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, Listpage)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      Listpage,
+      searchData,
+      datasemest,
+      dataVer
+    )
     return () => {}
   }, [volumeTopicCount])
 
@@ -54,16 +66,43 @@ function Chapter(props) {
       questionCategoryscrure,
       level,
       Listpage,
-      searchData
+      searchData,
+      datasemest,
+      dataVer
     )
   }
 
+  const VerClick = (idx, id) => {
+    setcurrentVer(idx)
+    setdataVer(id)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      Listpage,
+      searchData,
+      datasemest,
+      id
+    )
+  }
+
+  const semesterClick = (idx) => {
+    setcurrentsemest(idx)
+    setdatasemest(idx + 1)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      Listpage,
+      searchData,
+      idx + 1,
+      dataVer
+    )
+  }
   /**
    *  请求知识点数据
-   * @param {string} [grade_id='']
-   * @param {string} [konwledge_id='']
-   * @param {string} [type='']
-   * @param {string} [level='']
    */
   const getKnowledge = async (
     grade_id,
@@ -71,15 +110,19 @@ function Chapter(props) {
     type = 0,
     level = 0,
     page = 1,
-    title = ''
+    title = '',
+    semester = '',
+    version_id = ''
   ) => {
-    const { code, data, msg } = await getKnowledgeExercises({
+    const { code, data, msg } = await getChapterExercises({
       grade_id,
-      konwledge_id,
+      chapter_id: konwledge_id,
       type,
       level,
       page,
       title,
+      semester,
+      version_id,
     })
     if (code === 200) {
       data?.exercisesLists?.data?.map((item) => {
@@ -119,7 +162,16 @@ function Chapter(props) {
   const gradeClick = (id, index) => {
     setgradescrure(index)
     setgradeId(id)
-    getKnowledge(id, checkedKeys, questionCategoryscrure, level, Listpage)
+    getKnowledge(
+      id,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      Listpage,
+      searchData,
+      datasemest,
+      dataVer
+    )
   }
 
   /**
@@ -129,7 +181,16 @@ function Chapter(props) {
   const levelClick = (index) => {
     setlevelscrure(index)
     setlevel(index)
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, index, Listpage)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      index,
+      Listpage,
+      searchData,
+      datasemest,
+      dataVer
+    )
   }
   /**
    *  题类选择事件
@@ -139,7 +200,16 @@ function Chapter(props) {
   const questionCategoryClick = (id, index) => {
     setquestionCategoryscrure(id)
     setquestionCategory(index)
-    getKnowledge(gradeId, checkedKeys, id, level, Listpage)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      id,
+      level,
+      Listpage,
+      searchData,
+      datasemest,
+      dataVer
+    )
   }
 
   const closeClick = () => {
@@ -153,7 +223,16 @@ function Chapter(props) {
    */
   const PaginationChange = (page, pageSize) => {
     setListpage(page * 1)
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, page)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      page,
+      searchData,
+      datasemest,
+      dataVer
+    )
   }
 
   /**
@@ -175,7 +254,10 @@ function Chapter(props) {
       checkedKeys,
       questionCategoryscrure,
       level,
-      topageValue
+      topageValue,
+      searchData,
+      datasemest,
+      dataVer
     )
     setListpage(topageValue * 1)
   }
@@ -203,7 +285,10 @@ function Chapter(props) {
       checkedKeys,
       questionCategoryscrure,
       level,
-      topageValue
+      topageValue,
+      searchData,
+      datasemest,
+      dataVer
     )
   }
 
@@ -266,6 +351,22 @@ function Chapter(props) {
     event.preventDefault()
     history.push('/main/index')
   }
+
+  const semesterView = (obj) => {
+    return Object.values(obj).map((item, index) => {
+      console.log(item)
+      return (
+        <div
+          className={currentsemest == index ? 'items selected' : 'items'}
+          key={index}
+          onClick={() => semesterClick(index)}
+        >
+          <span>{item}</span>
+        </div>
+      )
+    })
+  }
+
   return (
     <div id="Chapter">
       <Breadcrumb
@@ -296,7 +397,7 @@ function Chapter(props) {
         <div className="left_box">
           <div className="title">
             {Knowledge?.grades?.map((item) => {
-              if (item?.id == Knowledge?.grade_id) {
+              if (item?.id == Knowledge?.gradeId) {
                 return item?.name
               }
             })}
@@ -312,8 +413,34 @@ function Chapter(props) {
             checkedKeys={checkedKeys}
             onSelect={onSelect}
             selectedKeys={selectedKeys}
-            treeData={knowledgeArrNewView(Knowledge?.knowledge)}
+            treeData={knowledgeArrNewView(Knowledge?.chapter)}
           />
+          <div className="hover_select">
+            {/* 版本 */}
+            <div className="versions">
+              <div className="title_box">版本:</div>
+              <div className="list">
+                {Knowledge?.version?.map((item, idx) => {
+                  return (
+                    <div
+                      className={currentVer == idx ? 'items selected' : 'items'}
+                      key={idx}
+                      onClick={() => VerClick(idx, item?.id)}
+                    >
+                      <span>{item?.title}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+            {/* 学期 */}
+            <div className="semester">
+              <div className="title_box">学期:</div>
+              <div className="list">
+                {Knowledge?.semester && semesterView(Knowledge?.semester)}
+              </div>
+            </div>
+          </div>
         </div>
         <div className="right_box">
           <div className="top_box">

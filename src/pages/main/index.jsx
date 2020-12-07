@@ -6,6 +6,7 @@ import { setTimerType } from '@/utils'
 
 function Main(props) {
   const { history, homeInfo } = props
+  console.log(props);
 
   const toresources = () => {
     history.push('/main/famous')

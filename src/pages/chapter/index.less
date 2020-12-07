@@ -20,7 +20,75 @@
       background: #FFFFFF;
       box-shadow: 0rem 0rem 3rem 0rem rgba(149, 149, 149, 0.13);
       border-radius: 1rem;
-      overflow: hidden;
+      position: relative;
+
+      .ant-tree {
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        overflow: hidden;
+      }
+
+      .title:hover~.hover_select {
+        display: block;
+      }
+
+      .hover_select:hover {
+        display: block;
+      }
+
+
+      .hover_select {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 5rem;
+        background-color: #fff;
+        border: 1px solid #FFF7F3;
+        border-radius: 1rem;
+        overflow: hidden;
+        width: 63.428571rem;
+        padding: 1.71rem;
+        z-index: 9999;
+        .versions,
+        .semester {
+          margin-bottom: 2.142857rem;
+
+          .title_box {
+            font-size: 1.14rem;
+            font-weight: 400;
+            color: #222222;
+            margin-bottom: 3px;
+          }
+
+          .list {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
+
+            .items {
+              text-align: center;
+              font-size: 1.14rem;
+              font-weight: 400;
+              color: #222222;
+              background-color: #fff;
+              border-radius: 0.357143rem;
+              margin-right: 2.07rem;
+              cursor: pointer;
+              padding: 0 5px;
+            }
+
+            .selected {
+              color: #FFFFFF;
+              background: #E50304;
+            }
+          }
+        }
+
+        .semester {
+          margin-bottom: 0;
+        }
+      }
 
       .title {
         height: 5rem;
@@ -33,6 +101,7 @@
         font-size: 1.43rem;
         font-weight: bold;
         color: #222222;
+        cursor: pointer;
       }
 
       /deep/.ant-tree-list {
@@ -145,11 +214,12 @@
             justify-content: flex-end;
             align-items: center;
 
-            .searchData{
+            .searchData {
               background: #FFFFFF;
               border-radius: 0.357143rem;
             }
-            .searchclick{
+
+            .searchclick {
               width: 5.71rem;
               height: 2.29rem;
               background: #E50304 !important;

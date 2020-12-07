@@ -142,6 +142,7 @@ function Mypaper(props) {
     })
     if (code === 200) {
       getPapers()
+      setOpensss(false)
       message.success(msg)
     } else {
       message.error(msg)

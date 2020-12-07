@@ -143,3 +143,12 @@ export function editTypeBasketSort(params) {
     params,
   })
 }
+
+
+export function getChapterExercises(params) {
+  return request({
+    url: '/getChapterExercises',
+    method: 'GET',
+    params,
+  })
+}
