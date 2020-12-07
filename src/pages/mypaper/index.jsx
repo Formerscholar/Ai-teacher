@@ -29,7 +29,7 @@ import {
   SET_TOPIC,
 } from '@/store/actionType'
 import T_modelbox from '@/common/T_modelbox'
-import { splitSearch } from '@/utils'
+import { splitSearch, setTimerType } from '@/utils'
 const { TextArea } = Input
 
 function Mypaper(props) {
@@ -44,7 +44,9 @@ function Mypaper(props) {
   const search = splitSearch(location.search)
   const [checkitems, setcheckitems] = useState([])
   const [ExercisesData, setExercisesData] = useState({})
-  const [Papertitle, setPapertitle] = useState('')
+  const [Papertitle, setPapertitle] = useState(
+    `${setTimerType(new Date(), false, 1)}初中数学试卷`
+  )
   const [subhead, setsubhead] = useState('')
   const [prompt, setprompt] = useState('')
   const [marked, setmarked] = useState('')
