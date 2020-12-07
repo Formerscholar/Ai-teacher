@@ -531,50 +531,6 @@ function Mypaper(props) {
                     {item1?.map((item2, idx2) => {
                       return (
                         <div className="items" key={idx2}>
-                          {/* 顶部内容 */}
-                          <div className="topbody">
-                            {idx2 + 1}.
-                            <span className="span">（{item2?.score}分）</span>
-                            <span
-                              dangerouslySetInnerHTML={{
-                                __html: item2?.exercises?.content_all,
-                              }}
-                            ></span>
-                            <div
-                              className="answerbox"
-                              style={{
-                                display: item2?.isanswer ? 'block' : 'none',
-                              }}
-                            >
-                              <div className="Tests">
-                                <span className="title">【考点】</span>
-                                <div
-                                  className="body_txt"
-                                  dangerouslySetInnerHTML={{
-                                    __html: item2?.exercises?.knowName,
-                                  }}
-                                ></div>
-                              </div>
-                              <div className="answer">
-                                <span className="title">【答案】</span>
-                                <div
-                                  className="body_txt"
-                                  dangerouslySetInnerHTML={{
-                                    __html: item2?.exercises?.answer,
-                                  }}
-                                ></div>
-                              </div>
-                              <div className="Parse">
-                                <span className="title">【解析】</span>
-                                <div
-                                  className="body_txt"
-                                  dangerouslySetInnerHTML={{
-                                    __html: item2?.exercises?.analysis,
-                                  }}
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
                           {/* 底部操作按钮 */}
                           <div className="bot_btns">
                             <div
@@ -643,6 +599,51 @@ function Mypaper(props) {
                                 alt="items_delete"
                               />
                               <span className="text">删除</span>
+                            </div>
+                          </div>
+
+                          {/* 顶部内容 */}
+                          <div className="topbody">
+                            {idx2 + 1}.
+                            <span className="span">（{item2?.score}分）</span>
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: item2?.exercises?.content_all,
+                              }}
+                            ></span>
+                            <div
+                              className="answerbox"
+                              style={{
+                                display: item2?.isanswer ? 'block' : 'none',
+                              }}
+                            >
+                              <div className="Tests">
+                                <span className="title">【考点】</span>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.knowName,
+                                  }}
+                                ></div>
+                              </div>
+                              <div className="answer">
+                                <span className="title">【答案】</span>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.answer,
+                                  }}
+                                ></div>
+                              </div>
+                              <div className="Parse">
+                                <span className="title">【解析】</span>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.analysis,
+                                  }}
+                                ></div>
+                              </div>
                             </div>
                           </div>
                         </div>
