@@ -201,8 +201,7 @@ function Questiondetails(props) {
                   variant="contained"
                   onClick={() => removeClick(ExercisesData?.exercise?.id)}
                 >
-                  <em>-</em>
-                  移除
+                  - 移除
                 </Button>
               ) : (
                 <Button
@@ -216,8 +215,7 @@ function Questiondetails(props) {
                     )
                   }
                 >
-                  <em>+</em>
-                  组卷
+                  + 组卷
                 </Button>
               )}
             </div>
@@ -327,8 +325,7 @@ function Questiondetails(props) {
                         variant="contained"
                         onClick={() => removeClick(item?.id)}
                       >
-                        <em>-</em>
-                        移除
+                        - 移除
                       </Button>
                     ) : (
                       <Button
@@ -337,8 +334,7 @@ function Questiondetails(props) {
                         variant="contained"
                         onClick={() => compositionClick(item?.id, item?.type)}
                       >
-                        <em>+</em>
-                        组卷
+                        + 组卷
                       </Button>
                     )}
                   </div>

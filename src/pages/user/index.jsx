@@ -110,6 +110,11 @@ function User(props) {
     setOpen(false)
   }
 
+  const todetailClick = (e, id) => {
+    e.stopPropagation()
+    console.log('todetailClick', id)
+  }
+
   /**
    *
    * 图片上传点击
@@ -728,9 +733,7 @@ function User(props) {
                 PapersLogList?.data?.map((item) => {
                   return (
                     <div className="down_body_table" key={item?.id}>
-                      <div className="name">
-                        {item?.exam_name}
-                      </div>
+                      <div className="name">{item?.exam_name}</div>
                       <div className="time">
                         {setTimerType(item?.update_time * 1000, true)}
                       </div>
@@ -848,10 +851,14 @@ function User(props) {
                 {UploadListData?.data ? (
                   UploadListData?.data?.map((item) => {
                     return (
-                      <div className="down_body_table" key={item?.upload_id}>
+                      <div
+                        className="down_body_table"
+                        key={item?.upload_id}
+                        onClick={() => paperDetailClick(item?.upload_id)}
+                      >
                         <div
                           className="name"
-                          onClick={() => paperDetailClick(item?.upload_id)}
+                          onClick={(e) => todetailClick(e, item?.upload_id)}
                         >
                           {item?.paper_name}
                         </div>

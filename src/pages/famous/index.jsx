@@ -118,7 +118,7 @@ function Famous(props) {
   }
 
   const topaperdetail = (id) => {
-    history.push(`/main/schoolbaseddetail?id=${id}`)
+    history.push(`/main/resourcesdetail?id=${id}`)
   }
 
   return (

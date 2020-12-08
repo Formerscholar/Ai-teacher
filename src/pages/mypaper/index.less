@@ -486,6 +486,10 @@
               background: #E50304 !important;
               background-image: none !important;
               border-radius: 0.357143rem;
+
+              &:hover {
+                background-color: #C80304 !important;
+              }
             }
 
             .continuebtn {
@@ -495,6 +499,10 @@
               color: #E50304 !important;
               border-color: #E50304 !important;
 
+              &:hover {
+                background-color: #E50304 !important;
+                color: #fff !important;
+              }
             }
 
             .emptybtn {
@@ -503,6 +511,11 @@
               border-radius: 0.357143rem;
               color: #E50304 !important;
               border-color: #E50304 !important;
+
+              &:hover {
+                background-color: #E50304 !important;
+                color: #fff !important;
+              }
             }
           }
         }
@@ -534,6 +547,12 @@
     color: #222222;
 
   }
+
+  .btn {
+    &:hover {
+      background-color: #C80304 !important;
+    }
+  }
 }
 
 .scroe {
@@ -563,17 +582,26 @@
     justify-content: center;
     align-items: center;
 
+    .btn {
+      &:hover {
+        background-color: #C80304 !important;
+      }
+    }
+
     .btn_cancel {
       margin-left: 1.41rem;
       width: 9.64rem;
       height: 2.5rem;
-      border: 1px solid #E50304;
+      border: 1px solid #E50304 !important;
       background-image: none !important;
       background-color: #fff;
       border-radius: 0.357143rem;
-      font-size: 1.14rem;
-      font-weight: 400;
       color: #E50304 !important;
+
+      &:hover {
+        background-color: #E50304 !important;
+        color: #fff !important;
+      }
     }
   }
 }

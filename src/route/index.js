@@ -80,6 +80,11 @@ const Mypaperdetail = Loadable({
   loading: G_spin,
 })
 
+const Resourcesdetail = Loadable({
+  loader: () => import('@/pages/resourcesdetail'),
+  loading: G_spin,
+})
+
 const BasicRoute = (props) => {
   window.scrollTo(0, 0)
   const { location } = props
@@ -144,6 +149,10 @@ const BasicRoute = (props) => {
       document.title = '我的试卷 - AI错题宝'
       localStorage.setItem('menuIndex', 6)
       break
+    case '/main/resourcesdetail':
+      document.title = '名校资源详情 - AI错题宝'
+      localStorage.setItem('menuIndex', 3)
+      break
     default:
       break
   }
@@ -165,6 +174,7 @@ const BasicRoute = (props) => {
       <Route path="/main/classreport" component={ClassReport} />
       <Route path="/main/mypaperlist" component={Mypaperlist} />
       <Route path="/main/mypaperdetail" component={Mypaperdetail} />
+      <Route path="/main/resourcesdetail" component={Resourcesdetail} />
       <AI_footer />
     </>
   )

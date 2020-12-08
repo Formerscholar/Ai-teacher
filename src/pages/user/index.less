@@ -49,7 +49,6 @@
             font-size: 1.71rem;
             font-weight: 400;
             color: #222222;
-
           }
         }
 
@@ -256,7 +255,9 @@
             background: #E50304 !important;
             background-image: none !important;
             border-radius: 0.357143rem;
-
+            &:hover {
+              background-color: #C80304 !important;
+            }
           }
         }
       }
@@ -358,13 +359,11 @@
             background: #E50304 !important;
             background-image: none !important;
             border-radius: 0.357143rem;
-            font-size: 1.14rem;
-            font-weight: 400;
             color: #FFFFFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             margin-left: 1.43rem;
+            &:hover {
+              background-color: #C80304 !important;
+            }
           }
         }
       }
@@ -429,7 +428,6 @@
 
           .name {
             flex: 7;
-            cursor: pointer;
           }
 
           .time {
@@ -482,12 +480,10 @@
           background: #E50304 !important;
           background-image: none !important;
           border-radius: 0.357143rem;
-          font-size: 1.14rem;
-          font-weight: 400;
           color: #FFFFFF;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          &:hover {
+            background-color: #C80304 !important;
+          }
 
 
           .btn_plus {
@@ -621,6 +617,9 @@
           background-image: none !important;
           border-radius: 0.357143rem;
           margin-top: 1.14rem;
+          &:hover {
+            background-color: #C80304 !important;
+          }
         }
       }
 
@@ -678,6 +677,7 @@
           border-bottom: 1px solid #E5E5E5;
           height: 3.43rem;
           padding: 0 2.86rem;
+          cursor: pointer;
 
           &:hover {
             background-color: #F1F1F1;
@@ -793,6 +793,12 @@
       margin-bottom: 3.57rem;
     }
   }
+
+  .btn{
+    &:hover {
+      background-color: #C80304 !important;
+    }
+  }
 }
 
 .phoneChange {
@@ -839,10 +845,11 @@
         background-image: none !important;
         border-radius: 0.357143rem;
         border: none !important;
-        font-size: 1rem;
-        font-weight: 400;
         color: #FFFFFF;
         text-align: center;
+        &:hover {
+          background-color: #FF8737 !important;
+        }
       }
     }
   }
