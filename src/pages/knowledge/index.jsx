@@ -384,14 +384,6 @@ function Knowledge(props) {
             </div>
             <div className="tip_box">
               <div className="left_boxs">
-                <div className="total">
-                  共计：{Knowledge?.exercisesLists?.total}题
-                </div>
-                <div className="allin" onClick={selectAllClick}>
-                  选择本页全部试题
-                </div>
-              </div>
-              <div className="right_boxs">
                 <Input
                   className="searchData"
                   value={searchData}
@@ -400,11 +392,20 @@ function Knowledge(props) {
                 />
                 <Button
                   type="primary"
+                  size="small"
                   className="searchclick"
                   onClick={searchClick}
                 >
                   搜索
                 </Button>
+                {/* <div className="total">
+                  共计：{Knowledge?.exercisesLists?.total}题
+                </div> */}
+              </div>
+              <div className="right_boxs">
+                <div className="allin" onClick={selectAllClick}>
+                  选择本页全部试题
+                </div>
               </div>
             </div>
           </div>

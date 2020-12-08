@@ -113,15 +113,41 @@
 
           .left_boxs {
             display: flex;
+
             justify-content: flex-start;
             align-items: center;
+            // .total {
+            //   font-size: 1.14rem;
+            //   font-weight: 400;
+            //   color: #222222;
 
-            .total {
-              font-size: 1.14rem;
-              font-weight: 400;
-              color: #222222;
-
+            // }
+            .searchData {
+              background: #FFFFFF;
+              border-radius: 0.357143rem;
             }
+
+            .searchclick {
+              background: #E50304 !important;
+              background-image: none !important;
+              color: #FFFFFF;
+              margin-left: 1.43rem;
+              border-radius: 0.357143rem;
+
+              &:hover {
+                background-color: #C80304 !important;
+              }
+            }
+
+
+
+          }
+
+          .right_boxs {
+            display: flex;
+
+            justify-content: flex-end;
+            align-items: center;
 
             .allin {
               width: 11.43rem;
@@ -135,31 +161,6 @@
               text-align: center;
               margin-left: 1.71rem;
               cursor: pointer;
-            }
-
-          }
-
-          .right_boxs {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-
-            .searchData {
-              background: #FFFFFF;
-              border-radius: 0.357143rem;
-            }
-
-            .searchclick {
-              width: 5.71rem;
-              height: 2.29rem;
-              background: #E50304 !important;
-              background-image: none !important;
-              color: #FFFFFF;
-              margin-left: 1.43rem;
-              border-radius: 0.357143rem;
-              &:hover {
-                background-color: #C80304 !important;
-              }
             }
           }
         }
@@ -314,15 +315,18 @@
                 border-radius: 0.357143rem;
                 color: #FFFFFF;
 
-               
+
               }
-              .add{
+
+              .add {
                 &:hover {
                   background-color: #C80304 !important;
                 }
               }
+
               .sub {
                 background: #999999 !important;
+
                 &:hover {
                   background-color: #666 !important;
                 }

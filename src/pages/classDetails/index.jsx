@@ -89,7 +89,7 @@ function ClassDetails(props) {
   }
 
   const StudyReportClick = (id) => {
-    history.push(`/studyreport?id=${id}&iid=${iid}`)
+    history.push(`/class/detail/chars?id=${id}&iid=${iid}`)
   }
 
   return (

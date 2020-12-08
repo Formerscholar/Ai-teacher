@@ -531,14 +531,9 @@ function Chapter(props) {
             </div>
             <div className="tip_box">
               <div className="left_boxs">
-                <div className="total">
+                {/* <div className="total">
                   共计：{Knowledge?.exercisesLists?.total}题
-                </div>
-                <div className="allin" onClick={selectAllClick}>
-                  选择本页全部试题
-                </div>
-              </div>
-              <div className="right_boxs">
+                </div> */}
                 <Input
                   className="searchData"
                   value={searchData}
@@ -547,11 +542,17 @@ function Chapter(props) {
                 />
                 <Button
                   type="primary"
+                  size="small"
                   className="searchclick"
                   onClick={searchClick}
                 >
                   搜索
                 </Button>
+              </div>
+              <div className="right_boxs">
+                <div className="allin" onClick={selectAllClick}>
+                  选择本页全部试题
+                </div>
               </div>
             </div>
           </div>

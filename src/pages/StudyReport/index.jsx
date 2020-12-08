@@ -139,7 +139,7 @@ function StudyReport(props) {
 
   const handleClickss = (event) => {
     event.preventDefault()
-    history.push(`/classdetail?id=${iid}`)
+    history.push(`/class/detail?id=${iid}`)
   }
 
   /**

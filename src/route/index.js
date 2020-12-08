@@ -121,7 +121,7 @@ const BasicRoute = (props) => {
       document.title = '试卷详情 - AI错题宝'
       localStorage.setItem('menuIndex', 6)
       break
-    case '/classdetail':
+    case '/class/detail':
       document.title = '班级详情 - AI错题宝'
       localStorage.setItem('menuIndex', 1)
       break
@@ -137,7 +137,7 @@ const BasicRoute = (props) => {
       document.title = '试卷详情 - AI错题宝'
       localStorage.setItem('menuIndex', 4)
       break
-    case '/studyreport':
+    case '/class/detail/chars':
       document.title = '学生学情 - AI错题宝'
       localStorage.setItem('menuIndex', 1)
       break
@@ -160,6 +160,8 @@ const BasicRoute = (props) => {
     <>
       <AI_header props={props} />
       <Switch>
+        <Route path="/class/detail" exact component={classDetails} />
+        <Route path="/class/detail/chars" exact component={StudyReport} />
         <Route path="/index" component={Main} />
         <Route path="/user" component={User} />
         <Route path="/class" component={Class} />
@@ -167,11 +169,9 @@ const BasicRoute = (props) => {
         <Route path="/schoolbased" component={Schoolbased} />
         <Route path="/knowledge" component={Knowledge} />
         <Route path="/mypaper" component={Mypaper} />
-        <Route path="/classdetail" component={classDetails} />
         <Route path="/chapter" component={Chapter} />
         <Route path="/questiondetails" component={Questiondetails} />
         <Route path="/schoolbaseddetail" component={Schoolbaseddetail} />
-        <Route path="/studyreport" component={StudyReport} />
         <Route path="/classreport" component={ClassReport} />
         <Route path="/mypaperlist" component={Mypaperlist} />
         <Route path="/mypaperdetail" component={Mypaperdetail} />
