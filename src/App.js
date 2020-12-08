@@ -21,9 +21,9 @@ function App() {
       <Provider store={store}>
         <BrowserRouter>
           <Switch>
-            <Route path="/main" component={BasicRoute} />
-            <Route path="/login" component={Login} />
-            <Redirect to="/main/index"></Redirect>
+            <Route path="/login" exact component={Login} />
+            <Route path="/" component={BasicRoute} />
+            <Redirect to="/"></Redirect>
           </Switch>
         </BrowserRouter>
       </Provider>

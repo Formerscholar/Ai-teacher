@@ -36,11 +36,11 @@ function Resourcesdetail(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/famous')
+    history.push('/famous')
   }
   const handleClicks = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   const getSchoolBased = async () => {

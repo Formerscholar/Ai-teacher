@@ -65,7 +65,7 @@ function Questiondetails(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/knowledge')
+    history.push('/knowledge')
   }
 
   /**

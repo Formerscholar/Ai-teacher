@@ -360,7 +360,7 @@ function Chapter(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   const semesterView = (obj) => {

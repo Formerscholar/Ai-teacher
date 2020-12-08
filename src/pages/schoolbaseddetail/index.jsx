@@ -36,11 +36,11 @@ function Schoolbaseddetail(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/schoolbased')
+    history.push('/schoolbased')
   }
   const handleClicks = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   const getSchoolBased = async () => {

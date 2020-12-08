@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom'
 import AI_header from 'components/AI_header/AI_header'
 import AI_footer from 'components/AI_footer/AI_footer'
 import Loadable from 'react-loadable'
@@ -89,67 +89,67 @@ const BasicRoute = (props) => {
   window.scrollTo(0, 0)
   const { location } = props
   switch (location.pathname) {
-    case '/main/index':
+    case '/':
       document.title = '教师端 - AI错题宝'
       localStorage.setItem('menuIndex', 0)
       break
-    case '/main/user':
+    case '/user':
       document.title = '个人信息 - AI错题宝'
       localStorage.setItem('menuIndex', 0)
       break
-    case '/main/class':
+    case '/class':
       document.title = '班级信息 - AI错题宝'
       localStorage.setItem('menuIndex', 1)
       break
-    case '/main/famous':
+    case '/famous':
       document.title = '名校资源 - AI错题宝'
       localStorage.setItem('menuIndex', 3)
       break
-    case '/main/schoolbased':
+    case '/schoolbased':
       document.title = '校本试卷 - AI错题宝'
       localStorage.setItem('menuIndex', 4)
       break
-    case '/main/knowledge':
+    case '/knowledge':
       document.title = '知识库 - AI错题宝'
       localStorage.setItem('menuIndex', 5)
       break
-    case '/main/mypaper':
+    case '/mypaper':
       document.title = '我的组卷 - AI错题宝'
       localStorage.setItem('menuIndex', 6)
       break
-    case '/main/mypaperdetail':
+    case '/mypaperdetail':
       document.title = '试卷详情 - AI错题宝'
       localStorage.setItem('menuIndex', 6)
       break
-    case '/main/classdetail':
+    case '/classdetail':
       document.title = '班级详情 - AI错题宝'
       localStorage.setItem('menuIndex', 1)
       break
-    case '/main/chapter':
+    case '/chapter':
       document.title = '章节同步 - AI错题宝'
       localStorage.setItem('menuIndex', 5)
       break
-    case '/main/questiondetails':
+    case '/questiondetails':
       document.title = '试题详情 - AI错题宝'
       localStorage.setItem('menuIndex', 5)
       break
-    case '/main/schoolbaseddetail':
+    case '/schoolbaseddetail':
       document.title = '试卷详情 - AI错题宝'
       localStorage.setItem('menuIndex', 4)
       break
-    case '/main/studyreport':
+    case '/studyreport':
       document.title = '学生学情 - AI错题宝'
       localStorage.setItem('menuIndex', 1)
       break
-    case '/main/classreport':
+    case '/classreport':
       document.title = '学情报告 - AI错题宝'
       localStorage.setItem('menuIndex', 2)
       break
-    case '/main/mypaperlist':
+    case '/mypaperlist':
       document.title = '我的试卷 - AI错题宝'
       localStorage.setItem('menuIndex', 6)
       break
-    case '/main/resourcesdetail':
+    case '/resourcesdetail':
       document.title = '名校资源详情 - AI错题宝'
       localStorage.setItem('menuIndex', 3)
       break
@@ -159,22 +159,25 @@ const BasicRoute = (props) => {
   return (
     <>
       <AI_header props={props} />
-      <Route path="/main/index" component={Main} />
-      <Route path="/main/user" component={User} />
-      <Route path="/main/class" component={Class} />
-      <Route path="/main/famous" component={Famous} />
-      <Route path="/main/schoolbased" component={Schoolbased} />
-      <Route path="/main/knowledge" component={Knowledge} />
-      <Route path="/main/mypaper" component={Mypaper} />
-      <Route path="/main/classdetail" component={classDetails} />
-      <Route path="/main/chapter" component={Chapter} />
-      <Route path="/main/questiondetails" component={Questiondetails} />
-      <Route path="/main/schoolbaseddetail" component={Schoolbaseddetail} />
-      <Route path="/main/studyreport" component={StudyReport} />
-      <Route path="/main/classreport" component={ClassReport} />
-      <Route path="/main/mypaperlist" component={Mypaperlist} />
-      <Route path="/main/mypaperdetail" component={Mypaperdetail} />
-      <Route path="/main/resourcesdetail" component={Resourcesdetail} />
+      <Switch>
+        <Route exact path="/index" component={Main} />
+        <Route exact path="/user" component={User} />
+        <Route exact path="/class" component={Class} />
+        <Route exact path="/famous" component={Famous} />
+        <Route exact path="/schoolbased" component={Schoolbased} />
+        <Route exact path="/knowledge" component={Knowledge} />
+        <Route exact path="/mypaper" component={Mypaper} />
+        <Route exact path="/classdetail" component={classDetails} />
+        <Route exact path="/chapter" component={Chapter} />
+        <Route exact path="/questiondetails" component={Questiondetails} />
+        <Route exact path="/schoolbaseddetail" component={Schoolbaseddetail} />
+        <Route exact path="/studyreport" component={StudyReport} />
+        <Route exact path="/classreport" component={ClassReport} />
+        <Route exact path="/mypaperlist" component={Mypaperlist} />
+        <Route exact path="/mypaperdetail" component={Mypaperdetail} />
+        <Route exact path="/resourcesdetail" component={Resourcesdetail} />
+        <Redirect to="/index"></Redirect>
+      </Switch>
       <AI_footer />
     </>
   )

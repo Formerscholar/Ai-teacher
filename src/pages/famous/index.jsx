@@ -114,7 +114,7 @@ function Famous(props) {
 
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   const topaperdetail = (id) => {

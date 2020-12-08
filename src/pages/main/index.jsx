@@ -9,11 +9,11 @@ function Main(props) {
   console.log(props);
 
   const toresources = () => {
-    history.push('/main/famous')
+    history.push('/famous')
   }
 
   const topaper = () => {
-    history.push('/main/schoolbased')
+    history.push('/schoolbased')
   }
 
   const topaperdetail = (id) => {
@@ -23,13 +23,13 @@ function Main(props) {
   const toPage = (idx) => {
     switch (idx) {
       case 1:
-        history.push('/main/class')
+        history.push('/class')
         break
       case 3:
-        history.push('/main/user?type=1')
+        history.push('/user?type=1')
         break
       case 4:
-        history.push('/main/mypaperlist')
+        history.push('/mypaperlist')
         break
 
       default:

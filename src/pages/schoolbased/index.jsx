@@ -80,7 +80,7 @@ function Schoolbased(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   return (

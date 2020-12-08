@@ -44,16 +44,16 @@ function AI_header({ props, setData }) {
 
   const handleClose = (info) => {
     const datafunc = () => {
-      history.push('/main/user?type=0')
+      history.push('/user?type=0')
     }
     const integralfunc = () => {
-      history.push('/main/user?type=1')
+      history.push('/user?type=1')
     }
     const downloadfunc = () => {
-      history.push('/main/user?type=2')
+      history.push('/user?type=2')
     }
     const volumefunc = () => {
-      history.push('/main/user?type=3')
+      history.push('/user?type=3')
     }
     const logoutfunc = async () => {
       let id = getCookie('id')
@@ -83,10 +83,10 @@ function AI_header({ props, setData }) {
 
   const handleCloses = (info) => {
     const Chapterfunc = () => {
-      props.history.push('/main/chapter')
+      props.history.push('/chapter')
     }
     const Knowledgefunc = () => {
-      props.history.push('/main/knowledge')
+      props.history.push('/knowledge')
     }
     const keymap = new Map([
       [araLists[0], Chapterfunc],
@@ -98,10 +98,10 @@ function AI_header({ props, setData }) {
 
   const handleClosess = (info) => {
     const uploadpaperfunc = () => {
-      props.history.push('/main/mypaper')
+      props.history.push('/mypaper')
     }
     const paperlistfunc = () => {
-      props.history.push('/main/mypaperlist')
+      props.history.push('/mypaperlist')
     }
     const keymap = new Map([
       [araListss[0], uploadpaperfunc],
@@ -138,7 +138,7 @@ function AI_header({ props, setData }) {
   )
 
   const toUpload = () => {
-    history.push('/main/user?type=3')
+    history.push('/user?type=3')
   }
 
   return (

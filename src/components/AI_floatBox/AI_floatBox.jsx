@@ -38,7 +38,7 @@ function AI_floatBox({ volumeTopicCount, props, settopicData }) {
   }
 
   const tocomposition = () => {
-    history.push('/main/mypaper')
+    history.push('/mypaper')
   }
 
   const delType = async (id) => {

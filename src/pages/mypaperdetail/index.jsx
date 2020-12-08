@@ -109,11 +109,11 @@ function Mypaperdetail(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   const paperClick = () => {
-    history.push('/main/mypaperlist')
+    history.push('/mypaperlist')
   }
 
   return (

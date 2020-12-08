@@ -110,11 +110,6 @@ function User(props) {
     setOpen(false)
   }
 
-  const todetailClick = (e, id) => {
-    e.stopPropagation()
-    console.log('todetailClick', id)
-  }
-
   /**
    *
    * 图片上传点击
@@ -280,7 +275,7 @@ function User(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   const uploadButton = (
@@ -856,12 +851,7 @@ function User(props) {
                         key={item?.upload_id}
                         onClick={() => paperDetailClick(item?.upload_id)}
                       >
-                        <div
-                          className="name"
-                          onClick={(e) => todetailClick(e, item?.upload_id)}
-                        >
-                          {item?.paper_name}
-                        </div>
+                        <div className="name">{item?.paper_name}</div>
                         <div className="time">
                           {setTimerType(item?.add_time * 1000)}
                         </div>

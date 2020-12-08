@@ -47,23 +47,24 @@ function Login(props) {
 
   const openCode = async () => {
     if (phoneRegular.test(Phone)) {
-      setbtndis(true)
-      let num = outtime
-      OutTimeinval = setInterval(() => {
-        if (num == 0) {
-          setOutTime('60')
-          setbtndis(false)
-          clearInterval(OutTimeinval)
-        } else {
-          num--
-          setOutTime(num)
-        }
-      }, 1000)
       const { code, msg } = await getLoginCode({
         mobile: Phone,
       })
       if (code !== 200) {
         message.error(msg)
+      } else {
+        setbtndis(true)
+        let num = outtime
+        OutTimeinval = setInterval(() => {
+          if (num == 0) {
+            setOutTime('60')
+            setbtndis(false)
+            clearInterval(OutTimeinval)
+          } else {
+            num--
+            setOutTime(num)
+          }
+        }, 1000)
       }
     } else {
       message.error('请输入正确手机号码!')
@@ -102,7 +103,7 @@ function Login(props) {
     if (code == 200) {
       setCookie('id', data.id)
       setCookie('token', data.token)
-      props.history.push('/main/index')
+      props.history.push('/index')
     } else {
       message.error(msg)
     }

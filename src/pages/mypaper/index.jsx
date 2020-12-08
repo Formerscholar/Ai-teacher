@@ -196,11 +196,11 @@ function Mypaper(props) {
    */
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
 
   const paperClick = () => {
-    history.push('/main/mypaperlist')
+    history.push('/mypaperlist')
   }
 
   function onChange(checkedValues) {
@@ -208,7 +208,7 @@ function Mypaper(props) {
   }
 
   const toknowledge = () => {
-    history.push('/main/knowledge')
+    history.push('/knowledge')
   }
 
   /**
@@ -349,7 +349,7 @@ function Mypaper(props) {
       })
       if (code === 200) {
         message.success(msg)
-        history.push('/main/mypaperlist')
+        history.push('/mypaperlist')
       } else {
         message.error(msg)
       }
@@ -366,7 +366,7 @@ function Mypaper(props) {
       })
       if (code === 200) {
         message.success(msg)
-        history.push('/main/mypaperlist')
+        history.push('/mypaperlist')
       } else {
         message.error(msg)
       }

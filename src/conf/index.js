@@ -14,31 +14,31 @@ const callBackUrl = encodeURIComponent('http://test.aictb.com/teacher/WXLogin')
 const headMenu = [
   {
     text: '首页',
-    url: '/main/index',
+    url: '/index',
   },
   {
     text: '班级信息',
-    url: '/main/class',
+    url: '/class',
   },
   {
     text: '学情报告',
-    url: '/main/classreport',
+    url: '/classreport',
   },
   {
     text: '名校资源',
-    url: '/main/famous',
+    url: '/famous',
   },
   {
     text: '校本试卷',
-    url: '/main/schoolbased',
+    url: '/schoolbased',
   },
   {
     text: '知识库',
-    url: '/main/knowledge',
+    url: '/knowledge',
   },
   {
     text: '我的试卷',
-    url: '/main/mypaperlist',
+    url: '/mypaperlist',
   },
 ]
 

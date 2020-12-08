@@ -32,12 +32,12 @@ function ClassDetails(props) {
 
   const handleClick = (event) => {
     event.preventDefault()
-    history.push('/main/class')
+    history.push('/class')
   }
 
   const handleClicks = (event) => {
     event.preventDefault()
-    history.push('/main/index')
+    history.push('/index')
   }
   /**
    * 班级删除老师
