@@ -43,7 +43,7 @@ function Mypaperdetail(props) {
   }
 
   const paperClick = () => {
-    history.push('/mypaperlist')
+    history.push('/mypaper/list')
   }
 
   return (

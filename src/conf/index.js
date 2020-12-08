@@ -38,7 +38,7 @@ const headMenu = [
   },
   {
     text: '我的试卷',
-    url: '/mypaperlist',
+    url: '/mypaper/list',
   },
 ]
 

@@ -179,7 +179,7 @@ function Knowledge(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    window.open(`/questiondetails?id=${id}`)
+    window.open(`/question/details?id=${id}`)
   }
 
   const onExpand = (expandedKeys) => {

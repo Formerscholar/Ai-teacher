@@ -118,7 +118,7 @@ function Famous(props) {
   }
 
   const topaperdetail = (id) => {
-    history.push(`/resourcesdetail?id=${id}`)
+    history.push(`/famous/detail?id=${id}`)
   }
 
   return (

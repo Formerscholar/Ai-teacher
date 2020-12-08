@@ -101,7 +101,7 @@ function AI_header({ props, setData }) {
       props.history.push('/mypaper')
     }
     const paperlistfunc = () => {
-      props.history.push('/mypaperlist')
+      props.history.push('/mypaper/list')
     }
     const keymap = new Map([
       [araListss[0], uploadpaperfunc],

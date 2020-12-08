@@ -160,7 +160,7 @@ function Mypaperlist(props) {
   }
 
   const toDetailPage = (id) => {
-    history.push(`/mypaperdetail?id=${id}`)
+    history.push(`/mypaper/detail?id=${id}`)
   }
 
   return (

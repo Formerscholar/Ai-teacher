@@ -17,7 +17,7 @@ function Main(props) {
   }
 
   const topaperdetail = (id) => {
-    history.push(`/schoolbaseddetail?id=${id}`)
+    history.push(`/schoolbased/detail?id=${id}`)
   }
 
   const toPage = (idx) => {
@@ -29,7 +29,7 @@ function Main(props) {
         history.push('/user?type=1')
         break
       case 4:
-        history.push('/mypaperlist')
+        history.push('/mypaper/list')
         break
 
       default:

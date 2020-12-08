@@ -200,7 +200,7 @@ function Mypaper(props) {
   }
 
   const paperClick = () => {
-    history.push('/mypaperlist')
+    history.push('/mypaper/list')
   }
 
   function onChange(checkedValues) {
@@ -349,7 +349,7 @@ function Mypaper(props) {
       })
       if (code === 200) {
         message.success(msg)
-        history.push('/mypaperlist')
+        history.push('/mypaper/list')
       } else {
         message.error(msg)
       }
@@ -366,7 +366,7 @@ function Mypaper(props) {
       })
       if (code === 200) {
         message.success(msg)
-        history.push('/mypaperlist')
+        history.push('/mypaper/list')
       } else {
         message.error(msg)
       }

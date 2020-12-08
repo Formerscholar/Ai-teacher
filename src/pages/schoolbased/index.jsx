@@ -72,7 +72,7 @@ function Schoolbased(props) {
    *  跳转试卷详情
    */
   const paperDetail = (id) => {
-    history.push(`/schoolbaseddetail?id=${id}`)
+    history.push(`/schoolbased/detail?id=${id}`)
   }
   /**
    *  面包屑返回
