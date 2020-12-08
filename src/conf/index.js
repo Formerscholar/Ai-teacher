@@ -68,6 +68,14 @@ const info_menu = [
   },
 ]
 
+
+const UserRoutePath = [
+  '/user/datum',
+  '/user/integral',
+  '/user/down',
+  '/user/upload_list',
+]
+
 export {
   baseURL,
   phoneRegular,
@@ -77,5 +85,6 @@ export {
   downURL,
   info_menu,
   downDOCURL,
-  emailRegular
+  emailRegular,
+  UserRoutePath,
 }

@@ -44,16 +44,16 @@ function AI_header({ props, setData }) {
 
   const handleClose = (info) => {
     const datafunc = () => {
-      history.push('/user?type=0')
+      history.push('/user/datum')
     }
     const integralfunc = () => {
-      history.push('/user?type=1')
+      history.push('/user/integral')
     }
     const downloadfunc = () => {
-      history.push('/user?type=2')
+      history.push('/user/down')
     }
     const volumefunc = () => {
-      history.push('/user?type=3')
+      history.push('/user/upload_list')
     }
     const logoutfunc = async () => {
       let id = getCookie('id')
@@ -138,7 +138,7 @@ function AI_header({ props, setData }) {
   )
 
   const toUpload = () => {
-    history.push('/user?type=3')
+    history.push('/user/upload_list')
   }
 
   return (

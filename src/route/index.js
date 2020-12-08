@@ -160,22 +160,22 @@ const BasicRoute = (props) => {
     <>
       <AI_header props={props} />
       <Switch>
-        <Route exact path="/index" component={Main} />
-        <Route exact path="/user" component={User} />
-        <Route exact path="/class" component={Class} />
-        <Route exact path="/famous" component={Famous} />
-        <Route exact path="/schoolbased" component={Schoolbased} />
-        <Route exact path="/knowledge" component={Knowledge} />
-        <Route exact path="/mypaper" component={Mypaper} />
-        <Route exact path="/classdetail" component={classDetails} />
-        <Route exact path="/chapter" component={Chapter} />
-        <Route exact path="/questiondetails" component={Questiondetails} />
-        <Route exact path="/schoolbaseddetail" component={Schoolbaseddetail} />
-        <Route exact path="/studyreport" component={StudyReport} />
-        <Route exact path="/classreport" component={ClassReport} />
-        <Route exact path="/mypaperlist" component={Mypaperlist} />
-        <Route exact path="/mypaperdetail" component={Mypaperdetail} />
-        <Route exact path="/resourcesdetail" component={Resourcesdetail} />
+        <Route path="/index" component={Main} />
+        <Route path="/user" component={User} />
+        <Route path="/class" component={Class} />
+        <Route path="/famous" component={Famous} />
+        <Route path="/schoolbased" component={Schoolbased} />
+        <Route path="/knowledge" component={Knowledge} />
+        <Route path="/mypaper" component={Mypaper} />
+        <Route path="/classdetail" component={classDetails} />
+        <Route path="/chapter" component={Chapter} />
+        <Route path="/questiondetails" component={Questiondetails} />
+        <Route path="/schoolbaseddetail" component={Schoolbaseddetail} />
+        <Route path="/studyreport" component={StudyReport} />
+        <Route path="/classreport" component={ClassReport} />
+        <Route path="/mypaperlist" component={Mypaperlist} />
+        <Route path="/mypaperdetail" component={Mypaperdetail} />
+        <Route path="/resourcesdetail" component={Resourcesdetail} />
         <Redirect to="/index"></Redirect>
       </Switch>
       <AI_footer />
