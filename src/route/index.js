@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import AI_header from 'components/AI_header/AI_header'
 import AI_footer from 'components/AI_footer/AI_footer'
 import Loadable from 'react-loadable'

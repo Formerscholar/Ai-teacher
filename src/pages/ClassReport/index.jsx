@@ -183,7 +183,7 @@ function ClassReport(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    window.open(`/main/questiondetails?id=${id}`)
+    window.open(`/questiondetails?id=${id}`)
   }
 
   /**

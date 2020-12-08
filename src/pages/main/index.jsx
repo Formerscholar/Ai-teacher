@@ -17,7 +17,7 @@ function Main(props) {
   }
 
   const topaperdetail = (id) => {
-    history.push(`/main/schoolbaseddetail?id=${id}`)
+    history.push(`/schoolbaseddetail?id=${id}`)
   }
 
   const toPage = (idx) => {

@@ -366,7 +366,7 @@ function User(props) {
    * @param {*} idx
    */
   const infoMenuClick = (idx) => {
-    history.push(`/main/user?type=${idx}`)
+    history.push(`/user?type=${idx}`)
     initData(idx)
   }
 

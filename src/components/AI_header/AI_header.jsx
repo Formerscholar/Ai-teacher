@@ -192,7 +192,7 @@ function AI_header({ props, setData }) {
           </div>
         </div>
       </div>
-      {location.pathname === '/main/index' ? (
+      {location.pathname === '/index' ? (
         <div className="banner" onClick={toUpload}></div>
       ) : (
         <div className="banner1"></div>

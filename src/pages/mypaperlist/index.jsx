@@ -95,7 +95,7 @@ function Mypaperlist(props) {
       id: reedId,
     })
     if (code === 200) {
-      history.push(`/main/mypaper?id=${reedId}`)
+      history.push(`/mypaper?id=${reedId}`)
     } else {
       message.error(msg)
     }
@@ -160,7 +160,7 @@ function Mypaperlist(props) {
   }
 
   const toDetailPage = (id) => {
-    history.push(`/main/mypaperdetail?id=${id}`)
+    history.push(`/mypaperdetail?id=${id}`)
   }
 
   return (

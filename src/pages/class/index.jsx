@@ -47,12 +47,12 @@ function Class(props) {
   }
 
   /**
-   *跳转班级详情页面/main/classdetail 传递iid
+   *跳转班级详情页面/classdetail 传递iid
    *
    * @param {Number} iid
    */
   const get_Details = (iid) => {
-    history.push(`/main/classdetail?id=${iid}`)
+    history.push(`/classdetail?id=${iid}`)
   }
 
   /**

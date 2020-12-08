@@ -139,7 +139,7 @@ function StudyReport(props) {
 
   const handleClickss = (event) => {
     event.preventDefault()
-    history.push(`/main/classdetail?id=${iid}`)
+    history.push(`/classdetail?id=${iid}`)
   }
 
   /**
@@ -184,7 +184,7 @@ function StudyReport(props) {
    * @param {*} id
    */
   const answerClick = (id) => {
-    window.open(`/main/questiondetails?id=${id}`)
+    window.open(`/questiondetails?id=${id}`)
   }
 
   /**
