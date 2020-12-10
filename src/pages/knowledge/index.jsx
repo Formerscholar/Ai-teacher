@@ -81,8 +81,8 @@ function Knowledge(props) {
       data?.exercisesLists?.data?.map((item) => {
         item['isanswer'] = false
       })
-      let arr = data?.knowledge?.map((item) => item?.id * 1)
-      console.log(arr);
+      let arr = data?.knowledge?.map((item) => item?.id.toString())
+      console.log(arr)
       setExpandedKeys(arr)
       setKnowledge(data)
       setgradeId(data?.grade_id)
@@ -104,7 +104,7 @@ function Knowledge(props) {
     return array?.map((item) => {
       return {
         title: item?.name,
-        key: item?.id,
+        key: item?.id.toString(),
         children: item?.children && knowledgeArrNewView(item?.children),
       }
     })
@@ -313,8 +313,8 @@ function Knowledge(props) {
             checkable
             showLine
             onExpand={onExpand}
-            expandedKeys={expandedKeys}
             defaultExpandedKeys={expandedKeys}
+            expandedKeys={expandedKeys}
             autoExpandParent={autoExpandParent}
             onCheck={onCheck}
             checkedKeys={checkedKeys}

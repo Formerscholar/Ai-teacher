@@ -27,23 +27,23 @@ module.exports = {
   webpack: {
     plugins: [
       new BundleAnalyzerPlugin({ analyzerPort: 8919 }),
-      // new UglifyJSPlugin({
-      //   uglifyOptions: {
-      //     mangle: true,
-      //     warnings: false,
-      //     compress: {
-      //       pure_getters: true,
-      //       unsafe: true,
-      //       unsafe_comps: true,
-      //       drop_debugger: true,
-      //       drop_console: true,
-      //     },
-      //     output: {
-      //       comments: false,
-      //     },
-      //   },
-      //   exclude: [/\.min\.js$/gi],
-      // }),
+      new UglifyJSPlugin({
+        uglifyOptions: {
+          mangle: true,
+          warnings: false,
+          compress: {
+            pure_getters: true,
+            unsafe: true,
+            unsafe_comps: true,
+            drop_debugger: true,
+            drop_console: true,
+          },
+          output: {
+            comments: false,
+          },
+        },
+        exclude: [/\.min\.js$/gi],
+      }),
       new HardSourceWebpackPlugin(),
       new CompressionWebpackPlugin({
         algorithm: 'gzip',
