@@ -18,6 +18,7 @@ function ClassDetails(props) {
   const [detailData, setDetailData] = useState({})
   const [detailstudInfo, setdetailstudInfo] = useState({})
   const [Open, setOpen] = useState(false)
+  const [Opens, setOpens] = useState(false)
   const [delText, setdelText] = useState('')
 
   useEffect(() => {
@@ -45,7 +46,11 @@ function ClassDetails(props) {
     history.push('/index')
   }
 
-  const delhandleClick = async () => {
+  const delhandleClick = () => {
+    setOpens(true)
+  }
+
+  const confirmClicks = async () => {
     const { code, msg } = await delTeam({
       team_id: iid,
     })
@@ -56,6 +61,7 @@ function ClassDetails(props) {
       message.error(msg)
     }
   }
+
   /**
    * 班级删除老师
    *
@@ -285,6 +291,30 @@ function ClassDetails(props) {
               type="primary"
               className="btncanle"
               onClick={() => setOpen(false)}
+            >
+              取消
+            </Button>
+          </div>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Opens}
+        title="【温馨提示】"
+        closeClick={() => setOpens(false)}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox" className="delitem">
+          <div className="title">确定是否解散该班级？</div>
+          <div className="btns">
+            <Button type="primary" className="btn" onClick={confirmClicks}>
+              确定
+            </Button>
+            <Button
+              type="primary"
+              className="btncanle"
+              onClick={() => setOpens(false)}
             >
               取消
             </Button>
