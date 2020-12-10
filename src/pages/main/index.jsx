@@ -6,7 +6,7 @@ import { setTimerType } from '@/utils'
 
 function Main(props) {
   const { history, homeInfo } = props
-  console.log(props);
+  console.log(props)
 
   const toresources = () => {
     history.push('/famous')
@@ -17,6 +17,9 @@ function Main(props) {
   }
 
   const topaperdetail = (id) => {
+    history.push(`/famous/detail?id=${id}`)
+  }
+  const topaperdetails = (id) => {
     history.push(`/schoolbased/detail?id=${id}`)
   }
 
@@ -118,7 +121,7 @@ function Main(props) {
               <div
                 className="items"
                 key={item?.id}
-                onClick={() => topaperdetail(item?.based_id)}
+                onClick={() => topaperdetails(item?.based_id)}
               >
                 <div className="left_text">
                   <img

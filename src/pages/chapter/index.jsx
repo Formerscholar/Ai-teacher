@@ -430,6 +430,7 @@ function Chapter(props) {
           <Tree
             checkable
             showLine
+            defaultExpandAll
             onExpand={onExpand}
             expandedKeys={expandedKeys}
             autoExpandParent={autoExpandParent}

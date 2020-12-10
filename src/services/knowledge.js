@@ -144,7 +144,6 @@ export function editTypeBasketSort(params) {
   })
 }
 
-
 export function getChapterExercises(params) {
   return request({
     url: '/getChapterExercises',

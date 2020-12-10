@@ -1,6 +1,6 @@
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useState, useEffect, useRef } from 'react'
 import './index.less'
-import { Breadcrumb, message } from 'antd'
+import { Breadcrumb, message, Radio, Button } from 'antd'
 import { getDetailPapers } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -9,17 +9,76 @@ import {
   SUB_TOPIC,
   SET_TOPIC,
 } from '@/store/actionType'
-import { splitSearch } from '@/utils'
+import { splitSearch, getRandomColor } from '@/utils'
+import T_modelbox from '@/common/T_modelbox'
+import { downDOCURL } from '@/conf'
+
+const typeArr = ['普通答题卡', '标准答题卡', '密集答题卡']
 
 function Mypaperdetail(props) {
   const { history, location, volumeTopicCount } = props
   const search = splitSearch(location.search)
   const [exercisesData, setexercisesData] = useState({})
+  const Echars = useRef(null)
+  const [Open, setOpen] = useState(false)
+  const [Opens, setOpens] = useState(false)
+  const [Openss, setOpenss] = useState(false)
+  const [formt, setformt] = useState('doc')
+  const [size, setsize] = useState('A4')
+  const [currents, setcurrents] = useState(1)
+  const [options, setoptions] = useState({
+    title: {
+      text: '试卷难度分析',
+      left: 'center',
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b} : {c} ({d}%)',
+    },
+    legend: {
+      bottom: 0,
+      left: 'center',
+      data: [],
+    },
+    series: [
+      {
+        name: '',
+        type: 'pie',
+        radius: '50%',
+        center: ['50%', '50%'],
+        selectedMode: 'single',
+        data: [],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
+  })
 
   useEffect(() => {
     getPapers()
     return () => {}
   }, [volumeTopicCount])
+
+  useEffect(() => {
+    const myChart = window.echarts.init(Echars.current)
+    myChart.setOption(options)
+  })
+
+  const typeSelect = (idx) => {
+    setcurrents(idx)
+  }
+
+  const downTypeClick = () => {
+    window.open(
+      `${downDOCURL}/teacher/downloadAnswerSheet?exam_id=${search.id}&type=${currents}`
+    )
+    setOpenss(false)
+  }
 
   const getPapers = async () => {
     const { code, data, msg } = await getDetailPapers({
@@ -27,9 +86,34 @@ function Mypaperdetail(props) {
     })
     if (code === 200) {
       setexercisesData(data)
+      let legend = []
+      let series = []
+      let newOptions = { ...options }
+      data?.levelAnalysi?.map((item) => {
+        let legdata = item[1] + `(${item[0]}道)`
+        legend.push(item[1])
+        series.push({
+          name: item[1],
+          value: item[0],
+        })
+      })
+      newOptions.legend.data = legend
+      newOptions.series[0].data = series
+      setoptions(newOptions)
     } else {
       message.error(msg)
     }
+  }
+
+  /**
+   *
+   *  下载确认点击
+   */
+  const closeClickss = async () => {
+    window.open(
+      `${downDOCURL}/teacher/organizingPapers?paper_type=${size}&exam_id=${exercisesData?.teacherExam?.id}&extension=${formt}`
+    )
+    setOpens(false)
   }
 
   /**
@@ -44,6 +128,15 @@ function Mypaperdetail(props) {
 
   const paperClick = () => {
     history.push('/mypaper/list')
+  }
+
+  const rightDetail = () => {
+    let newOptions = { ...options }
+    newOptions.title.text = ''
+    newOptions.title.left = 'left'
+    newOptions.legend.left = 'center'
+    setoptions(newOptions)
+    setOpen(true)
   }
 
   return (
@@ -82,16 +175,274 @@ function Mypaperdetail(props) {
       </Breadcrumb>
       <div className="content_body">
         <div className="left_box">
-          <div className="title_box">2020年11月13日xxx的初中数学试卷</div>
-          <div className="topic_title">一、单选题（共2题；共30分）</div>
-          <div className="topic_html">
-            有 3 块积木，每一块的各面都涂上不同的颜色，3
-            块的涂法完全相同,现把它们摆放成不同的位
-            置(如图)，请你根据图形判断涂成绿色一面的对面的颜色是 ( )
+          <div className="title_box">{exercisesData?.teacherExam?.title}</div>
+          {exercisesData?.teacherExamExercise?.map((item, idx) => {
+            if (item?.parent_id == 1) {
+              return (
+                <div className="topic_title" key={idx}>
+                  {item?.title}
+                </div>
+              )
+            } else if (item?.parent_id == 2) {
+              return (
+                <div className="topic_html" key={idx}>
+                  <span className="title_warp">
+                    {item?.title}.<div className="span">({item?.score})</div>
+                  </span>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: item?.get_one_exercises?.content_all,
+                    }}
+                  ></span>
+                </div>
+              )
+            }
+          })}
+        </div>
+        <div className="right_box">
+          <div className="top_box">
+            <Button
+              type="primary"
+              className="downbtn"
+              onClick={() => setOpens(true)}
+            >
+              下载试卷
+            </Button>
+            <Button className="lastbtn" onClick={() => setOpenss(true)}>
+              答题卡下载
+            </Button>
+          </div>
+          <div className="bott_box">
+            <div className="tip_top">
+              <div className="left_boxx">
+                试卷分析
+                <span>(总分:{exercisesData?.countScore}分)</span>
+              </div>
+              <div className="right_boxs" onClick={rightDetail}>
+                详情
+              </div>
+            </div>
+            <div ref={Echars} style={{ width: '100%', height: '376px' }}></div>
+            <div className="my_chars">
+              <div className="title_text">知识点分析</div>
+              <div className="list">
+                {exercisesData?.knowAnalysis?.map((item, idx) => {
+                  return (
+                    <div className="items" key={idx}>
+                      <div className="top_text">
+                        <div className="left_txt">
+                          {item[1]}
+                          <span>{item[2]}%</span>
+                        </div>
+                        <div className="right_txt">{item[0]}道题</div>
+                      </div>
+                      <div
+                        className="progress"
+                        style={{
+                          width: `${item[2]}%`,
+                          backgroundColor: getRandomColor(),
+                        }}
+                      ></div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="right_box">right_box</div>
       </div>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Opens}
+        title="【下载确认】"
+        closeClick={() => {
+          setOpens(false)
+        }}
+        width="62.64rem"
+        height="31.57rem"
+      >
+        <div id="tmodelbox" className="downbox">
+          <div className="title">{exercisesData?.teacherExam?.title}</div>
+          <div className="body_text">
+            {/* 文件格式 */}
+            <div className="fileformt">
+              <span className="title_txt">文件格式:</span>
+              <Radio.Group
+                onChange={(e) => setformt(e.target.value)}
+                value={formt}
+              >
+                <Radio
+                  className="itemradio itemradios"
+                  style={{ display: 'block' }}
+                  value="doc"
+                >
+                  <span className="context">
+                    <span className="span">DOC</span>
+                    <span className="tip">
+                      doc格式文档，公式为图片，不可编辑公式
+                    </span>
+                  </span>
+                </Radio>
+                <Radio
+                  className="itemradio itemradios"
+                  style={{ display: 'block' }}
+                  value="docx"
+                >
+                  <span className="context">
+                    <span className="span">DOCX</span>
+                    <span className="tip">docx格式文档，可编辑公式</span>
+                  </span>
+                </Radio>
+              </Radio.Group>
+            </div>
+            {/* 纸张大小 */}
+            <div className="fileformt">
+              <span className="title_txt">纸张大小:</span>
+              <Radio.Group
+                onChange={(e) => {
+                  setsize(e.target.value)
+                }}
+                value={size}
+              >
+                <Radio className="itemradio" value="A4">
+                  A4
+                </Radio>
+                <Radio className="itemradio" value="A3">
+                  A3（双栏）
+                </Radio>
+                <Radio className="itemradio" value="B4">
+                  B4（双栏）
+                </Radio>
+              </Radio.Group>
+            </div>
+          </div>
+          <Button type="primary" className="btn" onClick={closeClickss}>
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Open}
+        title="【试卷分析】"
+        closeClick={() => {
+          setOpen(false)
+        }}
+        width="62.64rem"
+        height="31.57rem"
+        style={{ overflow: 'auto' }}
+      >
+        <div className="charsbox">
+          <div className="title">{exercisesData?.teacherExam?.title}</div>
+          <div className="levelchars">
+            <div className="tip_title">
+              <div className="text">试卷难度分析</div>
+            </div>
+            <div className="chars_boxs">
+              <div className="chars">
+                <div
+                  ref={Echars}
+                  style={{ width: '400px', height: '210px' }}
+                ></div>
+              </div>
+              <div className="tables">
+                <table border="1" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td>题型</td>
+                    <td>题目量(占比)</td>
+                    <td>分值(占比)</td>
+                  </tr>
+                  {exercisesData?.typeAnalysis?.map((item, idx) => {
+                    return (
+                      <tr key={idx}>
+                        <td>{item[1]}</td>
+                        <td>
+                          {item[0]}({item[3]}%)
+                        </td>
+                        <td>
+                          {item[2]}({item[4]}%)
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </table>
+              </div>
+            </div>
+            <div className="tip_title">
+              <div className="text">知识点分析</div>
+            </div>
+            <div className="my_chars">
+              <div className="list">
+                {exercisesData?.knowAnalysis?.map((item, idx) => {
+                  return (
+                    <div className="items" key={idx}>
+                      <div className="top_text">
+                        <div className="left_txt">
+                          {item[1]}
+                          <span>{item[2]}%</span>
+                        </div>
+                        <div className="right_txt">{item[0]}道题</div>
+                      </div>
+                      <div
+                        className="progress"
+                        style={{
+                          width: `${item[2]}%`,
+                          backgroundColor: getRandomColor(),
+                        }}
+                      ></div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Openss}
+        title="【答题卡下载】"
+        closeClick={() => {
+          setOpenss(false)
+        }}
+        width="50rem"
+        height="20rem"
+      >
+        <div className="answerbox">
+          <div className="titles">
+            请选择下载的答题卡类型，选择后点击“确定”按钮即可下载
+          </div>
+          <div className="an_type">
+            <div className="tip">答题卡类型：</div>
+            <div className="typelist">
+              {typeArr?.map((itm, idx) => {
+                return (
+                  <div
+                    className={currents == idx + 1 ? 'items current' : 'items'}
+                    key={idx}
+                    onClick={() => typeSelect(idx + 1)}
+                  >
+                    {itm}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+          <div className="btns">
+            <Button type="primary" className="surebtn" onClick={downTypeClick}>
+              确定
+            </Button>
+            <Button
+              className="canlebtn"
+              onClick={() => {
+                setOpenss(false)
+              }}
+            >
+              取消
+            </Button>
+          </div>
+        </div>
+      </T_modelbox>
     </div>
   )
 }

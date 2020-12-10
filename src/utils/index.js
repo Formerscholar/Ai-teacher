@@ -87,6 +87,12 @@ const getNearDate = (newDate, num) => {
   return [setTimerType(start), setTimerType(new Date())]
 }
 
+const getRandomColor = function () {
+  return (
+    '#' + ('00000' + ((Math.random() * 0x1000000) << 0).toString(16)).substr(-6)
+  )
+}
+
 export {
   setTimerType,
   setCookie,
@@ -95,4 +101,5 @@ export {
   Trim,
   splitSearch,
   getNearDate,
+  getRandomColor,
 }
