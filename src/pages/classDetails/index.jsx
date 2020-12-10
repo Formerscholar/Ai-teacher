@@ -1,6 +1,11 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
-import { getTeamDetail, delTeamTeacher, delTeamStudent } from '@/services/class'
+import {
+  getTeamDetail,
+  delTeamTeacher,
+  delTeamStudent,
+  delTeam,
+} from '@/services/class'
 import { Avatar, Breadcrumb, message, Button } from 'antd'
 import { setTimerType, splitSearch } from '@/utils'
 import { connect } from 'react-redux'
@@ -38,6 +43,18 @@ function ClassDetails(props) {
   const handleClicks = (event) => {
     event.preventDefault()
     history.push('/index')
+  }
+
+  const delhandleClick = async () => {
+    const { code, msg } = await delTeam({
+      team_id: iid,
+    })
+    if (code === 200) {
+      message.success(msg)
+      history.go(-1)
+    } else {
+      message.error(msg)
+    }
   }
   /**
    * 班级删除老师
@@ -130,6 +147,15 @@ function ClassDetails(props) {
         </Breadcrumb.Item>
       </Breadcrumb>
       <div className="teacher_list">
+        <div className="title_del">
+          <div className="left_name">
+            {detailData?.team?.get_grade?.name}
+            {detailData?.team?.name}
+          </div>
+          <Button type="primary" className="delbtn" onClick={delhandleClick}>
+            解散班级
+          </Button>
+        </div>
         <div className="title_text">
           <span>老师姓名</span>
           <span>科目</span>

@@ -54,3 +54,11 @@ export function studentAcademicReport(params) {
     params,
   })
 }
+
+export function delTeam(data) {
+  return request({
+    url: '/delTeam',
+    method: 'POST',
+    data: Qs.stringify(data),
+  })
+}
