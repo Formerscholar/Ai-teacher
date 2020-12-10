@@ -19,7 +19,9 @@ function ClassDetails(props) {
   const [detailstudInfo, setdetailstudInfo] = useState({})
   const [Open, setOpen] = useState(false)
   const [Opens, setOpens] = useState(false)
-  const [delText, setdelText] = useState('')
+  const [Openss, setOpenss] = useState(false)
+  const [delteachertext, setdelteachertext] = useState('')
+  const [delteacherid, setdelteacherid] = useState(0)
 
   useEffect(() => {
     getTeamDetails()
@@ -68,16 +70,23 @@ function ClassDetails(props) {
    * @param {Number} team_id
    * @param {Number} teacher_id
    */
-  const delteacherClick = async (team_id, teacher_id) => {
+  const delteacherClick = (teacher_id, true_name) => {
+    setdelteacherid(teacher_id)
+    setdelteachertext(true_name)
+    setOpenss(true)
+  }
+
+  const confirmsClick = async () => {
     const { code, msg } = await delTeamTeacher({
-      team_id,
-      teacher_id,
+      team_id: iid,
+      teacher_id: delteacherid,
     })
     if (code === 200) {
       message.success(msg)
     } else {
       message.error(msg)
     }
+    setOpenss(false)
     getTeamDetails()
   }
 
@@ -178,7 +187,7 @@ function ClassDetails(props) {
                     alt="avatar"
                     src={item?.avatar_file}
                   />
-                  <span>{item?.true_name}老师</span>
+                  <span>{item?.true_name}</span>
                 </div>
                 <div className="subject_box flex_box">
                   <span>{item?.get_subject?.title}</span>
@@ -191,9 +200,7 @@ function ClassDetails(props) {
                   detailData?.team?.teacher_id === homeInfo?.teacher?.id &&
                   detailData?.team?.is_active === 0 ? (
                     <span
-                      onClick={() =>
-                        delteacherClick(detailData?.team?.id, item?.id)
-                      }
+                      onClick={() => delteacherClick(item?.id, item?.true_name)}
                     >
                       移除
                     </span>
@@ -315,6 +322,30 @@ function ClassDetails(props) {
               type="primary"
               className="btncanle"
               onClick={() => setOpens(false)}
+            >
+              取消
+            </Button>
+          </div>
+        </div>
+      </T_modelbox>
+      {/* 模态框 */}
+      <T_modelbox
+        isOpen={Openss}
+        title="【温馨提示】"
+        closeClick={() => setOpenss(false)}
+        width="41.71rem"
+        height="19.93rem"
+      >
+        <div id="tmodelbox" className="delitem">
+          <div className="title">确定是否移除《{delteachertext}》老师？</div>
+          <div className="btns">
+            <Button type="primary" className="btn" onClick={confirmsClick}>
+              确定
+            </Button>
+            <Button
+              type="primary"
+              className="btncanle"
+              onClick={() => setOpenss(false)}
             >
               取消
             </Button>
