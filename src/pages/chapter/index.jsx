@@ -5,6 +5,7 @@ import {
   getChapterExercises,
   addExamBasket,
   delExamBasket,
+  getExerciseAnswer
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -129,11 +130,29 @@ function Chapter(props) {
     }
   }
 
-  const onSetAnswer = (idx) => {
-    let data = { ...Knowledge }
-    data.exercisesLists.data[idx].isanswer = !data.exercisesLists.data[idx]
-      .isanswer
-    setKnowledge(data)
+  const onSetAnswer =async (idx, id) => {
+    let basedDataCopy = { ...Knowledge }
+    let basedRoot = basedDataCopy.exercisesLists.data[idx]
+    if (!basedRoot.isanswer) {
+      if (
+        basedRoot['knowName'] === undefined &&
+        basedRoot['answer'] === undefined &&
+        basedRoot['analysis'] === undefined
+      ) {
+        const { code, data, msg } = await getExerciseAnswer({
+          id,
+        })
+        if (code === 200) {
+          basedRoot['knowName'] = data.exercise.knowName
+          basedRoot['answer'] = data.exercise.answer
+          basedRoot['analysis'] = data.exercise.analysis
+        } else {
+          message.error(msg)
+        }
+      }
+    }
+    basedRoot.isanswer = !basedRoot.isanswer
+    setKnowledge(basedDataCopy)
   }
 
   /**
@@ -624,7 +643,7 @@ function Chapter(props) {
                       {/* <div className="counts">组卷次数：0</div> */}
                     </div>
                     <div className="right_box_warp">
-                      <div className="answers" onClick={() => onSetAnswer(idx)}>
+                      <div className="answers" onClick={() => onSetAnswer(idx,item?.id)}>
                         <img
                           className="View"
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
