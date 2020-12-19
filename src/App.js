@@ -15,12 +15,18 @@ const BasicRoute = Loadable({
   loading: G_spin,
 })
 
+const Test = Loadable({
+  loader: () => import('@/pages/test'),
+  loading: G_spin,
+})
+
 function App() {
   return (
     <div className="App">
       <Provider store={store}>
         <BrowserRouter>
           <Switch>
+            <Route path="/test" component={Test} />
             <Route path="/login" exact component={Login} />
             <Route path="/" component={BasicRoute} />
             <Redirect to="/"></Redirect>

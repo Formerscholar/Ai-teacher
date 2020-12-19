@@ -12,7 +12,11 @@ import {
 } from '@/store/actionType'
 import { setTimerType } from '@/utils'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
-import { addExamBasket, delExamBasket } from '@/services/knowledge'
+import {
+  addExamBasket,
+  delExamBasket,
+  getExerciseAnswer,
+} from '@/services/knowledge'
 
 function Resourcesdetail(props) {
   const {
@@ -60,10 +64,30 @@ function Resourcesdetail(props) {
     }
   }
 
-  const onSetAnswer = (idx) => {
-    let data = { ...basedData }
-    data.examsExercises[idx].isanswer = !data.examsExercises[idx].isanswer
-    setBasedData(data)
+  const onSetAnswer = async (idx, id) => {
+    let basedDataCopy = { ...basedData }
+    let basedRoot = basedDataCopy.examsExercises[idx]
+    if (!basedRoot.isanswer) {
+      let exercisesCopy = basedRoot.get_exercises
+      if (
+        exercisesCopy['knowName'] === undefined &&
+        exercisesCopy['answer'] === undefined &&
+        exercisesCopy['analysis'] === undefined
+      ) {
+        const { code, data, msg } = await getExerciseAnswer({
+          id,
+        })
+        if (code === 200) {
+          exercisesCopy['knowName'] = data.exercise.knowName
+          exercisesCopy['answer'] = data.exercise.answer
+          exercisesCopy['analysis'] = data.exercise.analysis
+        } else {
+          message.error(msg)
+        }
+      }
+    }
+    basedRoot.isanswer = !basedDataCopy.examsExercises[idx].isanswer
+    setBasedData(basedDataCopy)
   }
 
   /**
@@ -202,7 +226,10 @@ function Resourcesdetail(props) {
                   {/* <div className="counts">组卷次数：0</div> */}
                 </div>
                 <div className="right_box_warp">
-                  <div className="answers" onClick={() => onSetAnswer(idx)}>
+                  <div
+                    className="answers"
+                    onClick={() => onSetAnswer(idx, item?.exercises_id)}
+                  >
                     <img
                       className="View"
                       src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"

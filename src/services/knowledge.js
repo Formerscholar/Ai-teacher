@@ -151,3 +151,13 @@ export function getChapterExercises(params) {
     params,
   })
 }
+
+
+
+export function getExerciseAnswer(params) {
+  return request({
+    url: '/getExerciseAnswer',
+    method: 'GET',
+    params,
+  })
+}
