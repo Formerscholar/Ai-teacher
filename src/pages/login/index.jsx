@@ -101,8 +101,8 @@ function Login(props) {
       code: Code,
     })
     if (code == 200) {
-      setCookie('id', data.id)
-      setCookie('token', data.token)
+      // setCookie('id', data.id)
+      // setCookie('token', data.token)
       props.history.push('/index')
     } else {
       message.error(msg)
