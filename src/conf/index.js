@@ -3,13 +3,14 @@ const baseURL =
     ? 'https://api2.aictb.com/teacher'
     : '/teacher'
 
+    
 const phoneRegular = /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1|8|9]))\d{8}$/
 
 const emailRegular = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const appid = 'wx5f0976e726b587f8'
 
-const callBackUrl = encodeURIComponent('http://test.aictb.com/teacher/WXLogin')
+const callBackUrl = encodeURIComponent('https://api2.aictb.com/teacher/WXLogin')
 
 const headMenu = [
   {
@@ -43,7 +44,8 @@ const headMenu = [
 ]
 
 const downURL = 'http://aictb.com'
-const downDOCURL = 'http://test.aictb.com'
+
+const downDOCURL = 'https://api2.aictb.com'
 
 const info_menu = [
   {
