@@ -15,7 +15,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/teacher': {
-        target: 'http://test.aictb.com',
+        target: 'https://api2.aictb.com',
         ws: true,
         changOrigin: true,
         pathRewrite: {

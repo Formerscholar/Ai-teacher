@@ -26,6 +26,7 @@ function Schoolbaseddetail(props) {
     addtopicData,
     subtopicData,
     volumeTopicCount,
+    match
   } = props
   const [basedData, setBasedData] = useState({})
 
@@ -49,7 +50,7 @@ function Schoolbaseddetail(props) {
 
   const getSchoolBased = async () => {
     const { code, data } = await getSchoolBasedDetail({
-      id: splitSearch(location.search).id,
+      id: match.params.id,
     })
     if (code === 200) {
       if (data.examsExercises.length === 0) {

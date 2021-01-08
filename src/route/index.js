@@ -162,7 +162,7 @@ const BasicRoute = (props) => {
       <Switch>
         <Route path="/class/detail" exact component={classDetails} />
         <Route path="/class/detail/chars" exact component={StudyReport} />
-        <Route path="/schoolbased/detail" exact component={Schoolbaseddetail} />
+        <Route path="/schoolbased/detail/:id" exact component={Schoolbaseddetail} />
         <Route path="/question/details" exact component={Questiondetails} />
         <Route path="/mypaper/list" exact component={Mypaperlist} />
         <Route path="/mypaper/detail" exact component={Mypaperdetail} />
