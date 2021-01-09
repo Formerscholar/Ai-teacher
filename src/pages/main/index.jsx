@@ -29,7 +29,7 @@ function Main(props) {
         history.push('/class')
         break
       case 3:
-        history.push('/user?type=1')
+        history.push('user/integral')
         break
       case 4:
         history.push('/mypaper/list')

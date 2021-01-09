@@ -207,7 +207,7 @@ function Knowledge(props) {
   const onExpand = (expandedKeys) => {
     console.log('onExpand', expandedKeys)
     setExpandedKeys(expandedKeys)
-    setAutoExpandParent(false)
+    //setAutoExpandParent(false)
   }
 
   const onCheck = (checkedKeys) => {
@@ -223,10 +223,26 @@ function Knowledge(props) {
   }
 
   const onSelect = (selectedKeys, info) => {
-    let arr = [...selectedKeys, ...checkedKeys]
-    if (info?.node?.children) {
-      arr = [...arr, ...selectedrecursion(info?.node?.children)]
-    }
+	  console.log(selectedKeys, info);
+	  var children = selectedrecursion(info.node.children);
+	  if(typeof(children) == 'undefined') children = []
+	  children.push(info.node.key);
+	  console.log('children', children);
+	  var arr = [];
+	  if(info.node.checked){
+		  var arr_ = checkedKeys;
+		  children.map(function(item, index){
+			  checkedKeys.map(function(item1, index1){
+				  if(item1 == item){
+					  arr_.splice(index1, 1);
+				  }
+			  });
+		  })
+		  arr = arr_
+	  }else{
+		  arr = [...children, ...checkedKeys];
+	  }
+	  console.log('arr', arr);
     setCheckedKeys(arr)
     getKnowledge(gradeId, arr, questionCategoryscrure, level, topageValue)
   }
@@ -328,18 +344,7 @@ function Knowledge(props) {
             })}
             {homeInfo?.teacher?.get_subject?.title} · 知识点
           </div>
-          <Tree
-            checkable
-            showLine
-            onExpand={onExpand}
-            defaultExpandedKeys={expandedKeys}
-            expandedKeys={expandedKeys}
-            autoExpandParent={autoExpandParent}
-            onCheck={onCheck}
-            checkedKeys={checkedKeys}
-            onSelect={onSelect}
-            treeData={knowledgeArrNewView(Knowledge?.knowledge)}
-          />
+          {Knowledge.knowledge&&Knowledge.knowledge.length>0 ? <Tree checkable showLine onExpand={onExpand} defaultExpandedKeys={expandedKeys} onCheck={onCheck} checkedKeys={checkedKeys} onSelect={onSelect} treeData={knowledgeArrNewView(Knowledge?.knowledge)} /> : ''}
         </div>
         <div className="right_box">
           <div className="top_box">
