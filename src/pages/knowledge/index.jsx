@@ -5,7 +5,7 @@ import {
   getKnowledgeExercises,
   addExamBasket,
   delExamBasket,
-  getExerciseAnswer
+  getExerciseAnswer,
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -83,14 +83,13 @@ function Knowledge(props) {
         item['isanswer'] = false
       })
       let arr = data?.knowledge?.map((item) => item?.id.toString())
-      console.log(arr)
       setExpandedKeys(arr)
       setKnowledge(data)
       setgradeId(data?.grade_id)
     }
   }
 
-  const onSetAnswer =async (idx, id) => {
+  const onSetAnswer = async (idx, id) => {
     let basedDataCopy = { ...Knowledge }
     let basedRoot = basedDataCopy.exercisesLists.data[idx]
     if (!basedRoot.isanswer) {
@@ -223,26 +222,26 @@ function Knowledge(props) {
   }
 
   const onSelect = (selectedKeys, info) => {
-	  console.log(selectedKeys, info);
-	  var children = selectedrecursion(info.node.children);
-	  if(typeof(children) == 'undefined') children = []
-	  children.push(info.node.key);
-	  console.log('children', children);
-	  var arr = [];
-	  if(info.node.checked){
-		  var arr_ = checkedKeys;
-		  children.map(function(item, index){
-			  checkedKeys.map(function(item1, index1){
-				  if(item1 == item){
-					  arr_.splice(index1, 1);
-				  }
-			  });
-		  })
-		  arr = arr_
-	  }else{
-		  arr = [...children, ...checkedKeys];
-	  }
-	  console.log('arr', arr);
+    console.log(selectedKeys, info)
+    var children = selectedrecursion(info.node.children)
+    if (typeof children == 'undefined') children = []
+    children.push(info.node.key)
+    console.log('children', children)
+    var arr = []
+    if (info.node.checked) {
+      var arr_ = checkedKeys
+      children.map(function (item, index) {
+        checkedKeys.map(function (item1, index1) {
+          if (item1 == item) {
+            arr_.splice(index1, 1)
+          }
+        })
+      })
+      arr = arr_
+    } else {
+      arr = [...children, ...checkedKeys]
+    }
+    console.log('arr', arr)
     setCheckedKeys(arr)
     getKnowledge(gradeId, arr, questionCategoryscrure, level, topageValue)
   }
@@ -344,7 +343,20 @@ function Knowledge(props) {
             })}
             {homeInfo?.teacher?.get_subject?.title} · 知识点
           </div>
-          {Knowledge.knowledge&&Knowledge.knowledge.length>0 ? <Tree checkable showLine onExpand={onExpand} defaultExpandedKeys={expandedKeys} onCheck={onCheck} checkedKeys={checkedKeys} onSelect={onSelect} treeData={knowledgeArrNewView(Knowledge?.knowledge)} /> : ''}
+          {Knowledge.knowledge && Knowledge.knowledge.length > 0 ? (
+            <Tree
+              checkable
+              showLine
+              onExpand={onExpand}
+              defaultExpandedKeys={expandedKeys}
+              onCheck={onCheck}
+              checkedKeys={checkedKeys}
+              onSelect={onSelect}
+              treeData={knowledgeArrNewView(Knowledge?.knowledge)}
+            />
+          ) : (
+            ''
+          )}
         </div>
         <div className="right_box">
           <div className="top_box">
@@ -504,7 +516,10 @@ function Knowledge(props) {
                       {/* <div className="counts">组卷次数：0</div> */}
                     </div>
                     <div className="right_box_warp">
-                      <div className="answers" onClick={() => onSetAnswer(idx,item?.id)}>
+                      <div
+                        className="answers"
+                        onClick={() => onSetAnswer(idx, item?.id)}
+                      >
                         <img
                           className="View"
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
@@ -580,8 +595,6 @@ function Knowledge(props) {
         {/* 悬浮框 */}
         <AI_floatBox props={props} />
       </div>
-    
-    
     </div>
   )
 }

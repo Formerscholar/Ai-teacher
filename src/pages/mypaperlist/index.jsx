@@ -340,9 +340,9 @@ function Mypaperlist(props) {
                 >
                   <span className="context">
                     <span className="span">DOC</span>
-                    <span className="tip">
+                    {/* <span className="tip">
                       doc格式文档，公式为图片，不可编辑公式
-                    </span>
+                    </span> */}
                   </span>
                 </Radio>
                 <Radio
@@ -352,7 +352,7 @@ function Mypaperlist(props) {
                 >
                   <span className="context">
                     <span className="span">DOCX</span>
-                    <span className="tip">docx格式文档，可编辑公式</span>
+                    {/* <span className="tip">docx格式文档，可编辑公式</span> */}
                   </span>
                 </Radio>
               </Radio.Group>

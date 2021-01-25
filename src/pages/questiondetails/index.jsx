@@ -236,112 +236,119 @@ function Questiondetails(props) {
           </div>
         </div>
         <div className="body_box">
-          {ExercisesData?.exerciseList?.data?.map((item, idx) => {
-            return (
-              <div className="items" key={item?.id}>
-                <div className="top_title">
-                  <div className="info_class">
-                    <div className="difficulty">
-                      难度：<span>{homeInfo?.teacher?.level[item?.level]}</span>
+          {ExercisesData?.exerciseList?.data?.length === 0 || ExercisesData?.exerciseList?.length === 0 ? (
+            <div style={{ textAlign: 'center', color: '#E50304' }}>
+              没有找到同类型题目
+            </div>
+          ) : (
+            ExercisesData?.exerciseList?.data?.map((item, idx) => {
+              return (
+                <div className="items" key={item?.id}>
+                  <div className="top_title">
+                    <div className="info_class">
+                      <div className="difficulty">
+                        难度：
+                        <span>{homeInfo?.teacher?.level[item?.level]}</span>
+                      </div>
+                      <div className="question">
+                        {/* 来源：邗江实验学校2019-2020年九年级上学期第一次月考试卷.doc */}
+                        题型：{item?.get_question_category?.title}
+                      </div>
                     </div>
-                    <div className="question">
-                      {/* 来源：邗江实验学校2019-2020年九年级上学期第一次月考试卷.doc */}
-                      题型：{item?.get_question_category?.title}
+                    {/* <img
+                      className="new_icon"
+                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/new_icon.png"
+                      alt="new_icon"
+                    /> */}
+                  </div>
+                  <div
+                    className="cet_body"
+                    dangerouslySetInnerHTML={{ __html: item?.content_all }}
+                  ></div>
+                  <div
+                    className="answerbox"
+                    style={{ display: item?.isanswer ? 'block' : 'none' }}
+                  >
+                    <div className="Tests">
+                      <span className="title">【考点】</span>
+                      <div
+                        className="body_txt"
+                        dangerouslySetInnerHTML={{
+                          __html: item?.knowName,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="answer">
+                      <span className="title">【答案】</span>
+                      <div
+                        className="body_txt"
+                        dangerouslySetInnerHTML={{
+                          __html: item?.answer,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="Parse">
+                      <span className="title">【解析】</span>
+                      <div
+                        className="body_txt"
+                        dangerouslySetInnerHTML={{
+                          __html: item?.analysis,
+                        }}
+                      ></div>
                     </div>
                   </div>
-                  {/* <img
-                    className="new_icon"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/new_icon.png"
-                    alt="new_icon"
-                  /> */}
-                </div>
-                <div
-                  className="cet_body"
-                  dangerouslySetInnerHTML={{ __html: item?.content_all }}
-                ></div>
-                <div
-                  className="answerbox"
-                  style={{ display: item?.isanswer ? 'block' : 'none' }}
-                >
-                  <div className="Tests">
-                    <span className="title">【考点】</span>
-                    <div
-                      className="body_txt"
-                      dangerouslySetInnerHTML={{
-                        __html: item?.knowName,
-                      }}
-                    ></div>
-                  </div>
-                  <div className="answer">
-                    <span className="title">【答案】</span>
-                    <div
-                      className="body_txt"
-                      dangerouslySetInnerHTML={{
-                        __html: item?.answer,
-                      }}
-                    ></div>
-                  </div>
-                  <div className="Parse">
-                    <span className="title">【解析】</span>
-                    <div
-                      className="body_txt"
-                      dangerouslySetInnerHTML={{
-                        __html: item?.analysis,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-                <div className="bot_btns">
-                  <div className="left_box_warp">
-                    <div className="update_time">
-                      更新时间：{setTimerType(item?.update_time * 1000)}
+                  <div className="bot_btns">
+                    <div className="left_box_warp">
+                      <div className="update_time">
+                        更新时间：{setTimerType(item?.update_time * 1000)}
+                      </div>
+                      {/* <div className="counts">组卷次数：0</div> */}
                     </div>
-                    {/* <div className="counts">组卷次数：0</div> */}
-                  </div>
-                  <div className="right_box_warp">
-                    <div className="answers" onClick={() => onSetAnswer(idx)}>
-                      <img
-                        className="View"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
-                        alt="View"
-                      />
-                      <span>查看答案</span>
-                    </div>
-                    <div
-                      className="details"
-                      onClick={() => answerClick(item?.id)}
-                    >
-                      <img
-                        className="answer"
-                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/answer.png"
-                        alt="answer"
-                      />
-                      <span>试题详情</span>
-                    </div>
-                    {item?.is_basket ? (
-                      <Button
-                        className="sub"
-                        size="small"
-                        variant="contained"
-                        onClick={() => removeClick(item?.id)}
+                    <div className="right_box_warp">
+                      <div className="answers" onClick={() => onSetAnswer(idx)}>
+                        <img
+                          className="View"
+                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
+                          alt="View"
+                        />
+                        <span>查看答案</span>
+                      </div>
+                      <div
+                        className="details"
+                        onClick={() => answerClick(item?.id)}
                       >
-                        - 移除
-                      </Button>
-                    ) : (
-                      <Button
-                        className="add"
-                        size="small"
-                        variant="contained"
-                        onClick={() => compositionClick(item?.id, item?.type)}
-                      >
-                        + 组卷
-                      </Button>
-                    )}
+                        <img
+                          className="answer"
+                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/answer.png"
+                          alt="answer"
+                        />
+                        <span>试题详情</span>
+                      </div>
+                      {item?.is_basket ? (
+                        <Button
+                          className="sub"
+                          size="small"
+                          variant="contained"
+                          onClick={() => removeClick(item?.id)}
+                        >
+                          - 移除
+                        </Button>
+                      ) : (
+                        <Button
+                          className="add"
+                          size="small"
+                          variant="contained"
+                          onClick={() => compositionClick(item?.id, item?.type)}
+                        >
+                          + 组卷
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })
+          )}
         </div>
       </div>
       {/* 悬浮框 */}

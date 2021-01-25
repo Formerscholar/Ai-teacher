@@ -5,7 +5,7 @@ import {
   getChapterExercises,
   addExamBasket,
   delExamBasket,
-  getExerciseAnswer
+  getExerciseAnswer,
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -125,12 +125,14 @@ function Chapter(props) {
       data?.exercisesLists?.data?.map((item) => {
         item['isanswer'] = false
       })
+      let arr = data?.chapter?.map((item) => item?.id.toString())
+      setExpandedKeys(arr)
       setKnowledge(data)
       setgradeId(data?.grade_id)
     }
   }
 
-  const onSetAnswer =async (idx, id) => {
+  const onSetAnswer = async (idx, id) => {
     let basedDataCopy = { ...Knowledge }
     let basedRoot = basedDataCopy.exercisesLists.data[idx]
     if (!basedRoot.isanswer) {
@@ -286,7 +288,7 @@ function Chapter(props) {
   const onExpand = (expandedKeys) => {
     console.log('onExpand', expandedKeys)
     setExpandedKeys(expandedKeys)
-    setAutoExpandParent(false)
+    // setAutoExpandParent(false)
   }
 
   const onCheck = (checkedKeys) => {
@@ -305,9 +307,26 @@ function Chapter(props) {
   }
 
   const onSelect = (selectedKeys, info) => {
-    let arr = [...selectedKeys, ...checkedKeys]
-    if (info?.node?.children) {
-      arr = [...arr, ...selectedrecursion(info?.node?.children)]
+    // let arr = [...selectedKeys, ...checkedKeys]
+    // if (info?.node?.children) {
+    //   arr = [...arr, ...selectedrecursion(info?.node?.children)]
+    // }
+    var children = selectedrecursion(info.node.children)
+    if (typeof children == 'undefined') children = []
+    children.push(info.node.key)
+    var arr = []
+    if (info.node.checked) {
+      var arr_ = checkedKeys
+      children.map(function (item, index) {
+        checkedKeys.map(function (item1, index1) {
+          if (item1 == item) {
+            arr_.splice(index1, 1)
+          }
+        })
+      })
+      arr = arr_
+    } else {
+      arr = [...children, ...checkedKeys]
     }
     setCheckedKeys(arr)
     getKnowledge(
@@ -446,18 +465,20 @@ function Chapter(props) {
             })}
             {Knowledge?.semester && semesterTitle(Knowledge?.semester)}
           </div>
-          <Tree
-            checkable
-            showLine
-            defaultExpandAll
-            onExpand={onExpand}
-            expandedKeys={expandedKeys}
-            autoExpandParent={autoExpandParent}
-            onCheck={onCheck}
-            checkedKeys={checkedKeys}
-            onSelect={onSelect}
-            treeData={knowledgeArrNewView(Knowledge?.chapter)}
-          />
+          {Knowledge.chapter && Knowledge.chapter.length > 0 ? (
+            <Tree
+              checkable
+              showLine
+              onExpand={onExpand}
+              defaultExpandedKeys={expandedKeys}
+              onCheck={onCheck}
+              checkedKeys={checkedKeys}
+              onSelect={onSelect}
+              treeData={knowledgeArrNewView(Knowledge?.chapter)}
+            />
+          ) : (
+            ''
+          )}
           <div className="hover_select">
             {/* 版本 */}
             <div className="versions">
@@ -643,7 +664,10 @@ function Chapter(props) {
                       {/* <div className="counts">组卷次数：0</div> */}
                     </div>
                     <div className="right_box_warp">
-                      <div className="answers" onClick={() => onSetAnswer(idx,item?.id)}>
+                      <div
+                        className="answers"
+                        onClick={() => onSetAnswer(idx, item?.id)}
+                      >
                         <img
                           className="View"
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
