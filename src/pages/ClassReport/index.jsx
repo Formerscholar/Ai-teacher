@@ -110,9 +110,9 @@ function ClassReport(props) {
       let series = []
       let newOptions = { ...options }
       data?.knowPointExercises?.map((item) => {
-        legend.push(item.title)
+        legend.push(item.title + ` (${item.count}道错题)`)
         series.push({
-          name: item.title,
+          name: item.title + ` (${item.count}道错题)`,
           value: item.count,
         })
       })

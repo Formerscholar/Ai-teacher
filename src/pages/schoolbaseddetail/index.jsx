@@ -176,7 +176,7 @@ function Schoolbaseddetail(props) {
                     </span>
                   </div>
                   <div className="question">
-                    题型：{item?.get_exercises?.get_question_category?.title}
+                    题型：{item?.get_exercises?.title}
                   </div>
                 </div>
               </div>
