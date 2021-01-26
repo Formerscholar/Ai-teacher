@@ -109,7 +109,6 @@ function Chapter(props) {
     page = 1,
     title = '',
     semester = '',
-    version_id = ''
   ) => {
     const { code, data, msg } = await getChapterExercises({
       grade_id,
@@ -119,7 +118,6 @@ function Chapter(props) {
       page,
       title,
       semester,
-      version_id,
     })
     if (code === 200) {
       data?.exercisesLists?.data?.map((item) => {
@@ -452,17 +450,8 @@ function Chapter(props) {
       <div className="Knowledge_box">
         <div className="left_box">
           <div className="title">
-            {Knowledge?.version?.map((item) => {
-              if (item?.id == Knowledge?.versionId) {
-                return item?.title
-              }
-            })}{' '}
+            {Knowledge?.version?.get_version.title}{' '}
             ·{' '}
-            {Knowledge?.grades?.map((item) => {
-              if (item?.id == Knowledge?.gradeId) {
-                return item?.name
-              }
-            })}
             {Knowledge?.semester && semesterTitle(Knowledge?.semester)}
           </div>
           {Knowledge.chapter && Knowledge.chapter.length > 0 ? (
@@ -480,23 +469,6 @@ function Chapter(props) {
             ''
           )}
           <div className="hover_select">
-            {/* 版本 */}
-            <div className="versions">
-              <div className="title_box">版本:</div>
-              <div className="list">
-                {Knowledge?.version?.map((item, idx) => {
-                  return (
-                    <div
-                      className={currentVer == idx ? 'items selected' : 'items'}
-                      key={idx}
-                      onClick={() => VerClick(idx, item?.id)}
-                    >
-                      <span>{item?.title}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
             {/* 学期 */}
             <div className="semester">
               <div className="title_box">学期:</div>
