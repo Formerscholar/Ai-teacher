@@ -159,17 +159,18 @@ function Login(props) {
                 />
               </div>
               <div className="Verification">
-                <span>验证码</span>
+                <span>密码</span>
                 <Input
                   className="userinput"
-                  placeholder="请输入验证码"
+                  placeholder="请输入密码"
                   onInput={codeText}
-                  suffix={
+                  type="password"
+                />
+                {/* suffix={
                     <button disabled={btndis} onClick={openCode}>
                       {!btndis ? '获取验证码' : `再次获取(${outtime})`}
                     </button>
-                  }
-                />
+                  } */}
               </div>
               <div className="btns">
                 <Button

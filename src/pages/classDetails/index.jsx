@@ -216,6 +216,7 @@ function ClassDetails(props) {
       <div className="student_list">
         <div className="title_text">
           <span>学生姓名</span>
+          <span>VIP过期时间</span>
           <span>已收集错题数</span>
           <span>更新错题时间</span>
           <span>操作</span>
@@ -240,6 +241,9 @@ function ClassDetails(props) {
                   ) : (
                     <></>
                   )}
+                </div>
+                <div className="end_time flex_box">
+                  {setTimerType(item.vip_time * 1000)}
                 </div>
                 <div className="subject_box flex_box">
                   <span>{item?.errorCount}</span>
