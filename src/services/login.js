@@ -24,3 +24,19 @@ export function getLogout(params) {
     params
   })
 }
+
+export function getLoginByPwd(params) {
+  return request({
+    url: '/loginByPwd',
+    method: 'GET',
+    params
+  })
+}
+
+export function getEditPwd(params) {
+  return request({
+    url: '/editPwd',
+    method: 'GET',
+    params
+  })
+}

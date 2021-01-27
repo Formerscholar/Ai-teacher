@@ -3,16 +3,21 @@ import './index.less'
 import { Button, message, Input } from 'antd'
 import { phoneRegular, appid, callBackUrl } from '@/conf'
 import { setCookie, Trim } from '@/utils'
-import { getLoginCode, getLogin } from '@/services/login'
+import {
+  getLoginCode,
+  getLogin,
+  getLoginByPwd,
+  getEditPwd,
+} from '@/services/login'
 
 function Login(props) {
-  const [isWechat, setWechat] = useState(false)
-  const [isSMS, setSMS] = useState(true)
+  const [isWechat, setWechat] = useState(0) // 0=微信登录 1=账号密码  2=忘记密码
   const [btndis, setbtndis] = useState(false)
   const [btnlogin, setbtnlogin] = useState(true)
   const [outtime, setOutTime] = useState('60')
   const [Phone, setPhone] = useState('')
   const [Code, setCode] = useState('')
+  const [Pass, setPass] = useState('')
 
   let OutTimeinval = null
 
@@ -45,6 +50,12 @@ function Login(props) {
     setbtnlogin(false)
   }
 
+  const passText = (data) => {
+    const { value } = data.target
+    setPass(Trim(value))
+    setbtnlogin(false)
+  }
+
   const openCode = async () => {
     if (phoneRegular.test(Phone)) {
       const { code, msg } = await getLoginCode({
@@ -72,10 +83,9 @@ function Login(props) {
   }
 
   const handleClick = () => {
-    if (isWechat) {
-      setWechat(!isWechat)
+    if (isWechat === 1) {
+      setWechat(0)
       setTimeout(() => {
-        setSMS(!isSMS)
         window.WxLogin({
           self_redirect: true,
           id: 'login_container',
@@ -88,17 +98,16 @@ function Login(props) {
         })
       }, 300)
     } else {
-      setSMS(!isSMS)
       setTimeout(() => {
-        setWechat(!isWechat)
+        setWechat(1)
       }, 300)
     }
   }
 
   const clickLogin = async () => {
-    const { code, data, msg } = await getLogin({
+    const { code, data, msg } = await getLoginByPwd({
       mobile: Phone,
-      code: Code,
+      pwd: Pass,
     })
     if (code == 200) {
       // setCookie('id', data.id)
@@ -108,6 +117,30 @@ function Login(props) {
       message.error(msg)
     }
   }
+
+  const changeLogin = async () => {
+    const { code, msg } = await getEditPwd({
+      mobile: Phone,
+      pwd: Pass,
+      code: Code,
+    })
+    if (code == 200) {
+      message.success(msg)
+      setTimeout(() => {
+        setWechat(1)
+      }, 300)
+    } else {
+      message.error(msg)
+    }
+  }
+
+  const changePassword = () => {
+    console.log('changePassword')
+    setTimeout(() => {
+      setWechat(2)
+    }, 300)
+  }
+
   return (
     <div id="Login">
       <div className="content">
@@ -119,7 +152,7 @@ function Login(props) {
         </div>
         <div className="right_box">
           <div className="right_imgs" onClick={handleClick}>
-            {isWechat ? (
+            {isWechat === 0 ? (
               <>
                 <div className="WeChat">微信扫码登录</div>
                 <img
@@ -128,10 +161,7 @@ function Login(props) {
                   alt="QRcode"
                 />
               </>
-            ) : (
-              ''
-            )}
-            {isSMS ? (
+            ) : isWechat === 1 ? (
               <>
                 <img
                   src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/SMSlogin.png"
@@ -147,7 +177,7 @@ function Login(props) {
               ''
             )}
           </div>
-          {isWechat ? (
+          {isWechat === 1 ? (
             <div className="form_box">
               <div className="title">老师后台管理系统</div>
               <div className="phone">
@@ -163,14 +193,12 @@ function Login(props) {
                 <Input
                   className="userinput"
                   placeholder="请输入密码"
-                  onInput={codeText}
+                  onInput={passText}
                   type="password"
                 />
-                {/* suffix={
-                    <button disabled={btndis} onClick={openCode}>
-                      {!btndis ? '获取验证码' : `再次获取(${outtime})`}
-                    </button>
-                  } */}
+              </div>
+              <div className="changePassword" onClick={changePassword}>
+                忘记密码?
               </div>
               <div className="btns">
                 <Button
@@ -184,10 +212,7 @@ function Login(props) {
               </div>
               <div className="tip">客服电话:0514-82885886</div>
             </div>
-          ) : (
-            ''
-          )}
-          {isSMS ? (
+          ) : isWechat === 0 ? (
             <div className="wechatForm">
               <div className="title_box">
                 <img
@@ -208,7 +233,50 @@ function Login(props) {
               <div className="footer_box">打开微信,扫一扫登录</div>
             </div>
           ) : (
-            ''
+            <div className="form_box">
+              <div className="title">修改密码</div>
+              <div className="phone">
+                <span>手机号</span>
+                <Input
+                  className="userinput"
+                  placeholder="请输入手机号"
+                  onInput={phoneText}
+                />
+              </div>
+              <div className="Verification">
+                <span>新密码</span>
+                <Input
+                  className="userinput"
+                  placeholder="请输入密码"
+                  onInput={passText}
+                  type="password"
+                />
+              </div>
+              <div className="Verification">
+                <span>验证码</span>
+                <Input
+                  className="userinput"
+                  placeholder="请输入验证码"
+                  onInput={codeText}
+                  suffix={
+                    <button disabled={btndis} onClick={openCode}>
+                      {!btndis ? '获取验证码' : `再次获取(${outtime})`}
+                    </button>
+                  }
+                />
+              </div>
+              <div className="btns">
+                <Button
+                  variant="contained"
+                  disabled={btnlogin}
+                  className="login"
+                  onClick={changeLogin}
+                >
+                  修改
+                </Button>
+              </div>
+              <div className="tip">客服电话:0514-82885886</div>
+            </div>
           )}
         </div>
       </div>
