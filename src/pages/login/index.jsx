@@ -244,15 +244,6 @@ function Login(props) {
                 />
               </div>
               <div className="Verification">
-                <span>新密码</span>
-                <Input
-                  className="userinput"
-                  placeholder="请输入密码"
-                  onInput={passText}
-                  type="password"
-                />
-              </div>
-              <div className="Verification">
                 <span>验证码</span>
                 <Input
                   className="userinput"
@@ -263,6 +254,15 @@ function Login(props) {
                       {!btndis ? '获取验证码' : `再次获取(${outtime})`}
                     </button>
                   }
+                />
+              </div>
+              <div className="Verification">
+                <span>新密码</span>
+                <Input
+                  className="userinput"
+                  placeholder="请输入密码"
+                  onInput={passText}
+                  type="password"
                 />
               </div>
               <div className="btns">
