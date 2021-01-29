@@ -12,6 +12,7 @@ import {
 import { splitSearch, getRandomColor } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
 import { downDOCURL } from '@/conf'
+import MathJax from 'react-mathjax-preview'
 
 const typeArr = ['普通答题卡', '标准答题卡', '密集答题卡']
 
@@ -189,11 +190,12 @@ function Mypaperdetail(props) {
                   <span className="title_warp">
                     {item?.title}.<div className="span">({item?.score})</div>
                   </span>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: item?.get_one_exercises?.content_all,
+                  <MathJax
+                    math={item?.get_one_exercises?.content_all}
+                    config={{
+                      loader: { load: ['input/tex', 'output/chtml'] },
                     }}
-                  ></span>
+                  />
                 </div>
               )
             }

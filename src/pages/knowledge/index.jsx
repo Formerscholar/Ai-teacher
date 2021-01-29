@@ -16,6 +16,8 @@ import {
 } from '@/store/actionType'
 import { setTimerType } from '@/utils'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
+import MathJax from 'react-mathjax-preview'
+import AI_topic from 'components/AI_topic/AI_topic'
 
 function Knowledge(props) {
   const {
@@ -40,7 +42,14 @@ function Knowledge(props) {
   const [searchData, setsearchData] = useState('')
 
   useEffect(() => {
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, Listpage)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      Listpage,
+      searchData
+    )
     return () => {}
   }, [volumeTopicCount])
 
@@ -136,7 +145,14 @@ function Knowledge(props) {
   const gradeClick = (id, index) => {
     setgradescrure(index)
     setgradeId(id)
-    getKnowledge(id, checkedKeys, questionCategoryscrure, level, Listpage)
+    getKnowledge(
+      id,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      Listpage,
+      searchData
+    )
   }
 
   /**
@@ -146,7 +162,14 @@ function Knowledge(props) {
   const levelClick = (index) => {
     setlevelscrure(index)
     setlevel(index)
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, index, Listpage)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      index,
+      Listpage,
+      searchData
+    )
   }
   /**
    *  题类选择事件
@@ -156,7 +179,7 @@ function Knowledge(props) {
   const questionCategoryClick = (id, index) => {
     setquestionCategoryscrure(id)
     setquestionCategory(index)
-    getKnowledge(gradeId, checkedKeys, id, level, Listpage)
+    getKnowledge(gradeId, checkedKeys, id, level, Listpage, searchData)
   }
 
   /**
@@ -167,7 +190,14 @@ function Knowledge(props) {
    */
   const PaginationChange = (page, pageSize) => {
     setListpage(page * 1)
-    getKnowledge(gradeId, checkedKeys, questionCategoryscrure, level, page)
+    getKnowledge(
+      gradeId,
+      checkedKeys,
+      questionCategoryscrure,
+      level,
+      page,
+      searchData
+    )
   }
 
   /**
@@ -189,7 +219,8 @@ function Knowledge(props) {
       checkedKeys,
       questionCategoryscrure,
       level,
-      topageValue
+      topageValue,
+      searchData
     )
     setListpage(topageValue * 1)
   }
@@ -217,7 +248,8 @@ function Knowledge(props) {
       checkedKeys,
       questionCategoryscrure,
       level,
-      topageValue
+      topageValue,
+      searchData
     )
   }
 
@@ -243,7 +275,14 @@ function Knowledge(props) {
     }
     console.log('arr', arr)
     setCheckedKeys(arr)
-    getKnowledge(gradeId, arr, questionCategoryscrure, level, topageValue)
+    getKnowledge(
+      gradeId,
+      arr,
+      questionCategoryscrure,
+      level,
+      topageValue,
+      searchData
+    )
   }
 
   const selectedrecursion = (children) => {
@@ -455,111 +494,24 @@ function Knowledge(props) {
             {/* Knowledge?.exercisesLists?.data */}
             {Knowledge?.exercisesLists?.data?.map((item, idx) => {
               return (
-                <div className="items" key={item?.id}>
-                  <div className="top_title">
-                    <div className="info_class">
-                      <div className="difficulty">
-                        难度：<span>{Knowledge?.level[item?.level]}</span>
-                      </div>
-                      <div className="question">
-                        {/* 来源：邗江实验学校2019-2020年九年级上学期第一次月考试卷.doc */}
-                        题型：{item?.get_question_category?.title}
-                      </div>
-                    </div>
-                    {/* <img
-                    className="new_icon"
-                    src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/new_icon.png"
-                    alt="new_icon"
-                  /> */}
-                  </div>
-                  <div
-                    className="cet_body"
-                    dangerouslySetInnerHTML={{ __html: item?.content_all }}
-                  ></div>
-                  <div
-                    className="answerbox"
-                    style={{ display: item?.isanswer ? 'block' : 'none' }}
-                  >
-                    <div className="Tests">
-                      <span className="title">【考点】</span>
-                      <div
-                        className="body_txt"
-                        dangerouslySetInnerHTML={{
-                          __html: item?.knowName,
-                        }}
-                      ></div>
-                    </div>
-                    <div className="answer">
-                      <span className="title">【答案】</span>
-                      <div
-                        className="body_txt"
-                        dangerouslySetInnerHTML={{
-                          __html: item?.answer,
-                        }}
-                      ></div>
-                    </div>
-                    <div className="Parse">
-                      <span className="title">【解析】</span>
-                      <div
-                        className="body_txt"
-                        dangerouslySetInnerHTML={{
-                          __html: item?.analysis,
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="bot_btns">
-                    <div className="left_box_warp">
-                      <div className="update_time">
-                        更新时间：{setTimerType(item?.update_time * 1000)}
-                      </div>
-                      {/* <div className="counts">组卷次数：0</div> */}
-                    </div>
-                    <div className="right_box_warp">
-                      <div
-                        className="answers"
-                        onClick={() => onSetAnswer(idx, item?.id)}
-                      >
-                        <img
-                          className="View"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
-                          alt="View"
-                        />
-                        <span>查看答案</span>
-                      </div>
-                      <div
-                        className="details"
-                        onClick={() => answerClick(item?.id)}
-                      >
-                        <img
-                          className="answer"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/answer.png"
-                          alt="answer"
-                        />
-                        <span>试题详情</span>
-                      </div>
-                      {item?.is_basket ? (
-                        <Button
-                          className="sub"
-                          size="small"
-                          variant="contained"
-                          onClick={() => removeClick(item?.id)}
-                        >
-                          - 移除
-                        </Button>
-                      ) : (
-                        <Button
-                          className="add"
-                          size="small"
-                          variant="contained"
-                          onClick={() => compositionClick(item?.id, item?.type)}
-                        >
-                          + 组卷
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <AI_topic
+                  key={item?.id}
+                  level={item?.level}
+                  exercises_title={item?.get_question_category?.title}
+                  content_all={item?.content_all}
+                  isanswer={item?.isanswer}
+                  knowName={item?.knowName}
+                  answer={item?.answer}
+                  analysis={item?.analysis}
+                  update_time={item?.update_time}
+                  is_basket={item?.is_basket}
+                  onSetAnswer={() => onSetAnswer(idx, item?.id)}
+                  answerClick={() => answerClick(item?.id)}
+                  removeClick={() => removeClick(item?.id)}
+                  compositionClick={() =>
+                    compositionClick(item?.id, item?.type)
+                  }
+                />
               )
             })}
 

@@ -16,6 +16,7 @@ import {
 } from '@/store/actionType'
 import { setTimerType } from '@/utils'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
+import MathJax from 'react-mathjax-preview'
 
 function Chapter(props) {
   const {
@@ -108,7 +109,7 @@ function Chapter(props) {
     level = 0,
     page = 1,
     title = '',
-    semester = '',
+    semester = ''
   ) => {
     const { code, data, msg } = await getChapterExercises({
       grade_id,
@@ -450,8 +451,7 @@ function Chapter(props) {
       <div className="Knowledge_box">
         <div className="left_box">
           <div className="title">
-            {Knowledge?.version?.get_version.title}{' '}
-            ·{' '}
+            {Knowledge?.version?.get_version.title} ·{' '}
             {Knowledge?.semester && semesterTitle(Knowledge?.semester)}
           </div>
           {Knowledge.chapter && Knowledge.chapter.length > 0 ? (
@@ -592,10 +592,14 @@ function Chapter(props) {
                     alt="new_icon"
                   /> */}
                   </div>
-                  <div
-                    className="cet_body"
-                    dangerouslySetInnerHTML={{ __html: item?.content_all }}
-                  ></div>
+                  <div className="cet_body">
+                    <MathJax
+                      math={item?.content_all}
+                      config={{
+                        loader: { load: ['input/tex', 'output/chtml'] },
+                      }}
+                    />
+                  </div>
                   <div
                     className="answerbox"
                     style={{ display: item?.isanswer ? 'block' : 'none' }}
@@ -611,21 +615,27 @@ function Chapter(props) {
                     </div>
                     <div className="answer">
                       <span className="title">【答案】</span>
-                      <div
-                        className="body_txt"
-                        dangerouslySetInnerHTML={{
-                          __html: item?.answer,
-                        }}
-                      ></div>
+                      <div className="body_txt">
+                        <MathJax
+                          math={item?.answer}
+                          config={{
+                            loader: { load: ['input/tex', 'output/chtml'] },
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className="Parse">
                       <span className="title">【解析】</span>
                       <div
                         className="body_txt"
-                        dangerouslySetInnerHTML={{
-                          __html: item?.analysis,
-                        }}
-                      ></div>
+                      >
+                        <MathJax
+                          math={item?.analysis}
+                          config={{
+                            loader: { load: ['input/tex', 'output/chtml'] },
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="bot_btns">

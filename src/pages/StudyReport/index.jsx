@@ -21,6 +21,7 @@ import {
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 import moment from 'moment'
+import MathJax from 'react-mathjax-preview'
 
 const { RangePicker } = DatePicker
 
@@ -344,12 +345,14 @@ function StudyReport(props) {
                   alt="new_icon"
                 /> */}
               </div>
-              <div
-                className="cet_body"
-                dangerouslySetInnerHTML={{
-                  __html: item?.get_exercises?.content_all,
-                }}
-              ></div>
+              <div className="cet_body">
+                <MathJax
+                  math={item?.get_exercises?.content_all}
+                  config={{
+                    loader: { load: ['input/tex', 'output/chtml'] },
+                  }}
+                />
+              </div>
               <div
                 className="answerbox"
                 style={{ display: item?.isanswer ? 'block' : 'none' }}
@@ -365,21 +368,25 @@ function StudyReport(props) {
                 </div>
                 <div className="answer">
                   <span className="title">【答案】</span>
-                  <div
-                    className="body_txt"
-                    dangerouslySetInnerHTML={{
-                      __html: item?.get_exercises?.answer,
-                    }}
-                  ></div>
+                  <div className="body_txt">
+                    <MathJax
+                      math={item?.get_exercises?.answer}
+                      config={{
+                        loader: { load: ['input/tex', 'output/chtml'] },
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="Parse">
                   <span className="title">【解析】</span>
-                  <div
-                    className="body_txt"
-                    dangerouslySetInnerHTML={{
-                      __html: item?.get_exercises?.analysis,
-                    }}
-                  ></div>
+                  <div className="body_txt">
+                    <MathJax
+                      math={item?.get_exercises?.analysis}
+                      config={{
+                        loader: { load: ['input/tex', 'output/chtml'] },
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="bot_btns">

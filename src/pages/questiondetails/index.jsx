@@ -15,6 +15,7 @@ import {
   SET_TOPIC,
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
+import MathJax from 'react-mathjax-preview'
 
 function Questiondetails(props) {
   const {
@@ -144,12 +145,14 @@ function Questiondetails(props) {
       </Breadcrumb>
       <div className="content_body">
         <div className="bor_warp">
-          <div
-            className="content_all"
-            dangerouslySetInnerHTML={{
-              __html: ExercisesData?.exercise?.content_all,
-            }}
-          ></div>
+          <div className="content_all">
+            <MathJax
+              math={ExercisesData?.exercise?.content_all}
+              config={{
+                loader: { load: ['input/tex', 'output/chtml'] },
+              }}
+            />
+          </div>
           <div className="Tests">
             <span className="title">【考点】</span>
             <div
@@ -163,19 +166,27 @@ function Questiondetails(props) {
             <span className="title">【答案】</span>
             <div
               className="body_txt"
-              dangerouslySetInnerHTML={{
-                __html: ExercisesData?.exercise?.answer,
-              }}
-            ></div>
+            >
+              <MathJax
+                      math={ExercisesData?.exercise?.answer}
+                      config={{
+                        loader: { load: ['input/tex', 'output/chtml'] },
+                      }}
+                    />
+            </div>
           </div>
           <div className="Parse">
             <span className="title">【解析】</span>
             <div
               className="body_txt"
-              dangerouslySetInnerHTML={{
-                __html: ExercisesData?.exercise?.analysis,
-              }}
-            ></div>
+            >
+              <MathJax
+                      math={ExercisesData?.exercise?.analysis}
+                      config={{
+                        loader: { load: ['input/tex', 'output/chtml'] },
+                      }}
+                    />
+            </div>
           </div>
           <div className="bot_warp">
             <div className="left_box">
@@ -236,7 +247,7 @@ function Questiondetails(props) {
           </div>
         </div>
         <div className="body_box">
-          {ExercisesData?.exerciseList?.data?.length === 0 || ExercisesData?.exerciseList?.length === 0 ? (
+          {ExercisesData?.exerciseList?.data?.length === 0 ? (
             <div style={{ textAlign: 'center', color: '#E50304' }}>
               没有找到同类型题目
             </div>
@@ -261,10 +272,14 @@ function Questiondetails(props) {
                       alt="new_icon"
                     /> */}
                   </div>
-                  <div
-                    className="cet_body"
-                    dangerouslySetInnerHTML={{ __html: item?.content_all }}
-                  ></div>
+                  <div className="cet_body">
+                    <MathJax
+                      math={item?.content_all}
+                      config={{
+                        loader: { load: ['input/tex', 'output/chtml'] },
+                      }}
+                    />
+                  </div>
                   <div
                     className="answerbox"
                     style={{ display: item?.isanswer ? 'block' : 'none' }}
@@ -280,21 +295,25 @@ function Questiondetails(props) {
                     </div>
                     <div className="answer">
                       <span className="title">【答案】</span>
-                      <div
-                        className="body_txt"
-                        dangerouslySetInnerHTML={{
-                          __html: item?.answer,
-                        }}
-                      ></div>
+                      <div className="body_txt">
+                        <MathJax
+                          math={item?.answer}
+                          config={{
+                            loader: { load: ['input/tex', 'output/chtml'] },
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className="Parse">
                       <span className="title">【解析】</span>
-                      <div
-                        className="body_txt"
-                        dangerouslySetInnerHTML={{
-                          __html: item?.analysis,
-                        }}
-                      ></div>
+                      <div className="body_txt">
+                        <MathJax
+                          math={item?.analysis}
+                          config={{
+                            loader: { load: ['input/tex', 'output/chtml'] },
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="bot_btns">
