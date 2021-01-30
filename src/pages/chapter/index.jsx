@@ -16,7 +16,7 @@ import {
 } from '@/store/actionType'
 import { setTimerType } from '@/utils'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
-import MathJax from 'react-mathjax-preview'
+
 import AI_topic from 'components/AI_topic/AI_topic'
 
 function Chapter(props) {

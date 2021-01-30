@@ -17,7 +17,7 @@ import {
   addExamBasket,
   delExamBasket,
 } from '@/services/knowledge'
-import MathJax from 'react-mathjax-preview'
+
 import AI_topic from 'components/AI_topic/AI_topic'
 
 function Schoolbaseddetail(props) {

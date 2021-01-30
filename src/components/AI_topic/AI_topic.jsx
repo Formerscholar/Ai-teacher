@@ -1,5 +1,4 @@
-import React, { memo } from 'react'
-import MathJax from 'react-mathjax-preview'
+import React, { memo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import {
   GET_CLASS_INFO,
@@ -29,6 +28,14 @@ function AI_topic(props) {
     compositionClick,
   } = props
 
+  useEffect(() => {
+    const MathJax = window.MathJax
+    if (MathJax) {
+      MathJax.typesetPromise && MathJax.typesetPromise()
+    }
+    return () => {}
+  }, [])
+
   return (
     <div id="AI_topic">
       <div className="top_title">
@@ -40,14 +47,12 @@ function AI_topic(props) {
           <div className="question">题型：{exercises_title}</div>
         </div>
       </div>
-      <div className="cet_body">
-        <MathJax
-          math={content_all}
-          config={{
-            loader: { load: ['input/tex', 'output/chtml'] },
-          }}
-        />
-      </div>
+      <div
+        className="cet_body"
+        dangerouslySetInnerHTML={{
+          __html: content_all,
+        }}
+      ></div>
       <div
         className="answerbox"
         style={{ display: isanswer ? 'block' : 'none' }}
@@ -63,25 +68,21 @@ function AI_topic(props) {
         </div>
         <div className="answer">
           <span className="title">【答案】</span>
-          <div className="body_txt">
-            <MathJax
-              math={answer}
-              config={{
-                loader: { load: ['input/tex', 'output/chtml'] },
-              }}
-            />
-          </div>
+          <div
+            className="body_txt"
+            dangerouslySetInnerHTML={{
+              __html: answer,
+            }}
+          ></div>
         </div>
         <div className="Parse">
           <span className="title">【解析】</span>
-          <div className="body_txt">
-            <MathJax
-              math={analysis}
-              config={{
-                loader: { load: ['input/tex', 'output/chtml'] },
-              }}
-            />
-          </div>
+          <div
+            className="body_txt"
+            dangerouslySetInnerHTML={{
+              __html: analysis,
+            }}
+          ></div>
         </div>
       </div>
       <div className="bot_btns">

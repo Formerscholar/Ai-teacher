@@ -45,7 +45,6 @@ function Datum(props) {
   const [btndis, setbtndis] = useState(false)
   let OutTimeinval = null
 
-
   useEffect(() => {
     getAllAreaList()
     getinformation()
@@ -53,7 +52,7 @@ function Datum(props) {
       clearInterval(OutTimeinval)
     }
   }, [])
-
+  
   const getinformation = async () => {
     const { code, data, msg } = await information()
     if (code === 200) {
@@ -95,7 +94,7 @@ function Datum(props) {
       message.error('邮箱格式不正确!重新输入!')
     }
   }
-  
+
   const verificationCode = async () => {
     if (phoneRegular.test(newPhone)) {
       setbtndis(true)
@@ -201,7 +200,6 @@ function Datum(props) {
     setOpen(true)
   }
 
-  
   const confirmClicks = async () => {
     const { code, msg } = await editMobile({
       mobile: newPhone,
@@ -297,7 +295,7 @@ function Datum(props) {
           <div className="lable">性别：</div>
           <Select
             className="itemSelect"
-            value={gender.toString()}
+            value={gender ? gender.toString() : 1}
             style={{ width: '38.07rem' }}
             onChange={genderChange}
           >

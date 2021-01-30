@@ -15,7 +15,7 @@ import {
   SET_TOPIC,
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
-import MathJax from 'react-mathjax-preview'
+
 import AI_topic from 'components/AI_topic/AI_topic'
 
 function Questiondetails(props) {
@@ -34,6 +34,13 @@ function Questiondetails(props) {
     getDetails(pages)
     return () => {}
   }, [volumeTopicCount])
+
+  useEffect(() => {
+    const MathJax = window.MathJax
+    if (MathJax) {
+      MathJax.typesetPromise && MathJax.typesetPromise()
+    }
+  })
 
   const onSetAnswer = (idx) => {
     let data = { ...ExercisesData }
@@ -146,14 +153,12 @@ function Questiondetails(props) {
       </Breadcrumb>
       <div className="content_body">
         <div className="bor_warp">
-          <div className="content_all">
-            <MathJax
-              math={ExercisesData?.exercise?.content_all}
-              config={{
-                loader: { load: ['input/tex', 'output/chtml'] },
-              }}
-            />
-          </div>
+          <div
+            className="content_all"
+            dangerouslySetInnerHTML={{
+              __html: ExercisesData?.exercise?.content_all,
+            }}
+          ></div>
           <div className="Tests">
             <span className="title">【考点】</span>
             <div
@@ -165,25 +170,21 @@ function Questiondetails(props) {
           </div>
           <div className="answer">
             <span className="title">【答案】</span>
-            <div className="body_txt">
-              <MathJax
-                math={ExercisesData?.exercise?.answer}
-                config={{
-                  loader: { load: ['input/tex', 'output/chtml'] },
-                }}
-              />
-            </div>
+            <div
+              className="body_txt"
+              dangerouslySetInnerHTML={{
+                __html: ExercisesData?.exercise?.answer,
+              }}
+            ></div>
           </div>
           <div className="Parse">
             <span className="title">【解析】</span>
-            <div className="body_txt">
-              <MathJax
-                math={ExercisesData?.exercise?.analysis}
-                config={{
-                  loader: { load: ['input/tex', 'output/chtml'] },
-                }}
-              />
-            </div>
+            <div
+              className="body_txt"
+              dangerouslySetInnerHTML={{
+                __html: ExercisesData?.exercise?.analysis,
+              }}
+            ></div>
           </div>
           <div className="bot_warp">
             <div className="left_box">

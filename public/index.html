@@ -72,6 +72,53 @@
         display: inline-block;
       }
     </style>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [
+            ['$', '$'],
+            ['\\(', '\\)'],
+          ],
+          displayMath: [
+            ['$$', '$$'],
+            ['\\[', '\\]'],
+          ],
+        },
+        options: {
+          enableMenu: false,
+          ignoreHtmlClass: 'tex2jax_ignore',
+          processHtmlClass: 'tex2jax_process',
+          skipHtmlTags: [
+            'script',
+            'noscript',
+            'style',
+            'textarea',
+            'code',
+            'a',
+          ],
+        },
+        chtml: {
+          scale: 1.2,
+        },
+        loader: {
+          load: ['[tex]/extpfeil', '[tex]/mhchem'],
+        },
+        startup: {
+          ready: () => {
+            window.MathJax.startup.defaultReady()
+            window.MathJax.startup.promise.then(() => {
+              console.log('MathJax initial typesetting complete')
+            })
+          },
+        },
+      }
+    </script>
+    <script
+      type="text/javascript"
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js"
+    ></script>
   </head>
   <body>
     <div id="root"></div>

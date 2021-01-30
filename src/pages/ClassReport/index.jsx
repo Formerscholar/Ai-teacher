@@ -21,7 +21,7 @@ import {
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 import moment from 'moment'
-import MathJax from 'react-mathjax-preview'
+
 import AI_topic from 'components/AI_topic/AI_topic'
 
 const { RangePicker } = DatePicker

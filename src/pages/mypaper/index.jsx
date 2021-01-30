@@ -30,7 +30,6 @@ import {
 } from '@/store/actionType'
 import T_modelbox from '@/common/T_modelbox'
 import { splitSearch, setTimerType } from '@/utils'
-import MathJax from 'react-mathjax-preview'
 
 const { TextArea } = Input
 
@@ -66,6 +65,13 @@ function Mypaper(props) {
     getPapers()
     return () => {}
   }, [volumeTopicCount])
+
+  useEffect(() => {
+    const MathJax = window.MathJax
+    if (MathJax) {
+      MathJax.typesetPromise && MathJax.typesetPromise()
+    }
+  })
 
   const getPapers = async () => {
     const { code, data, msg } = await getPapersExercises({
@@ -655,12 +661,11 @@ function Mypaper(props) {
                           <div className="topbody">
                             {idx2 + 1}.
                             <span className="span">（{item2?.score}分）</span>
-                            <MathJax
-                              math={item2?.exercises?.content_all}
-                              config={{
-                                loader: { load: ['input/tex', 'output/chtml'] },
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: item2?.exercises?.content_all,
                               }}
-                            />
+                            ></span>
                             <div
                               className="answerbox"
                               style={{
@@ -678,29 +683,21 @@ function Mypaper(props) {
                               </div>
                               <div className="answer">
                                 <span className="title">【答案】</span>
-                                <div className="body_txt">
-                                  <MathJax
-                                    math={item2?.exercises?.answer}
-                                    config={{
-                                      loader: {
-                                        load: ['input/tex', 'output/chtml'],
-                                      },
-                                    }}
-                                  />
-                                </div>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.answer,
+                                  }}
+                                ></div>
                               </div>
                               <div className="Parse">
                                 <span className="title">【解析】</span>
-                                <div className="body_txt">
-                                  <MathJax
-                                    math={item2?.exercises?.analysis}
-                                    config={{
-                                      loader: {
-                                        load: ['input/tex', 'output/chtml'],
-                                      },
-                                    }}
-                                  />
-                                </div>
+                                <div
+                                  className="body_txt"
+                                  dangerouslySetInnerHTML={{
+                                    __html: item2?.exercises?.analysis,
+                                  }}
+                                ></div>
                               </div>
                             </div>
                           </div>
