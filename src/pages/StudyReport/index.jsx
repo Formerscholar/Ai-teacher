@@ -22,6 +22,7 @@ import {
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 import moment from 'moment'
 import MathJax from 'react-mathjax-preview'
+import AI_topic from 'components/AI_topic/AI_topic'
 
 const { RangePicker } = DatePicker
 
@@ -325,127 +326,26 @@ function StudyReport(props) {
       <div className="topics">
         {AcademicData?.userExercises?.data?.map((item, idx) => {
           return (
-            <div className="items" key={item?.exercises_id}>
-              <div className="top_title">
-                <div className="info_class">
-                  <div className="difficulty">
-                    难度：
-                    <span>
-                      {homeInfo?.teacher?.level[item?.get_exercises?.level]}
-                    </span>
-                  </div>
-                  <div className="question">
-                    {/* 来源：邗江实验学校2019-2020年九年级上学期第一次月考试卷.doc */}
-                    题型：{item?.get_exercises?.get_question_category?.title}
-                  </div>
-                </div>
-                {/* <img
-                  className="new_icon"
-                  src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/new_icon.png"
-                  alt="new_icon"
-                /> */}
-              </div>
-              <div className="cet_body">
-                <MathJax
-                  math={item?.get_exercises?.content_all}
-                  config={{
-                    loader: { load: ['input/tex', 'output/chtml'] },
-                  }}
-                />
-              </div>
-              <div
-                className="answerbox"
-                style={{ display: item?.isanswer ? 'block' : 'none' }}
-              >
-                <div className="Tests">
-                  <span className="title">【考点】</span>
-                  <div
-                    className="body_txt"
-                    dangerouslySetInnerHTML={{
-                      __html: item?.get_exercises?.knowName,
-                    }}
-                  ></div>
-                </div>
-                <div className="answer">
-                  <span className="title">【答案】</span>
-                  <div className="body_txt">
-                    <MathJax
-                      math={item?.get_exercises?.answer}
-                      config={{
-                        loader: { load: ['input/tex', 'output/chtml'] },
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="Parse">
-                  <span className="title">【解析】</span>
-                  <div className="body_txt">
-                    <MathJax
-                      math={item?.get_exercises?.analysis}
-                      config={{
-                        loader: { load: ['input/tex', 'output/chtml'] },
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="bot_btns">
-                <div className="left_box_warp">
-                  <div className="update_time">
-                    更新时间：
-                    {setTimerType(item?.get_exercises?.update_time * 1000)}
-                  </div>
-                  {/* <div className="counts">组卷次数：0</div> */}
-                </div>
-                <div className="right_box_warp">
-                  <div className="answers" onClick={() => onSetAnswer(idx)}>
-                    <img
-                      className="View"
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View.png"
-                      alt="View"
-                    />
-                    <span>查看答案</span>
-                  </div>
-                  <div
-                    className="details"
-                    onClick={() => answerClick(item?.get_exercises?.id)}
-                  >
-                    <img
-                      className="answer"
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/answer.png"
-                      alt="answer"
-                    />
-                    <span>试题详情</span>
-                  </div>
-                  {item?.is_basket ? (
-                    <Button
-                      className="sub"
-                      size="small"
-                      variant="contained"
-                      onClick={() => removeClick(item?.exercises_id)}
-                    >
-                      <em>-</em>
-                      移除
-                    </Button>
-                  ) : (
-                    <Button
-                      className="add"
-                      size="small"
-                      variant="contained"
-                      onClick={() =>
-                        compositionClick(
-                          item?.exercises_id,
-                          item?.get_exercises?.type
-                        )
-                      }
-                    >
-                      <em>+</em>
-                      组卷
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
+            <AI_topic
+              key={item?.exercises_id}
+              level={item?.get_exercises?.level}
+              exercises_title={
+                item?.get_exercises?.get_question_category?.title
+              }
+              content_all={item?.get_exercises?.content_all}
+              isanswer={item?.isanswer}
+              knowName={item?.get_exercises?.knowName}
+              answer={item?.get_exercises?.answer}
+              analysis={item?.get_exercises?.analysis}
+              update_time={item?.get_exercises?.update_time}
+              is_basket={item?.is_basket}
+              onSetAnswer={() => onSetAnswer(idx)}
+              answerClick={() => answerClick(item?.get_exercises?.id)}
+              removeClick={() => removeClick(item?.exercises_id)}
+              compositionClick={() =>
+                compositionClick(item?.exercises_id, item?.get_exercises?.type)
+              }
+            />
           )
         })}
       </div>
