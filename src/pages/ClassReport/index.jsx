@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
 import './index.less'
-import { setTimerType, getNearDate } from '@/utils'
+import { setTimerType, getNearDate, getRandomColor } from '@/utils'
 import {
   Breadcrumb,
   message,
@@ -11,7 +11,11 @@ import {
   Pagination,
 } from 'antd'
 import { teamAcademicReport } from '@/services/Schoolbased'
-import { addExamBasket, delExamBasket } from '@/services/knowledge'
+import {
+  addExamBasket,
+  delExamBasket,
+  academicReportKnowledgeDetail,
+} from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
   GET_HOME_INFO,
@@ -41,6 +45,9 @@ function ClassReport(props) {
   const [startTime, setstartTime] = useState(getNearDate(new Date(), 7)[0])
   const [endTime, setendTime] = useState(getNearDate(new Date(), 7)[1])
   const [classCrrunt, setClassCrrunt] = useState(0)
+  const [isAnBox, setIsAnBox] = useState(false)
+  const [currnetId, SetCurrnetId] = useState(0)
+  const [KnowledgeDatas, setKnowledgeDatas] = useState([])
   const [options, setoptions] = useState({
     title: {
       text: '错题知识点分布图',
@@ -48,14 +55,6 @@ function ClassReport(props) {
     tooltip: {
       trigger: 'item',
       formatter: '{b} : {c} ({d}%)',
-    },
-    legend: {
-      type: 'scroll',
-      orient: 'vertical',
-      right: 10,
-      top: 20,
-      bottom: 20,
-      data: [],
     },
     series: [
       {
@@ -109,19 +108,17 @@ function ClassReport(props) {
         item['isanswer'] = false
       })
       setAcademicData(data)
-      let legend = []
       let series = []
       let newOptions = { ...options }
       data?.knowPointExercises?.map((item) => {
-        legend.push(item.title + ` (${item.count}道错题)`)
         series.push({
           name: item.title + ` (${item.count}道错题)`,
           value: item.count,
         })
       })
-      newOptions.legend.data = legend
       newOptions.series[0].data = series
       setoptions(newOptions)
+      setid(data?.teams[0]?.id)
     } else {
       message.error(msg)
     }
@@ -132,6 +129,12 @@ function ClassReport(props) {
     data.userExercises.data[idx].isanswer = !data.userExercises.data[idx]
       .isanswer
     setAcademicData(data)
+  }
+
+  const onSetAnswers = (idx) => {
+    let data = [...KnowledgeDatas]
+    data[idx].isanswer = !data[idx].isanswer
+    setKnowledgeDatas(data)
   }
 
   /**
@@ -172,6 +175,7 @@ function ClassReport(props) {
       setendTime(arr[1])
       getteamAcademicReport(Id, Listpage, arr[0], arr[1])
     }
+    setIsAnBox(false)
     const keymap = new Map([
       ['0', weekfunc],
       ['1', monthfunc],
@@ -196,12 +200,14 @@ function ClassReport(props) {
    * @param {*} dateStrings
    */
   const PickerChange = (dates, dateStrings) => {
+    setIsAnBox(false)
     setPickerData(dateStrings)
     setstartTime(dateStrings[0])
     setendTime(dateStrings[1])
   }
 
   const SearchClick = () => {
+    setIsAnBox(false)
     setstartTime(PickerData[0])
     setendTime(PickerData[1])
     getteamAcademicReport(Id, Listpage, PickerData[0], PickerData[1])
@@ -226,6 +232,7 @@ function ClassReport(props) {
   const classChange = (id, idx) => {
     setClassCrrunt(idx)
     setid(id)
+    setIsAnBox(false)
     getteamAcademicReport(id, Listpage, PickerData[0], PickerData[1])
   }
 
@@ -235,11 +242,13 @@ function ClassReport(props) {
    * @param {*} id
    * @param {*} type
    */
-  const compositionClick = async (id, type) => {
+  const compositionClick = async (id) => {
     const { code, msg } = await addExamBasket({
       exercises_id: [id],
     })
     if (code == 200) {
+      KnowledgeClick(currnetId)
+
       message.success(msg)
       addtopicData(1)
     } else {
@@ -252,8 +261,30 @@ function ClassReport(props) {
       exercises_id: id,
     })
     if (code == 200) {
+      KnowledgeClick(currnetId)
+
       message.success(msg)
       subtopicData(1)
+    } else {
+      message.error(msg)
+    }
+  }
+
+  const KnowledgeClick = async (iid) => {
+    SetCurrnetId(iid)
+    const { code, data, msg } = await academicReportKnowledgeDetail({
+      knowledge_id: iid,
+      start_time: startTime,
+      end_time: endTime,
+      team_id: Id,
+    })
+    if (code == 200) {
+      data.map((item) => {
+        item['isanswer'] = false
+      })
+      message.success(msg)
+      setKnowledgeDatas(data)
+      setIsAnBox(true)
     } else {
       message.error(msg)
     }
@@ -323,46 +354,99 @@ function ClassReport(props) {
         </div>
       </div>
       <div className="Chars">
-        <div ref={Echars} style={{ width: '100%', height: '100%' }}></div>
+        <div className="echars_box" ref={Echars}></div>
+        <div className="analysis">
+          <div className="title">错题知识点分析</div>
+          {AcademicData?.knowPointExercises?.map((item) => {
+            return (
+              <div
+                className="items"
+                key={item.id}
+                onClick={() => KnowledgeClick(item.id)}
+              >
+                <div className="top_text">
+                  <div className="left_tit">
+                    {item.title}
+                    <div className="percentage">{item.proportion}%</div>
+                  </div>
+                  <div className="count">{item.count}道题</div>
+                </div>
+                <div
+                  className="bot_color"
+                  style={{
+                    width: item.proportion + '%',
+                    backgroundColor: getRandomColor(),
+                  }}
+                ></div>
+              </div>
+            )
+          })}
+        </div>
       </div>
-      <div className="topics">
-        {AcademicData?.userExercises?.data?.map((item, idx) => {
-          return (
-            <AI_topic
-              key={item?.exercises_id}
-              level={item?.get_exercises?.level}
-              exercises_title={
-                item?.get_exercises?.get_question_category?.title
-              }
-              content_all={item?.get_exercises?.content_all}
-              isanswer={item?.isanswer}
-              knowName={item?.get_exercises?.knowName}
-              answer={item?.get_exercises?.answer}
-              analysis={item?.get_exercises?.analysis}
-              update_time={item?.get_exercises?.update_time}
-              is_basket={item?.is_basket}
-              onSetAnswer={() => onSetAnswer(idx)}
-              answerClick={() => answerClick(item?.get_exercises?.id)}
-              removeClick={() => removeClick(item?.exercises_id)}
-              compositionClick={() =>
-                compositionClick(item?.exercises_id, item?.get_exercises?.type)
-              }
+      {isAnBox ? (
+        <div className="topics" style={{ marginBottom: '1.71rem' }}>
+          {KnowledgeDatas?.map((item, idx) => {
+            return (
+              <AI_topic
+                key={item?.id}
+                level={item?.level}
+                exercises_title={item?.get_question_category?.title}
+                content_all={item?.content_all}
+                isanswer={item?.isanswer}
+                knowName={item?.knowName}
+                answer={item?.answer_latex}
+                analysis={item?.analysis_latex}
+                update_time={item?.update_time}
+                is_basket={item?.is_basket}
+                onSetAnswer={() => onSetAnswers(idx)}
+                answerClick={() => answerClick(item?.id)}
+                removeClick={() => removeClick(item?.id)}
+                compositionClick={() => compositionClick(item?.id)}
+              />
+            )
+          })}
+        </div>
+      ) : (
+        <>
+          <div className="topics">
+            {AcademicData?.userExercises?.data?.map((item, idx) => {
+              return (
+                <AI_topic
+                  key={item?.exercises_id}
+                  level={item?.get_exercises?.level}
+                  exercises_title={
+                    item?.get_exercises?.get_question_category?.title
+                  }
+                  content_all={item?.get_exercises?.content_all}
+                  isanswer={item?.isanswer}
+                  knowName={item?.get_exercises?.knowName}
+                  answer={item?.get_exercises?.answer}
+                  analysis={item?.get_exercises?.analysis}
+                  update_time={item?.get_exercises?.update_time}
+                  is_basket={item?.is_basket}
+                  onSetAnswer={() => onSetAnswer(idx)}
+                  answerClick={() => answerClick(item?.get_exercises?.id)}
+                  removeClick={() => removeClick(item?.exercises_id)}
+                  compositionClick={() => compositionClick(item?.exercises_id)}
+                />
+              )
+            })}
+          </div>
+          <div className="pages">
+            <Pagination
+              hideOnSinglePage={false}
+              total={AcademicData?.userExercises?.total}
+              defaultPageSize={20}
+              showSizeChanger={false}
+              showQuickJumper={true}
+              pageSize={AcademicData?.userExercises?.per_page || 20}
+              onChange={PaginationChange}
+              current={Listpage}
             />
-          )
-        })}
-      </div>
-      <div className="pages">
-        <Pagination
-          hideOnSinglePage={false}
-          total={AcademicData?.userExercises?.total}
-          defaultPageSize={20}
-          showSizeChanger={false}
-          showQuickJumper={true}
-          pageSize={AcademicData?.userExercises?.per_page || 20}
-          onChange={PaginationChange}
-          current={Listpage}
-        />
-      </div>
+          </div>
+        </>
+      )}
+
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
     </div>

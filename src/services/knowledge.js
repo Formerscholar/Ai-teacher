@@ -152,12 +152,18 @@ export function getChapterExercises(params) {
   })
 }
 
-
-
 export function getExerciseAnswer(params) {
   return request({
     url: '/getExerciseAnswer',
     method: 'GET',
     params,
+  })
+}
+
+export function academicReportKnowledgeDetail(data) {
+  return request({
+    url: '/academicReportKnowledgeDetail',
+    method: 'POST',
+    data: Qs.stringify(data),
   })
 }

@@ -152,18 +152,20 @@ function Famous(props) {
       </Breadcrumb>
       <div className="content-warp">
         <div className="top_box">
-          <span className="name">试卷名称:</span>
-          <Input
-            className="outlined"
-            variant="outlined"
-            value={searchName}
-            style={{ width: '11.43rem', height: '2.29rem' }}
-            size="small"
-            onInput={InputChange}
-          />
-          <Button variant="contained" className="btn" onClick={searchClick}>
-            查询
-          </Button>
+          <span className="name">试卷列表</span>
+          <div>
+            <Input
+              className="outlined"
+              variant="outlined"
+              value={searchName}
+              style={{ width: '11.43rem', height: '2.29rem' }}
+              size="small"
+              onInput={InputChange}
+            />
+            <Button variant="contained" className="btn" onClick={searchClick}>
+              查询
+            </Button>
+          </div>
         </div>
         <div className="body_box">
           <div className="lists">
@@ -177,7 +179,12 @@ function Famous(props) {
                       alt="paper_icon"
                     />
                     <div className="info_box">
-                      <div className="title" onClick={() => topaperdetail(item?.id)}>{item?.title}</div>
+                      <div
+                        className="title"
+                        onClick={() => topaperdetail(item?.id)}
+                      >
+                        {item?.title}
+                      </div>
                       <div className="bot_info">
                         <img
                           className="time_icon"
@@ -196,16 +203,19 @@ function Famous(props) {
                       </div>
                     </div>
                   </div>
-                  <div
-                    className="right_box"
-                    onClick={() => downloadClick(item?.pdf1, item?.pdf2)}
-                  >
-                    <img
-                      className="download_icon"
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/download_icon.png"
-                      alt="download_icon"
-                    />
-                    <span className="text">下载</span>
+                  <div className="right_btn">
+                    <div
+                      className="download_box"
+                      onClick={() => downloadClick(item?.pdf1, item?.pdf2)}
+                    >
+                      <img
+                        className="download_icon"
+                        src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/download_icon_write.png"
+                        alt="download_icon"
+                      />
+                      <span className="text">下载</span>
+                    </div>
+                    <div className="Synchronize">同步我的试卷</div>
                   </div>
                 </div>
               )

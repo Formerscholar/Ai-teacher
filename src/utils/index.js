@@ -93,6 +93,7 @@ const getRandomColor = function () {
   )
 }
 
+
 export {
   setTimerType,
   setCookie,

@@ -8,7 +8,9 @@ import {
   Space,
   Radio,
   Input,
+  Select,
 } from 'antd'
+
 import {
   getPapersList,
   paperToBased,
@@ -19,6 +21,7 @@ import { setTimerType } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
 import { downDOCURL } from '@/conf'
 import moment from 'moment'
+const { Option } = Select
 
 function Mypaperlist(props) {
   const { history } = props
@@ -36,6 +39,7 @@ function Mypaperlist(props) {
   const [searchData, setsearchData] = useState('')
   const [reedId, setreedId] = useState(0)
   const [delId, setdelId] = useState(0)
+  const [categoryId, setCategoryId] = useState('')
 
   useEffect(() => {
     getPapersListData()
@@ -146,6 +150,7 @@ function Mypaperlist(props) {
     const { code, msg } = await paperToBased({
       id: SyncId,
       show_time: SyncTime,
+      based_category_id: categoryId,
     })
     if (code === 200) {
       message.success(msg)
@@ -161,6 +166,10 @@ function Mypaperlist(props) {
 
   const toDetailPage = (id) => {
     history.push(`/mypaper/detail?id=${id}`)
+  }
+
+  const cateChange = (value) => {
+    setCategoryId(value)
   }
 
   return (
@@ -239,7 +248,10 @@ function Mypaperlist(props) {
                   />
                   {/* left_info_text */}
                   <div className="left_info_text">
-                    <div className="top_text">{item?.title}</div>
+                    <div className="top_text">
+                      {item?.title}
+                      {item?.last_time && <div className="is_last">已同步</div>}
+                    </div>
                     <div className="bot_image_text">
                       {/* <div className="subject">
                         <img
@@ -255,7 +267,9 @@ function Mypaperlist(props) {
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/groupOftime.png"
                           alt="groupOftime"
                         />
-                        组卷时间：{setTimerType(item?.add_time * 1000)}
+                        {item?.last_time
+                          ? '同步时间：' + setTimerType(item?.last_time * 1000)
+                          : '组卷时间：' + setTimerType(item?.add_time * 1000)}
                       </div>
                     </div>
                   </div>
@@ -302,7 +316,20 @@ function Mypaperlist(props) {
         height="19.93rem"
       >
         <div id="tmodelbox">
-          <div className="title">选择上线时间</div>
+          <div className="title">请选择</div>
+          <Select
+            placeholder="我的分类"
+            style={{ width: '90%', marginBottom: '1.25rem' }}
+            onChange={cateChange}
+          >
+            {PapersList?.basedCategory?.map((item) => {
+              return (
+                <Option value={item.id} key={item.id}>
+                  {item.name}
+                </Option>
+              )
+            })}
+          </Select>
           <Space className="Space" direction="vertical" size={35}>
             <DatePicker
               showTime
@@ -310,7 +337,6 @@ function Mypaperlist(props) {
               defaultValue={moment(new Date())}
             />
           </Space>
-
           <Button type="primary" className="btn" onClick={confirmClick}>
             确定
           </Button>

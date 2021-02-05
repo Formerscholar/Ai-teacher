@@ -112,7 +112,8 @@ function Schoolbased(props) {
       </Breadcrumb>
       <div className="Schoolbased_box">
         <div className="top_box">
-          <span className="name">试卷名称:</span>
+          <span className="name">试卷列表</span>
+          <div>
           <Input
             className="outlined"
             variant="outlined"
@@ -124,6 +125,8 @@ function Schoolbased(props) {
           <Button variant="contained" className="btn" onClick={searchClick}>
             查询
           </Button>
+          </div>
+          
         </div>
         <div className="body_box">
           <div className="lists">

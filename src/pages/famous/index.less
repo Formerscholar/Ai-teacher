@@ -22,9 +22,10 @@
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       padding: 0 2.14rem;
+
 
       .name {
         font-size: 1.14rem;
@@ -138,24 +139,50 @@
             }
           }
 
-          .right_box {
+          .right_btn {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
-            cursor: pointer;
 
-            .download_icon {
-              width: 1.43rem;
-              height: 1.43rem;
+            .download_box {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 5.9375rem;
+              height: 2.1875rem;
+              background: #E50304;
+              border-radius: .375rem;
+
+
+              .download_icon {
+                width: 1.43rem;
+                height: 1.43rem;
+              }
+
+              .text {
+                font-size: 1.14rem;
+                font-weight: 400;
+                color: #fff;
+
+                margin-left: 1rem;
+              }
             }
 
-            .text {
-              font-size: 1.14rem;
-              font-weight: 400;
-              color: #222222;
+            .Synchronize {
               margin-left: 1rem;
+              width: 8.0625rem;
+              height: 2.1875rem;
+              line-height: 2.1875rem;
+              border: 1px solid #E50304;
+              border-radius: .375rem;
+              font-size: 1rem;
+              font-weight: 400;
+              color: #E50304;
+              text-align: center;
+              cursor: pointer;
             }
           }
+
         }
       }
 
