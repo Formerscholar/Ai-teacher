@@ -72,7 +72,7 @@ function Schoolbased(props) {
    *  跳转试卷详情
    */
   const paperDetail = (id) => {
-    history.push(`/schoolbased/detail/${id}`)
+    history.push(`/schoolbased/detail?id=${id}`)
   }
   /**
    *  面包屑返回
@@ -134,7 +134,7 @@ function Schoolbased(props) {
               return (
                 <div
                   className="item"
-                  key={item?.id}
+                  key={item?.based_id}
                   onClick={() => paperDetail(item?.based_id)}
                 >
                   <div className="left_box">

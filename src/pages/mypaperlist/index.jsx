@@ -261,16 +261,29 @@ function Mypaperlist(props) {
                         />
                         学科：初中数学
                       </div> */}
-                      <div className="groupOftimebox">
+                      <div
+                        className="groupOftimebox"
+                        style={{ marginRight: '10px' }}
+                      >
                         <img
                           className="groupOftime"
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/groupOftime.png"
                           alt="groupOftime"
                         />
-                        {item?.last_time
-                          ? '同步时间：' + setTimerType(item?.last_time * 1000)
-                          : '组卷时间：' + setTimerType(item?.add_time * 1000)}
+                        {'组卷时间：' + setTimerType(item?.add_time * 1000)}
                       </div>
+                      {item?.last_time ? (
+                        <div className="groupOftimebox">
+                          <img
+                            className="groupOftime"
+                            src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/groupOftime.png"
+                            alt="groupOftime"
+                          />
+                          {'同步时间：' + setTimerType(item?.last_time * 1000)}
+                        </div>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                 </div>
@@ -287,12 +300,16 @@ function Mypaperlist(props) {
                     />
                     下载
                   </Button>
-                  <Button
-                    className="reedit"
-                    onClick={() => SyncClick(item?.id)}
-                  >
-                    同步校本试卷
-                  </Button>
+                  {item?.last_time ? (
+                    ''
+                  ) : (
+                    <Button
+                      className="reedit"
+                      onClick={() => SyncClick(item?.id)}
+                    >
+                      同步校本试卷
+                    </Button>
+                  )}
                   <Button
                     className="reedit"
                     onClick={() => editpaper(item?.id)}

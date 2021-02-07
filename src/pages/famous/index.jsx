@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useRef } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { Button, Input, Pagination, Radio, message, Breadcrumb } from 'antd'
 import { getSchoolResourcesList } from '@/services/famous'
@@ -13,7 +13,7 @@ function Famous(props) {
   const [Listpage, setListpage] = useState(1)
   const [ResourcesList, setResourcesList] = useState({})
   const [Open, setOpen] = useState(false)
-  const [RadioId, setRadioId] = useState(1)
+  const [RadioId, setRadioId] = useState(0)
   const [downfile, setdownfile] = useState([])
   const [msgErr, setmsgErr] = useState(false)
   const [dwonURL, setdwonURL] = useState('')
@@ -79,6 +79,7 @@ function Famous(props) {
    */
   const downloadClick = (pdf1, pdf2) => {
     let arr = [pdf1, pdf2]
+    setdwonURL(downURL + pdf1)
     setdownfile(arr)
     setOpen(true)
   }
