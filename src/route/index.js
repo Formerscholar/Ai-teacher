@@ -20,8 +20,18 @@ const Famous = Loadable({
   loading: G_spin,
 })
 
+const FamouFolder = Loadable({
+  loader: () => import('@/pages/famoufolder'),
+  loading: G_spin,
+})
+
 const Schoolbased = Loadable({
   loader: () => import('@/pages/schoolbased'),
+  loading: G_spin,
+})
+
+const basedfolder = Loadable({
+  loader: () => import('@/pages/basedfolder'),
   loading: G_spin,
 })
 
@@ -105,7 +115,15 @@ const BasicRoute = (props) => {
       document.title = '名校资源 - AI错题宝'
       localStorage.setItem('menuIndex', 3)
       break
+    case '/famou/folder':
+      document.title = '名校资源 - AI错题宝'
+      localStorage.setItem('menuIndex', 3)
+      break
     case '/schoolbased':
+      document.title = '校本试卷 - AI错题宝'
+      localStorage.setItem('menuIndex', 4)
+      break
+    case '/based/folder':
       document.title = '校本试卷 - AI错题宝'
       localStorage.setItem('menuIndex', 4)
       break
@@ -171,7 +189,9 @@ const BasicRoute = (props) => {
         <Route path="/user" component={User} />
         <Route path="/class" component={Class} />
         <Route path="/famous" component={Famous} />
+        <Route path="/famou/folder" component={FamouFolder} />
         <Route path="/schoolbased" component={Schoolbased} />
+        <Route path="/based/folder" component={basedfolder} />
         <Route path="/knowledge" component={Knowledge} />
         <Route path="/mypaper" component={Mypaper} />
         <Route path="/chapter" component={Chapter} />

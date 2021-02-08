@@ -3,14 +3,16 @@ import './index.less'
 import { Button, Input, Breadcrumb } from 'antd'
 import { Pagination } from 'antd'
 import { getSchoolBasedList } from '@/services/Schoolbased'
-import { setTimerType, Trim } from '@/utils'
+import { getBasedDir } from '@/services/famous'
+import { setTimerType, Trim, splitSearch } from '@/utils'
 
-function Schoolbased(props) {
+function Basedfolder(props) {
   const { history } = props
+  const preId = splitSearch(history.location.search).id
   const [searchName, setSearchName] = useState('')
   const [searchdata, setsearchdata] = useState('')
   const [Listpage, setListpage] = useState(1)
-  const [ResourcesList, setResourcesList] = useState({})
+  const [ResourcesList, setResourcesList] = useState([])
 
   useEffect(() => {
     getResourcesList()
@@ -24,10 +26,9 @@ function Schoolbased(props) {
    * @param {string} [title='']
    * @param {number} [page=1]
    */
-  const getResourcesList = async (title = '', page = 1) => {
-    const { code, data, msg } = await getSchoolBasedList({
-      title,
-      page,
+  const getResourcesList = async () => {
+    const { code, data, msg } = await getBasedDir({
+      parent_id: preId,
     })
     if (code === 200) {
       setResourcesList(data)
@@ -83,10 +84,6 @@ function Schoolbased(props) {
     history.push('/index')
   }
 
-  const folderClick = (iid, title) => {
-    history.push(`/based/folder?id=${iid}&title=${encodeURI(title)}`)
-  }
-
   return (
     <div id="Schoolbased">
       <Breadcrumb
@@ -113,11 +110,17 @@ function Schoolbased(props) {
         <Breadcrumb.Item style={{ cursor: 'pointer', color: '#222' }}>
           校本试卷
         </Breadcrumb.Item>
+        <Breadcrumb.Item
+          className="breaditem"
+          style={{ cursor: 'pointer', color: '#222' }}
+        >
+          {decodeURI(splitSearch(history.location.search).title)}
+        </Breadcrumb.Item>
       </Breadcrumb>
       <div className="Schoolbased_box">
         <div className="top_box">
-          <span className="name">试卷列表</span>
-          <div>
+          <span className="name">文件夹列表</span>
+          {/* <div>
             <Input
               className="outlined"
               variant="outlined"
@@ -129,16 +132,25 @@ function Schoolbased(props) {
             <Button variant="contained" className="btn" onClick={searchClick}>
               查询
             </Button>
-          </div>
+          </div> */}
+          <Button
+            variant="contained"
+            className="btn"
+            onClick={() => {
+              history.goBack()
+            }}
+          >
+            返回
+          </Button>
         </div>
         <div className="body_box">
           <div className="lists">
-            {ResourcesList?.examsSchool?.data?.map((item) => {
-              return item.get_base.is_based_dir === 1 ? (
+            {ResourcesList?.map((item) => {
+              return (
                 <div
                   className="item"
-                  key={item?.based_id}
-                  onClick={() => paperDetail(item?.based_id)}
+                  key={item?.id}
+                  onClick={() => paperDetail(item?.id)}
                 >
                   <div className="left_box">
                     <img
@@ -147,7 +159,7 @@ function Schoolbased(props) {
                       alt="paper_icon"
                     />
                     <div className="info_box">
-                      <div className="title">{item?.get_base?.title}</div>
+                      <div className="title">{item?.title}</div>
                       <div className="bot_info">
                         <img
                           className="time_icon"
@@ -156,57 +168,14 @@ function Schoolbased(props) {
                         />
                         <span className="time_text">
                           更新时间：
-                          {setTimerType(item?.get_base?.update_time * 1000)}
+                          {setTimerType(item?.add_time * 1000)}
                         </span>
-                        <img
+                        {/* <img
                           className="View_icon"
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
                           alt="View_icon"
-                        />
-                        <span className="view_text">浏览次数：166</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="right_box">
-                    <img
-                      className="download_icon"
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right.png"
-                      alt="download_icon"
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="item"
-                  key={item?.based_id}
-                  onClick={() =>
-                    folderClick(item?.based_id, item?.get_base?.title)
-                  }
-                >
-                  <div className="left_box">
-                    <img
-                      className="paper_icon"
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
-                      alt="paper_icon"
-                    />
-                    <div className="info_box">
-                      <div className="title">{item?.get_base?.title}</div>
-                      <div className="bot_info">
-                        <img
-                          className="time_icon"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/time_icon.png"
-                          alt="time_icon"
-                        />
-                        <span className="time_text">
-                          更新时间：
-                          {setTimerType(item?.get_base?.update_time * 1000)}
-                        </span>
-                        <img
-                          className="View_icon"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
-                          alt="View_icon"
-                        />
-                        <span className="view_text">浏览次数：166</span>
+                        /> */}
+                        {/* <span className="view_text">浏览次数：166</span> */}
                       </div>
                     </div>
                   </div>
@@ -221,7 +190,7 @@ function Schoolbased(props) {
               )
             })}
           </div>
-          <div className="Pagination">
+          {/* <div className="Pagination">
             <Pagination
               hideOnSinglePage={false}
               showSizeChanger={false}
@@ -231,10 +200,10 @@ function Schoolbased(props) {
               onChange={PaginationChange}
               current={Listpage}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
   )
 }
-export default memo(Schoolbased)
+export default memo(Basedfolder)

@@ -1,17 +1,23 @@
 import React, { memo, useState, useEffect } from 'react'
 import './index.less'
 import { Button, Input, Pagination, Radio, message, Breadcrumb } from 'antd'
-import { getSchoolResourcesList, schoolResourcesToMe } from '@/services/famous'
-import { setTimerType, Trim } from '@/utils'
+import {
+  getSchoolResourcesList,
+  schoolResourcesToMe,
+  getBasedDir,
+} from '@/services/famous'
+import { setTimerType, Trim, splitSearch } from '@/utils'
 import T_modelbox from '@/common/T_modelbox'
 import { downURL } from '@/conf'
 
 function Famous(props) {
   const { history } = props
+  console.log(history)
+  const perId = splitSearch(history.location.search).id
   const [searchName, setSearchName] = useState('')
   const [searchdata, setsearchdata] = useState('')
   const [Listpage, setListpage] = useState(1)
-  const [ResourcesList, setResourcesList] = useState({})
+  const [ResourcesList, setResourcesList] = useState([])
   const [Open, setOpen] = useState(false)
   const [RadioId, setRadioId] = useState(0)
   const [downfile, setdownfile] = useState([])
@@ -20,7 +26,6 @@ function Famous(props) {
 
   useEffect(() => {
     getResourcesList()
-
     return () => {}
   }, [])
 
@@ -30,10 +35,9 @@ function Famous(props) {
    * @param {string} [name='']
    * @param {number} [page=1]
    */
-  const getResourcesList = async (name = '', page = 1) => {
-    const { code, data, msg } = await getSchoolResourcesList({
-      name,
-      page,
+  const getResourcesList = async () => {
+    const { code, data, msg } = await getBasedDir({
+      parent_id: perId,
     })
     if (code === 200) {
       setResourcesList(data)
@@ -50,27 +54,6 @@ function Famous(props) {
     console.log(Trim(value))
     setSearchName(Trim(value))
     setsearchdata(Trim(value))
-  }
-
-  /**
-   *
-   *  页面变化请求数据
-   * @param {Number} page
-   * @param {Number} pageSize
-   */
-  const PaginationChange = (page, pageSize) => {
-    setListpage(page)
-    getResourcesList(searchdata, page)
-  }
-
-  /**
-   *
-   * 点击查询按钮 给定查询字段 初始化页码1
-   */
-  const searchClick = () => {
-    setListpage(1)
-    getResourcesList(searchName, 1)
-    setSearchName('')
   }
 
   /**
@@ -133,10 +116,6 @@ function Famous(props) {
     }
   }
 
-  const folderClick = (iid, title) => {
-    history.push(`/famou/folder?id=${iid}&title=${encodeURI(title)}`)
-  }
-
   return (
     <div id="Famous">
       <Breadcrumb
@@ -165,11 +144,17 @@ function Famous(props) {
         >
           名校资源
         </Breadcrumb.Item>
+        <Breadcrumb.Item
+          className="breaditem"
+          style={{ cursor: 'pointer', color: '#222' }}
+        >
+          {decodeURI(splitSearch(history.location.search).title)}
+        </Breadcrumb.Item>
       </Breadcrumb>
       <div className="content-warp">
         <div className="top_box">
-          <span className="name">试卷列表</span>
-          <div>
+          <span className="name">文件夹列表</span>
+          {/* <div>
             <Input
               className="outlined"
               variant="outlined"
@@ -181,12 +166,21 @@ function Famous(props) {
             <Button variant="contained" className="btn" onClick={searchClick}>
               查询
             </Button>
-          </div>
+          </div> */}
+          <Button
+            variant="contained"
+            className="btn"
+            onClick={() => {
+              history.goBack()
+            }}
+          >
+            返回
+          </Button>
         </div>
         <div className="body_box">
           <div className="lists">
-            {ResourcesList?.schoolResources?.data?.map((item) => {
-              return item.is_based_dir === 1 ? (
+            {ResourcesList?.map((item) => {
+              return (
                 <div className="item" key={item?.id}>
                   <div className="left_box">
                     <img
@@ -208,14 +202,14 @@ function Famous(props) {
                           alt="time_icon"
                         />
                         <span className="time_text">
-                          更新时间：{setTimerType(item?.update_time * 1000)}
+                          组卷时间：{setTimerType(item?.add_time * 1000)}
                         </span>
-                        <img
+                        {/* <img
                           className="View_icon"
                           src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
                           alt="View_icon"
-                        />
-                        <span className="view_text">浏览次数：166</span>
+                        /> */}
+                        {/* <span className="view_text">浏览次数：166</span> */}
                       </div>
                     </div>
                   </div>
@@ -239,61 +233,8 @@ function Famous(props) {
                     </div>
                   </div>
                 </div>
-              ) : (
-                <div
-                  className="item"
-                  key={item?.id}
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => folderClick(item?.id, item.title)}
-                >
-                  <div className="left_box">
-                    <img
-                      className="paper_icon"
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/paper_icon.png"
-                      alt="paper_icon"
-                    />
-                    <div className="info_box">
-                      <div className="title">{item?.title}</div>
-                      <div className="bot_info">
-                        <img
-                          className="time_icon"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/time_icon.png"
-                          alt="time_icon"
-                        />
-                        <span className="time_text">
-                          更新时间：{setTimerType(item?.update_time * 1000)}
-                        </span>
-                        <img
-                          className="View_icon"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
-                          alt="View_icon"
-                        />
-                        <span className="view_text">浏览次数：166</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="right_btn">
-                    <img
-                      src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/right.png"
-                      alt="right"
-                    />
-                  </div>
-                </div>
               )
             })}
-          </div>
-          <div className="Pagination">
-            <Pagination
-              hideOnSinglePage={false}
-              showSizeChanger={false}
-              total={ResourcesList?.schoolResources?.total}
-              defaultPageSize={20}
-              pageSize={ResourcesList?.schoolResources?.per_page || 20}
-              onChange={PaginationChange}
-              current={Listpage}
-            />
           </div>
         </div>
       </div>

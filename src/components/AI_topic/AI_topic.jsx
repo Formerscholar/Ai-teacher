@@ -26,6 +26,8 @@ function AI_topic(props) {
     answerClick,
     removeClick,
     compositionClick,
+    isWrong = false,
+    onSeeWrong,
   } = props
 
   useEffect(() => {
@@ -93,6 +95,16 @@ function AI_topic(props) {
           </div>
         </div>
         <div className="right_box_warp">
+          {isWrong && (
+            <div className="answers" onClick={onSeeWrong}>
+              <img
+                className="View"
+                src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/cuo_icon.png"
+                alt="View"
+              />
+              <span>错题名单</span>
+            </div>
+          )}
           <div className="answers" onClick={onSetAnswer}>
             <img
               className="View"

@@ -15,6 +15,7 @@ import {
   addExamBasket,
   delExamBasket,
   academicReportKnowledgeDetail,
+  academicReportStudentDetail,
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -25,6 +26,7 @@ import {
 } from '@/store/actionType'
 import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 import moment from 'moment'
+import T_modelbox from '@/common/T_modelbox'
 
 import AI_topic from 'components/AI_topic/AI_topic'
 
@@ -46,8 +48,10 @@ function ClassReport(props) {
   const [endTime, setendTime] = useState(getNearDate(new Date(), 7)[1])
   const [classCrrunt, setClassCrrunt] = useState(0)
   const [isAnBox, setIsAnBox] = useState(false)
+  const [Open, setOpen] = useState(false)
   const [currnetId, SetCurrnetId] = useState(0)
   const [KnowledgeDatas, setKnowledgeDatas] = useState([])
+  const [wrongList, setWrongList] = useState([])
   const [options, setoptions] = useState({
     title: {
       text: '错题知识点分布图',
@@ -290,6 +294,21 @@ function ClassReport(props) {
     }
   }
 
+  const onSeeWrong = async (iid) => {
+    const { code, data, msg } = await academicReportStudentDetail({
+      exercises_id: iid,
+      start_time: startTime,
+      end_time: endTime,
+      team_id: Id,
+    })
+    if (code === 200) {
+      setWrongList(data)
+      setOpen(true)
+    } else {
+      message.error(msg)
+    }
+  }
+
   return (
     <div id="ClassReport">
       <Breadcrumb
@@ -402,6 +421,8 @@ function ClassReport(props) {
                 answerClick={() => answerClick(item?.id)}
                 removeClick={() => removeClick(item?.id)}
                 compositionClick={() => compositionClick(item?.id)}
+                isWrong={true}
+                onSeeWrong={() => onSeeWrong(item?.id)}
               />
             )
           })}
@@ -428,6 +449,8 @@ function ClassReport(props) {
                   answerClick={() => answerClick(item?.get_exercises?.id)}
                   removeClick={() => removeClick(item?.exercises_id)}
                   compositionClick={() => compositionClick(item?.exercises_id)}
+                  isWrong={true}
+                  onSeeWrong={() => onSeeWrong(item?.exercises_id)}
                 />
               )
             })}
@@ -449,6 +472,37 @@ function ClassReport(props) {
 
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
+
+      <T_modelbox
+        isOpen={Open}
+        title="【错题名单】"
+        closeClick={() => {
+          setOpen(false)
+        }}
+        width="36.5rem"
+      >
+        <div id="tmodelbox">
+          <div className="list">
+            {wrongList?.map((item) => {
+              return (
+                <div key={item.id} className="item">
+                  <img className="avatar" src={item.avatar_file} alt="avatar" />
+                  <span className="name">{item.true_name}</span>
+                </div>
+              )
+            })}
+          </div>
+
+          <Button
+            type="primary"
+            onClick={() => {
+              setOpen(false)
+            }}
+          >
+            确定
+          </Button>
+        </div>
+      </T_modelbox>
     </div>
   )
 }

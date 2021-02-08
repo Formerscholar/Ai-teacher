@@ -167,3 +167,11 @@ export function academicReportKnowledgeDetail(data) {
     data: Qs.stringify(data),
   })
 }
+
+export function academicReportStudentDetail(data) {
+  return request({
+    url: '/academicReportStudentDetail',
+    method: 'POST',
+    data: Qs.stringify(data),
+  })
+}
