@@ -40,6 +40,7 @@ function Mypaperlist(props) {
   const [reedId, setreedId] = useState(0)
   const [delId, setdelId] = useState(0)
   const [categoryId, setCategoryId] = useState('')
+  const [BoxTitle, setBoxTitle] = useState('')
 
   useEffect(() => {
     getPapersListData()
@@ -130,9 +131,10 @@ function Mypaperlist(props) {
    *
    * @param {*} id
    */
-  const SyncClick = (id) => {
+  const SyncClick = (id,title) => {
     setOpen(true)
     setSyncId(id)
+    setBoxTitle(title)
   }
 
   /**
@@ -305,7 +307,7 @@ function Mypaperlist(props) {
                   ) : (
                     <Button
                       className="reedit"
-                      onClick={() => SyncClick(item?.id)}
+                      onClick={() => SyncClick(item?.id,item.title)}
                     >
                       同步校本试卷
                     </Button>
@@ -325,35 +327,41 @@ function Mypaperlist(props) {
       {/* 模态框 */}
       <T_modelbox
         isOpen={Open}
-        title="【同步】"
+        title="【同步校本试卷】"
         closeClick={() => {
           setOpen(false)
         }}
         width="41.71rem"
-        height="19.93rem"
+        height="23.93rem"
       >
         <div id="tmodelbox">
-          <div className="title">请选择</div>
-          <Select
-            placeholder="我的分类"
-            style={{ width: '90%', marginBottom: '1.25rem' }}
-            onChange={cateChange}
-          >
-            {PapersList?.basedCategory?.map((item) => {
-              return (
-                <Option value={item.id} key={item.id}>
-                  {item.name}
-                </Option>
-              )
-            })}
-          </Select>
-          <Space className="Space" direction="vertical" size={35}>
+          <div className="title">{BoxTitle}</div>
+
+          <div className="items" style={{ marginBottom: '1.25rem' }}>
+            <span>试卷分类:</span>
+            <Select
+              className="Space"
+              placeholder="试卷分类"
+              onChange={cateChange}
+            >
+              {PapersList?.basedCategory?.map((item) => {
+                return (
+                  <Option value={item.id} key={item.id}>
+                    {item.name}
+                  </Option>
+                )
+              })}
+            </Select>
+          </div>
+          <div className="items" style={{ marginBottom: '1.25rem' }}>
+            <span>上线时间:</span>
             <DatePicker
+              className="Space"
               showTime
               onOk={onOk}
               defaultValue={moment(new Date())}
             />
-          </Space>
+          </div>
           <Button type="primary" className="btn" onClick={confirmClick}>
             确定
           </Button>
