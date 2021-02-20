@@ -40,7 +40,6 @@ function ClassReport(props) {
     subtopicData,
     volumeTopicCount,
   } = props
-  const [Id, setid] = useState(0)
   const [AcademicData, setAcademicData] = useState({})
   const [PickerData, setPickerData] = useState(getNearDate(new Date(), 7))
   const [Listpage, setListpage] = useState(1)
@@ -48,8 +47,10 @@ function ClassReport(props) {
   const [endTime, setendTime] = useState(getNearDate(new Date(), 7)[1])
   const [classCrrunt, setClassCrrunt] = useState(0)
   const [isAnBox, setIsAnBox] = useState(false)
+  const [teamIds, setTeamIds] = useState(0)
   const [Open, setOpen] = useState(false)
-  const [currnetId, SetCurrnetId] = useState(0)
+  const [Opens, setOpens] = useState(false)
+  const [CurrnetTitle, SetCurrnetTitle] = useState('')
   const [KnowledgeDatas, setKnowledgeDatas] = useState([])
   const [wrongList, setWrongList] = useState([])
   const [options, setoptions] = useState({
@@ -80,7 +81,7 @@ function ClassReport(props) {
   const Echars = useRef(null)
 
   useEffect(() => {
-    getteamAcademicReport(Id, Listpage, startTime, endTime)
+    getteamAcademicReport(teamIds, Listpage, startTime, endTime)
     return () => {}
   }, [volumeTopicCount])
 
@@ -96,7 +97,7 @@ function ClassReport(props) {
    * @param {number} [page=1]
    */
   const getteamAcademicReport = async (
-    team_id = Id,
+    team_id = teamIds,
     page = Listpage,
     start_time = startTime,
     end_time = endTime
@@ -121,8 +122,10 @@ function ClassReport(props) {
         })
       })
       newOptions.series[0].data = series
+      if (teamIds == 0) {
+        setTeamIds(data?.teams[0]?.id)
+      }
       setoptions(newOptions)
-      setid(data?.teams[0]?.id)
     } else {
       message.error(msg)
     }
@@ -163,21 +166,21 @@ function ClassReport(props) {
       setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
-      getteamAcademicReport(Id, Listpage, arr[0], arr[1])
+      getteamAcademicReport(teamIds, Listpage, arr[0], arr[1])
     }
     const monthfunc = () => {
       const arr = getNearDate(new Date(), 30)
       setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
-      getteamAcademicReport(Id, Listpage, arr[0], arr[1])
+      getteamAcademicReport(teamIds, Listpage, arr[0], arr[1])
     }
     const yearfunc = () => {
       const arr = getNearDate(new Date(), 365)
       setPickerData(arr)
       setstartTime(arr[0])
       setendTime(arr[1])
-      getteamAcademicReport(Id, Listpage, arr[0], arr[1])
+      getteamAcademicReport(teamIds, Listpage, arr[0], arr[1])
     }
     setIsAnBox(false)
     const keymap = new Map([
@@ -214,7 +217,7 @@ function ClassReport(props) {
     setIsAnBox(false)
     setstartTime(PickerData[0])
     setendTime(PickerData[1])
-    getteamAcademicReport(Id, Listpage, PickerData[0], PickerData[1])
+    getteamAcademicReport(teamIds, Listpage, PickerData[0], PickerData[1])
   }
 
   /**
@@ -225,7 +228,7 @@ function ClassReport(props) {
    */
   const PaginationChange = (page, pageSize) => {
     setListpage(page * 1)
-    getteamAcademicReport(Id, page * 1)
+    getteamAcademicReport(teamIds, page * 1)
   }
 
   /**
@@ -235,7 +238,7 @@ function ClassReport(props) {
    */
   const classChange = (id, idx) => {
     setClassCrrunt(idx)
-    setid(id)
+    setTeamIds(id)
     setIsAnBox(false)
     getteamAcademicReport(id, Listpage, PickerData[0], PickerData[1])
   }
@@ -251,8 +254,6 @@ function ClassReport(props) {
       exercises_id: [id],
     })
     if (code == 200) {
-      KnowledgeClick(currnetId)
-
       message.success(msg)
       addtopicData(1)
     } else {
@@ -265,8 +266,6 @@ function ClassReport(props) {
       exercises_id: id,
     })
     if (code == 200) {
-      KnowledgeClick(currnetId)
-
       message.success(msg)
       subtopicData(1)
     } else {
@@ -274,21 +273,20 @@ function ClassReport(props) {
     }
   }
 
-  const KnowledgeClick = async (iid) => {
-    SetCurrnetId(iid)
+  const KnowledgeClick = async (iid, title) => {
+    SetCurrnetTitle(title)
     const { code, data, msg } = await academicReportKnowledgeDetail({
       knowledge_id: iid,
       start_time: startTime,
       end_time: endTime,
-      team_id: Id,
+      team_id: teamIds,
     })
     if (code == 200) {
       data.map((item) => {
         item['isanswer'] = false
       })
-      message.success(msg)
       setKnowledgeDatas(data)
-      setIsAnBox(true)
+      setOpens(true)
     } else {
       message.error(msg)
     }
@@ -299,7 +297,7 @@ function ClassReport(props) {
       exercises_id: iid,
       start_time: startTime,
       end_time: endTime,
-      team_id: Id,
+      team_id: teamIds,
     })
     if (code === 200) {
       setWrongList(data)
@@ -381,7 +379,7 @@ function ClassReport(props) {
               <div
                 className="items"
                 key={item.id}
-                onClick={() => KnowledgeClick(item.id)}
+                onClick={() => KnowledgeClick(item.id, item.title)}
               >
                 <div className="top_text">
                   <div className="left_tit">
@@ -402,73 +400,44 @@ function ClassReport(props) {
           })}
         </div>
       </div>
-      {isAnBox ? (
-        <div className="topics" style={{ marginBottom: '1.71rem' }}>
-          {KnowledgeDatas?.map((item, idx) => {
-            return (
-              <AI_topic
-                key={item?.id}
-                level={item?.level}
-                exercises_title={item?.get_question_category?.title}
-                content_all={item?.content_all}
-                isanswer={item?.isanswer}
-                knowName={item?.knowName}
-                answer={item?.answer_latex}
-                analysis={item?.analysis_latex}
-                update_time={item?.update_time}
-                is_basket={item?.is_basket}
-                onSetAnswer={() => onSetAnswers(idx)}
-                answerClick={() => answerClick(item?.id)}
-                removeClick={() => removeClick(item?.id)}
-                compositionClick={() => compositionClick(item?.id)}
-                isWrong={true}
-                onSeeWrong={() => onSeeWrong(item?.id)}
-              />
-            )
-          })}
-        </div>
-      ) : (
-        <>
-          <div className="topics">
-            {AcademicData?.userExercises?.data?.map((item, idx) => {
-              return (
-                <AI_topic
-                  key={item?.exercises_id}
-                  level={item?.get_exercises?.level}
-                  exercises_title={
-                    item?.get_exercises?.get_question_category?.title
-                  }
-                  content_all={item?.get_exercises?.content_all}
-                  isanswer={item?.isanswer}
-                  knowName={item?.get_exercises?.knowName}
-                  answer={item?.get_exercises?.answer}
-                  analysis={item?.get_exercises?.analysis}
-                  update_time={item?.get_exercises?.update_time}
-                  is_basket={item?.is_basket}
-                  onSetAnswer={() => onSetAnswer(idx)}
-                  answerClick={() => answerClick(item?.get_exercises?.id)}
-                  removeClick={() => removeClick(item?.exercises_id)}
-                  compositionClick={() => compositionClick(item?.exercises_id)}
-                  isWrong={true}
-                  onSeeWrong={() => onSeeWrong(item?.exercises_id)}
-                />
-              )
-            })}
-          </div>
-          <div className="pages">
-            <Pagination
-              hideOnSinglePage={false}
-              total={AcademicData?.userExercises?.total}
-              defaultPageSize={20}
-              showSizeChanger={false}
-              showQuickJumper={true}
-              pageSize={AcademicData?.userExercises?.per_page || 20}
-              onChange={PaginationChange}
-              current={Listpage}
+      <div className="topics">
+        {AcademicData?.userExercises?.data?.map((item, idx) => {
+          return (
+            <AI_topic
+              key={item?.exercises_id}
+              level={item?.get_exercises?.level}
+              exercises_title={
+                item?.get_exercises?.get_question_category?.title
+              }
+              content_all={item?.get_exercises?.content_all}
+              isanswer={item?.isanswer}
+              knowName={item?.get_exercises?.knowName}
+              answer={item?.get_exercises?.answer}
+              analysis={item?.get_exercises?.analysis}
+              update_time={item?.get_exercises?.update_time}
+              is_basket={item?.is_basket}
+              onSetAnswer={() => onSetAnswer(idx)}
+              answerClick={() => answerClick(item?.get_exercises?.id)}
+              removeClick={() => removeClick(item?.exercises_id)}
+              compositionClick={() => compositionClick(item?.exercises_id)}
+              isWrong={true}
+              onSeeWrong={() => onSeeWrong(item?.exercises_id)}
             />
-          </div>
-        </>
-      )}
+          )
+        })}
+      </div>
+      <div className="pages">
+        <Pagination
+          hideOnSinglePage={false}
+          total={AcademicData?.userExercises?.total}
+          defaultPageSize={20}
+          showSizeChanger={false}
+          showQuickJumper={true}
+          pageSize={AcademicData?.userExercises?.per_page || 20}
+          onChange={PaginationChange}
+          current={Listpage}
+        />
+      </div>
 
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
@@ -501,6 +470,41 @@ function ClassReport(props) {
           >
             确定
           </Button>
+        </div>
+      </T_modelbox>
+
+      <T_modelbox
+        isOpen={Opens}
+        title={`【${CurrnetTitle}】`}
+        closeClick={() => {
+          setOpens(false)
+        }}
+        width="54.0625rem"
+        height="37.5rem"
+      >
+        <div id="topics">
+          {KnowledgeDatas?.map((item, idx) => {
+            return (
+              <AI_topic
+                key={item?.id}
+                level={item?.level}
+                exercises_title={item?.get_question_category?.title}
+                content_all={item?.content_all}
+                isanswer={item?.isanswer}
+                knowName={item?.knowName}
+                answer={item?.answer_latex}
+                analysis={item?.analysis_latex}
+                update_time={item?.update_time}
+                is_basket={item?.is_basket}
+                onSetAnswer={() => onSetAnswers(idx)}
+                answerClick={() => answerClick(item?.id)}
+                removeClick={() => removeClick(item?.id)}
+                compositionClick={() => compositionClick(item?.id)}
+                isWrong={true}
+                onSeeWrong={() => onSeeWrong(item?.id)}
+              />
+            )
+          })}
         </div>
       </T_modelbox>
     </div>
