@@ -204,12 +204,20 @@ function Famous(props) {
                         <span className="time_text">
                           组卷时间：{setTimerType(item?.add_time * 1000)}
                         </span>
-                        {/* <img
-                          className="View_icon"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
-                          alt="View_icon"
-                        /> */}
-                        {/* <span className="view_text">浏览次数：166</span> */}
+                        {item?.get_based_category?.name ? (
+                          <>
+                            <img
+                              className="View_icon"
+                              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
+                              alt="View_icon"
+                            />
+                            <span className="view_text">
+                              试卷分类：{item?.get_based_category?.name}
+                            </span>
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </div>
                     </div>
                   </div>

@@ -16,8 +16,12 @@ function Main(props) {
     history.push('/schoolbased')
   }
 
-  const topaperdetail = (id) => {
-    history.push(`/famous/detail?id=${id}`)
+  const topaperdetail = (id, isdir, title) => {
+    if (isdir === 1) {
+      history.push(`/famous/detail?id=${id}`)
+    } else {
+      history.push(`/famou/folder?id=${id}&title=${title}`)
+    }
   }
   const topaperdetails = (id) => {
     history.push(`/schoolbased/detail?id=${id}`)
@@ -86,7 +90,9 @@ function Main(props) {
               <div
                 className="items"
                 key={item?.id}
-                onClick={() => topaperdetail(item?.id)}
+                onClick={() =>
+                  topaperdetail(item?.id, item?.is_based_dir, item?.title)
+                }
               >
                 <div className="left_text">
                   <img

@@ -11,7 +11,7 @@ function Famous(props) {
   const [searchName, setSearchName] = useState('')
   const [searchdata, setsearchdata] = useState('')
   const [Listpage, setListpage] = useState(1)
-  const [ResourcesList, setResourcesList] = useState({})
+  const [ResourcesList, setResourcesList] = useState([])
   const [Open, setOpen] = useState(false)
   const [RadioId, setRadioId] = useState(0)
   const [downfile, setdownfile] = useState([])
@@ -210,12 +210,20 @@ function Famous(props) {
                         <span className="time_text">
                           更新时间：{setTimerType(item?.update_time * 1000)}
                         </span>
-                        <img
-                          className="View_icon"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
-                          alt="View_icon"
-                        />
-                        <span className="view_text">浏览次数：166</span>
+                        {item?.get_based_category?.name ? (
+                          <>
+                            <img
+                              className="View_icon"
+                              src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
+                              alt="View_icon"
+                            />
+                            <span className="view_text">
+                              试卷分类：{item?.get_based_category?.name}
+                            </span>
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </div>
                     </div>
                   </div>
@@ -265,12 +273,6 @@ function Famous(props) {
                         <span className="time_text">
                           更新时间：{setTimerType(item?.update_time * 1000)}
                         </span>
-                        <img
-                          className="View_icon"
-                          src="https://aictb.oss-cn-shanghai.aliyuncs.com/teacher/View_icon.png"
-                          alt="View_icon"
-                        />
-                        <span className="view_text">浏览次数：166</span>
                       </div>
                     </div>
                   </div>

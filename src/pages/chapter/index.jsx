@@ -128,6 +128,7 @@ function Chapter(props) {
       let arr = data?.chapter?.map((item) => item?.id.toString())
       setExpandedKeys(arr)
       setKnowledge(data)
+      setcurrentsemest(data?.semesterId - 1)
       setgradeId(data?.grade_id)
     }
   }

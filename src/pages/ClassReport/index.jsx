@@ -479,7 +479,7 @@ function ClassReport(props) {
         closeClick={() => {
           setOpens(false)
         }}
-        width="54.0625rem"
+        width="76.0625rem"
         height="37.5rem"
       >
         <div id="topics">
