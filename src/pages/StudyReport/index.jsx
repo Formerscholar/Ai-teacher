@@ -15,6 +15,7 @@ import {
   addExamBasket,
   delExamBasket,
   academicReportKnowledgeDetail,
+  academicReportStudentDetail
 } from '@/services/knowledge'
 import { connect } from 'react-redux'
 import {
@@ -27,6 +28,7 @@ import AI_floatBox from 'components/AI_floatBox/AI_floatBox'
 import moment from 'moment'
 
 import AI_topic from 'components/AI_topic/AI_topic'
+import T_modelbox from '@/common/T_modelbox'
 
 const { RangePicker } = DatePicker
 
@@ -47,9 +49,16 @@ function StudyReport(props) {
   const [startTime, setstartTime] = useState(getNearDate(new Date(), 7)[0])
   const [endTime, setendTime] = useState(getNearDate(new Date(), 7)[1])
   const [isAnBox, setIsAnBox] = useState(false)
+  const [Opens, setOpens] = useState(false)
+  const [teamIds, setTeamIds] = useState(0)
+
   const [currnetId, SetCurrnetId] = useState(0)
+  const [CurrnetTitle, SetCurrnetTitle] = useState('')
   const [KnowledgeDatas, setKnowledgeDatas] = useState([])
   const [Id, setid] = useState(0)
+  const [wrongList, setWrongList] = useState([])
+  const [Open, setOpen] = useState(false)
+
   const [options, setoptions] = useState({
     title: {
       text: '错题知识点分布图',
@@ -121,6 +130,23 @@ function StudyReport(props) {
       message.error(msg)
     }
   }
+
+
+  const onSeeWrong = async (iid) => {
+    const { code, data, msg } = await academicReportStudentDetail({
+      exercises_id: iid,
+      start_time: startTime,
+      end_time: endTime,
+      team_id: teamIds,
+    })
+    if (code === 200) {
+      setWrongList(data)
+      setOpen(true)
+    } else {
+      message.error(msg)
+    }
+  }
+
 
   /**
    * menu click
@@ -230,7 +256,6 @@ function StudyReport(props) {
       exercises_id: [id],
     })
     if (code == 200) {
-      KnowledgeClick(currnetId)
       message.success(msg)
       addtopicData(1)
     } else {
@@ -243,7 +268,6 @@ function StudyReport(props) {
       exercises_id: id,
     })
     if (code == 200) {
-      KnowledgeClick(currnetId)
       message.success(msg)
       subtopicData(1)
     } else {
@@ -264,8 +288,8 @@ function StudyReport(props) {
     setKnowledgeDatas(data)
   }
 
-  const KnowledgeClick = async (id) => {
-    SetCurrnetId(id)
+  const KnowledgeClick = async (id,title) => {
+    SetCurrnetTitle(title)
     const { code, data, msg } = await academicReportKnowledgeDetail({
       knowledge_id: id,
       start_time: startTime,
@@ -276,9 +300,8 @@ function StudyReport(props) {
       data.map((item) => {
         item['isanswer'] = false
       })
-      message.success(msg)
       setKnowledgeDatas(data)
-      setIsAnBox(true)
+      setOpens(true)
     } else {
       message.error(msg)
     }
@@ -358,7 +381,7 @@ function StudyReport(props) {
               <div
                 className="items"
                 key={item.id}
-                onClick={() => KnowledgeClick(item.id)}
+                onClick={() => KnowledgeClick(item.id, item.title)}
               >
                 <div className="top_text">
                   <div className="left_tit">
@@ -450,6 +473,43 @@ function StudyReport(props) {
 
       {/* 悬浮框 */}
       <AI_floatBox props={props} />
+
+
+
+      <T_modelbox
+        isOpen={Opens}
+        title={`【${CurrnetTitle}】`}
+        closeClick={() => {
+          setOpens(false)
+        }}
+        width="76.0625rem"
+        height="37.5rem"
+      >
+        <div id="topics">
+          {KnowledgeDatas?.map((item, idx) => {
+            return (
+              <AI_topic
+                key={item?.id}
+                level={item?.level}
+                exercises_title={item?.get_question_category?.title}
+                content_all={item?.content_all}
+                isanswer={item?.isanswer}
+                knowName={item?.knowName}
+                answer={item?.answer_latex}
+                analysis={item?.analysis_latex}
+                update_time={item?.update_time}
+                is_basket={item?.is_basket}
+                onSetAnswer={() => onSetAnswers(idx)}
+                answerClick={() => answerClick(item?.id)}
+                removeClick={() => removeClick(item?.id)}
+                compositionClick={() => compositionClick(item?.id)}
+                isWrong={false}
+                onSeeWrong={() => onSeeWrong(item?.id)}
+              />
+            )
+          })}
+        </div>
+      </T_modelbox>
     </div>
   )
 }

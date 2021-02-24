@@ -263,6 +263,26 @@
       box-shadow: 0px 0px 2.714286rem 0px rgba(149, 149, 149, 0.13);
       border-radius: .714286rem;
       padding: 1.142857rem;
+      padding-bottom: 2.642857rem;
+      position: relative;
+
+      .more_box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 16px;
+        font-weight: 400;
+        color: #222222;
+        margin-top: .625rem;
+        cursor: pointer;
+        z-index: 999;
+        background-color: #FFFFFF;
+        padding-bottom: .625rem;
+      }
 
       .tip_top {
         display: flex;
@@ -356,6 +376,69 @@
           }
         }
       }
+
+      .Proportions {
+        margin-top: 3.0625rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .title {
+          font-size: 16px;
+          font-weight: bold;
+          color: #222222;
+          margin-bottom: 1.875rem;
+        }
+
+        .grid_box {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 4.6875rem 4.6875rem auto;
+
+          .item {
+            text-align: center;
+            border: 1px solid #E5E5E5;
+            margin-bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .progress {
+              width: 5.375rem;
+              height: .5rem;
+              background: #E5E5E5;
+              border-radius: .125rem;
+              margin-right: .5625rem;
+              overflow: hidden;
+
+              .color_sapn {
+                background-color: #E50304;
+                height: .5rem;
+              }
+            }
+          }
+
+          .title {
+            background-color: #E50304;
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFFFFF;
+            margin-right: 1px;
+            border: none;
+          }
+
+          .lrmn {
+            border-left: none;
+            border-right: none;
+          }
+        }
+      }
+    }
+
+    .more_style {
+      height: 41.4375rem;
+      overflow: hidden;
     }
   }
 }
